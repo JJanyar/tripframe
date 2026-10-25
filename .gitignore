@@ -4,3 +4,6 @@ dist
 .taste-skill
 .impeccable/review
 .impeccable/*.local.json
+
+.vercel
+.env*
