@@ -14,11 +14,13 @@
   --accent-soft: rgba(91, 157, 255, 0.16);
   --on-accent: #fff;
   --event: #ff6f61;
-  --event-soft: rgba(255, 111, 97, 0.16);
   --parking: #f0b54a;
-  --parking-soft: rgba(240, 181, 74, 0.16);
   --rear: #4fc7b4;
   --interior: #c9a7ff;
+  --check-rear: #2fa592;
+  --check-interior: #9a73e0;
+  --check-event: #e5554a;
+  --check-parking: #d0952a;
   --tile: 260px;
   --radius: 6px;
   --radius-sm: 4px;
@@ -309,16 +311,16 @@ body:not(.has-library) #open-folder {
 }
 
 .chip-cam-rear {
-  --dot: #2fa592;
+  --dot: var(--check-rear);
 }
 .chip-cam-interior {
-  --dot: #9a73e0;
+  --dot: var(--check-interior);
 }
 .chip-type-event {
-  --dot: #e5554a;
+  --dot: var(--check-event);
 }
 .chip-type-parking {
-  --dot: #d0952a;
+  --dot: var(--check-parking);
 }
 
 .days {
