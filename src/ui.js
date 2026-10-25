@@ -3,35 +3,38 @@ import {
   FolderOpen,
   Play,
   Pause,
-  ChevronUp,
-  ChevronDown,
   ArrowLeft,
   StepBack,
   StepForward,
+  SkipBack,
+  SkipForward,
+  ArrowLeftRight,
   Map as MapIcon,
   ImageDown,
   Columns2,
   PictureInPicture2,
-  Square,
   RotateCcw,
   MapPinOff,
   TriangleAlert,
 } from 'lucide';
+import { animate } from 'motion';
+import { t, locale } from './i18n.js';
+import { reducedMotion } from './theme.js';
 
 const ICONS = {
   folder: FolderOpen,
   play: Play,
   pause: Pause,
-  up: ChevronUp,
-  down: ChevronDown,
   back: ArrowLeft,
   stepBack: StepBack,
   stepFwd: StepForward,
+  prev: SkipBack,
+  next: SkipForward,
+  swap: ArrowLeftRight,
   map: MapIcon,
   save: ImageDown,
   sideBySide: Columns2,
   pip: PictureInPicture2,
-  single: Square,
   reopen: RotateCcw,
   noGps: MapPinOff,
   warn: TriangleAlert,
@@ -66,6 +69,7 @@ export function h(tag, attrs = {}, ...children) {
     if (v == null || v === false) continue;
     if (k === 'class') el.className = v;
     else if (k === 'dataset') Object.assign(el.dataset, v);
+    else if (k === 'style') el.style.cssText = v;
     else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
     else el.setAttribute(k, v === true ? '' : v);
   }
@@ -75,12 +79,12 @@ export function h(tag, attrs = {}, ...children) {
 
 export const $ = (id) => document.getElementById(id);
 
-export const CAMERA_LABEL = { front: 'Voor', rear: 'Achter', interior: 'Binnen', other: 'Camera' };
-export const TYPE_LABEL = { normal: 'Normaal', event: 'Event', parking: 'Parkeren', photo: "Foto's" };
+export const camLabel = (c) => t(`cam.${c}`);
+export const typeLabel = (k) => t(`type.${k}`);
 
-const nf1 = new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 1 });
 export function formatSize(bytes) {
-  if (bytes >= 1e9) return `${nf1.format(bytes / 1e9)} GB`;
+  const nf = new Intl.NumberFormat(locale(), { maximumFractionDigits: 1 });
+  if (bytes >= 1e9) return `${nf.format(bytes / 1e9)} GB`;
   if (bytes >= 1e6) return `${Math.round(bytes / 1e6)} MB`;
   return `${Math.max(1, Math.round(bytes / 1e3))} kB`;
 }
@@ -90,25 +94,19 @@ export function formatDuration(sec, centis = false) {
   const m = Math.floor(sec / 60);
   const s = Math.floor(sec % 60);
   const base = `${m}:${String(s).padStart(2, '0')}`;
-  return centis ? `${base},${String(Math.floor((sec % 1) * 100)).padStart(2, '0')}` : base;
+  const sep = (0.5).toLocaleString(locale()).charAt(1);
+  return centis ? `${base}${sep}${String(Math.floor((sec % 1) * 100)).padStart(2, '0')}` : base;
 }
-
-const dayFmt = new Intl.DateTimeFormat('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-const dayShortFmt = new Intl.DateTimeFormat('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' });
-const timeFmt = new Intl.DateTimeFormat('nl-NL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-const rangeFmt = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
 
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-export const formatDay = (d) => cap(dayFmt.format(d));
-export const formatDayShort = (d) => dayShortFmt.format(d).replace(/\./g, '');
-export const formatTime = (d) => timeFmt.format(d);
+const fmt = (opts) => new Intl.DateTimeFormat(locale(), opts);
+export const formatDay = (d) => cap(fmt({ weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d));
+export const formatDayShort = (d) => fmt({ weekday: 'short', day: 'numeric', month: 'short' }).format(d).replace(/\./g, '').replace(/,/g, '');
+export const formatTime = (d) => fmt({ hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(d);
 export function formatRange(a, b) {
   if (!a) return '';
-  return a.toDateString() === b.toDateString() ? rangeFmt.format(a) : rangeFmt.formatRange(a, b);
-}
-
-export function plural(n, one, many) {
-  return `${n.toLocaleString('nl-NL')} ${n === 1 ? one : many}`;
+  const f = fmt({ day: 'numeric', month: 'long', year: 'numeric' });
+  return a.toDateString() === b.toDateString() ? f.format(a) : f.formatRange(a, b);
 }
 
 let toastTimer;
@@ -116,10 +114,10 @@ export function toast(msg) {
   const el = $('toast');
   el.textContent = msg;
   el.hidden = false;
-  el.classList.remove('out');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    el.classList.add('out');
-    setTimeout(() => (el.hidden = true), 200);
+  if (!reducedMotion()) animate(el, { opacity: [0, 1], y: [12, 0], scale: [0.96, 1] }, { type: 'spring', stiffness: 520, damping: 34 });
+  toastTimer = setTimeout(async () => {
+    if (!reducedMotion()) await animate(el, { opacity: 0, y: 6 }, { duration: 0.18 }).finished;
+    el.hidden = true;
   }, 2600);
 }

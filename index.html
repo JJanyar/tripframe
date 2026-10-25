@@ -1,152 +1,183 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="description" content="Bekijk de beelden van je dashcam per dag en tijd, met voor- en achtercamera naast elkaar. Alles blijft op je eigen computer." />
-    <title>Dashcam dashboard</title>
+    <meta name="theme-color" content="#fafafa" />
+    <title>Dashcam dashboard: your dashcam footage, sorted by the minute</title>
+    <meta name="description" content="Open your dashcam's SD card in the browser. Every clip by day and time, front and rear in sync, frame by frame, with the route on a map. Free, no account, nothing is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Dashcam dashboard" />
+    <meta property="og:description" content="Your dashcam footage, sorted by the minute. Front and rear in sync, frame by frame, route on a map. Runs in your browser; nothing is uploaded." />
+    <meta property="og:image" content="https://dashcam-dashboard-vert.vercel.app/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
   </head>
-  <body>
-    <div class="app" id="app">
-      <aside class="sidebar" id="sidebar" aria-label="Map en filters">
-        <div class="brand">
-          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="8" width="20" height="16" rx="3" fill="currentColor"/><path d="M23 13.5 29 10v12l-6-3.5z" fill="currentColor"/><circle cx="13" cy="16" r="4" fill="var(--bg)"/></svg>
-          <span>Dashcam dashboard</span>
-        </div>
-
-        <button class="btn btn-primary btn-block" id="open-folder" type="button"></button>
-        <p class="folder-name" id="folder-name" hidden></p>
-
-        <div class="filters" id="filters" hidden>
-          <fieldset class="filter-group">
-            <legend>Camera</legend>
-            <div class="chips" id="filter-camera"></div>
-          </fieldset>
-          <fieldset class="filter-group">
-            <legend>Soort opname</legend>
-            <div class="chips" id="filter-type"></div>
-          </fieldset>
-          <nav class="days" aria-label="Dagen">
-            <h2 class="filter-title">Dagen</h2>
-            <ol class="day-list" id="day-list"></ol>
-          </nav>
-        </div>
-
-        <p class="local-note">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="4.5" y="10" width="15" height="11" rx="2.5" fill="currentColor"/></svg>
-          <span>Je beelden blijven op deze computer. Er wordt niets geüpload.</span>
-        </p>
-      </aside>
-
-      <main class="main" id="main">
-        <header class="toolbar" id="toolbar" hidden>
-          <div class="toolbar-title">
-            <h1 id="library-title">Opnames</h1>
-            <p id="library-meta"></p>
-          </div>
-          <div class="toolbar-actions">
-            <label class="zoom" title="Grootte van de miniaturen">
-              <span class="visually-hidden">Grootte van de miniaturen</span>
-              <span class="zoom-icon small" aria-hidden="true"></span>
-              <input type="range" id="zoom" min="180" max="420" step="10" value="260" />
-              <span class="zoom-icon" aria-hidden="true"></span>
-            </label>
-            <label class="select">
-              <span class="visually-hidden">Sorteren</span>
-              <select id="sort">
-                <option value="desc">Nieuwste eerst</option>
-                <option value="asc">Oudste eerst</option>
-              </select>
-            </label>
-          </div>
-        </header>
-
-        <section class="empty" id="empty">
-          <div class="drop" id="drop">
-            <div class="drop-art" aria-hidden="true">
-              <div class="drop-tile"></div>
-              <div class="drop-tile"></div>
-              <div class="drop-tile"></div>
-            </div>
-            <h1>Open de map van je dashcam</h1>
-            <p>Kies de geheugenkaart of de map <strong>DCIM</strong>. Je ziet je opnames dan per dag en tijd, met de voor- en achtercamera als één moment.</p>
-            <div class="drop-actions">
-              <button class="btn btn-primary btn-large" id="open-folder-big" type="button">Map kiezen</button>
-              <button class="btn btn-quiet btn-large" id="reopen" type="button" hidden></button>
-            </div>
-            <p class="drop-hint">Of sleep de map hierheen. Werkt met Viofo, BlackVue, Thinkware, 70mai, Nextbase en andere merken. Je beelden blijven op deze computer.</p>
-          </div>
-        </section>
-
-        <section class="loading" id="loading" hidden aria-live="polite">
-          <div class="spinner" aria-hidden="true"></div>
-          <p id="loading-text">Map wordt gelezen</p>
-        </section>
-
-        <section class="library" id="library" hidden></section>
-        <input type="file" id="folder-input" webkitdirectory directory multiple hidden />
-      </main>
-    </div>
-
-    <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
-      <header class="viewer-bar">
-        <button class="btn btn-ghost" id="viewer-close" type="button" title="Terug naar overzicht (Esc)"></button>
-        <div class="viewer-heading">
-          <h2 id="viewer-title"></h2>
-          <p id="viewer-sub"></p>
-        </div>
-        <div class="viewer-tools">
-          <div class="segmented" id="layout-switch" role="radiogroup" aria-label="Weergave"></div>
-          <button class="btn btn-ghost" id="map-toggle" type="button" aria-pressed="false"></button>
-          <button class="btn btn-ghost icon-only" id="prev-moment" type="button" title="Vorig moment (pijl omhoog)"></button>
-          <button class="btn btn-ghost icon-only" id="next-moment" type="button" title="Volgend moment (pijl omlaag)"></button>
-        </div>
-      </header>
-
-      <div class="viewer-body">
-        <div class="stage" id="stage"></div>
-        <aside class="map-panel" id="map-panel" hidden>
-          <div class="map" id="map"></div>
-          <div class="gps-readout" id="gps-readout"></div>
-        </aside>
+  <body class="home">
+    <header class="nav" id="nav">
+      <a class="wordmark" href="/">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="8" width="20" height="16" rx="3" fill="currentColor"/><path d="M23 13.5 29 10v12l-6-3.5z" fill="currentColor"/><circle cx="13" cy="16" r="4" fill="var(--bg)"/></svg>
+        <span>Dashcam dashboard</span>
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#moment" data-i18n="h.nav.how"></a>
+        <a href="#private" data-i18n="h.nav.privacy"></a>
+        <a href="#faq" data-i18n="h.nav.faq"></a>
+      </nav>
+      <div class="nav-prefs">
+        <div id="theme-switch"></div>
+        <label class="select compact">
+          <span class="visually-hidden" data-i18n="lang.label"></span>
+          <select id="lang"></select>
+        </label>
+        <a class="btn btn-primary" href="/app/" data-i18n="h.cta.short"></a>
       </div>
+    </header>
 
-      <footer class="controls" id="controls">
-        <div class="scrub">
-          <input type="range" id="scrubber" min="0" max="1000" step="1" value="0" aria-label="Positie in de clip" />
-        </div>
-        <div class="control-row">
-          <div class="control-group">
-            <button class="btn btn-ghost icon-only" id="frame-back" type="button" title="Eén frame terug (,)"></button>
-            <button class="btn btn-play icon-only" id="play" type="button" title="Afspelen of pauzeren (spatie)"></button>
-            <button class="btn btn-ghost icon-only" id="frame-fwd" type="button" title="Eén frame verder (.)"></button>
-            <p class="time" id="time"><span id="time-now">0:00,00</span><span class="time-sep">/</span><span id="time-total">0:00</span></p>
-            <p class="frame-no" id="frame-no"></p>
-          </div>
-          <div class="control-group">
-            <label class="select compact">
-              <span class="visually-hidden">Afspeelsnelheid</span>
-              <select id="speed">
-                <option value="0.25">0,25×</option>
-                <option value="0.5">0,5×</option>
-                <option value="1" selected>1×</option>
-                <option value="2">2×</option>
-                <option value="4">4×</option>
-              </select>
-            </label>
-            <label class="toggle" title="Speel na afloop het volgende moment af">
-              <input type="checkbox" id="autoplay" checked />
-              <span>Doorspelen</span>
-            </label>
-            <button class="btn btn-secondary" id="save-frame" type="button" title="Huidig frame opslaan als PNG (S)"></button>
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <h1 class="display" data-i18n="h.hero.title"></h1>
+          <p class="lead" data-i18n="h.hero.lead"></p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-large" href="/app/" data-i18n="h.cta"></a>
+            <p class="hero-note" data-i18n="h.hero.note"></p>
           </div>
         </div>
-      </footer>
-      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-    </div>
 
-    <script type="module" src="/src/main.js"></script>
+        <figure class="demo" id="demo" data-ui>
+          <div class="demo-bar">
+            <span class="demo-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="demo-title">DCIM</span>
+          </div>
+          <div class="demo-body">
+            <div class="demo-library" id="demo-library">
+              <h2 class="demo-day" id="demo-day"></h2>
+              <div class="demo-grid" id="demo-grid"></div>
+            </div>
+            <div class="demo-player force-dark" id="demo-player" hidden>
+              <div class="demo-stage" id="demo-stage"></div>
+              <div class="demo-controls">
+                <button type="button" class="demo-btn" id="demo-back" data-i18n="h.demo.back"></button>
+                <span class="demo-time" id="demo-time"></span>
+                <button type="button" class="demo-btn" id="demo-swap" data-i18n="h.demo.swap"></button>
+              </div>
+            </div>
+          </div>
+          <figcaption class="demo-caption" data-i18n="h.demo.caption"></figcaption>
+        </figure>
+      </section>
+
+      <section class="moment" id="moment" aria-labelledby="moment-title">
+        <div class="section-head">
+          <h2 class="headline" id="moment-title" data-i18n="h.moment.title"></h2>
+          <p class="body-l" data-i18n="h.moment.body"></p>
+        </div>
+        <ul class="decode" id="decode"></ul>
+      </section>
+
+      <section class="feature feature-sync" aria-labelledby="sync-title">
+        <div class="feature-media pair">
+          <img src="/photos/georgia-i75nb-mm86-2-dashcam.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.highway" loading="lazy" decoding="async" />
+          <img src="/photos/eb-us-84-divided-highway-ends-brooks.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.divided" loading="lazy" decoding="async" />
+        </div>
+        <div class="feature-copy">
+          <h2 class="headline" id="sync-title" data-i18n="h.sync.title"></h2>
+          <p class="body-l" data-i18n="h.sync.body"></p>
+          <p class="keys"><kbd>W</kbd> <span data-i18n="h.sync.key"></span></p>
+        </div>
+      </section>
+
+      <section class="feature feature-frame" aria-labelledby="frame-title">
+        <div class="feature-copy">
+          <h2 class="headline" id="frame-title" data-i18n="h.frame.title"></h2>
+          <p class="body-l" data-i18n="h.frame.body"></p>
+          <p class="keys"><kbd>,</kbd> <kbd>.</kbd> <span data-i18n="h.frame.key1"></span> <kbd>S</kbd> <span data-i18n="h.frame.key2"></span></p>
+        </div>
+        <div class="feature-media frames" id="frames">
+          <img class="frames-big" src="/photos/sb-ne-colin-kelley-highway-at-ne.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.intersection" loading="lazy" decoding="async" />
+          <div class="frame-strip" aria-hidden="true">
+            <span style="--x: 40%"></span><span style="--x: 45%"></span><span class="on" style="--x: 50%"></span><span style="--x: 55%"></span><span style="--x: 60%"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="feature feature-map" aria-labelledby="map-title">
+        <div class="feature-media route">
+          <img src="/photos/sb-madison-highway-directional-road-sign-ga.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.sign" loading="lazy" decoding="async" />
+          <div class="route-card force-dark" data-ui>
+            <svg class="route-svg" viewBox="0 0 200 120" aria-hidden="true">
+              <path class="route-path" d="M14 104 C 46 98, 52 70, 82 66 S 126 70, 140 46 S 170 18, 188 14" fill="none" />
+              <circle class="route-dot" r="6" cx="14" cy="104" />
+            </svg>
+            <p class="route-speed"><span id="route-speed">0</span> <span class="unit" data-i18n="v.kmh"></span></p>
+          </div>
+        </div>
+        <div class="feature-copy">
+          <h2 class="headline" id="map-title" data-i18n="h.map.title"></h2>
+          <p class="body-l" data-i18n="h.map.body"></p>
+        </div>
+      </section>
+
+      <section class="private" id="private" aria-labelledby="private-title">
+        <div class="private-inner">
+          <h2 class="display-2" id="private-title" data-i18n="h.private.title"></h2>
+          <div class="private-cols">
+            <p class="body-l" data-i18n="h.private.body"></p>
+            <ul class="private-list">
+              <li data-i18n="h.private.p1"></li>
+              <li data-i18n="h.private.p2"></li>
+              <li data-i18n="h.private.p3"></li>
+              <li data-i18n="h.private.p4"></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="steps" aria-labelledby="steps-title">
+        <h2 class="headline" id="steps-title" data-i18n="h.steps.title"></h2>
+        <ol class="step-list">
+          <li><h3 data-i18n="h.steps.1t"></h3><p data-i18n="h.steps.1"></p></li>
+          <li><h3 data-i18n="h.steps.2t"></h3><p data-i18n-html="h.steps.2"></p></li>
+          <li><h3 data-i18n="h.steps.3t"></h3><p data-i18n="h.steps.3"></p></li>
+        </ol>
+        <figure class="steps-photo">
+          <img src="/photos/dashcams-p1210466.jpg" width="1600" height="1200" alt="" data-i18n-attr="alt:h.alt.cams" loading="lazy" decoding="async" />
+        </figure>
+      </section>
+
+      <section class="faq" id="faq" aria-labelledby="faq-title">
+        <h2 class="headline" id="faq-title" data-i18n="h.faq.title"></h2>
+        <div class="faq-list">
+          <details><summary data-i18n="h.faq.q1"></summary><p data-i18n="h.faq.a1"></p></details>
+          <details><summary data-i18n="h.faq.q2"></summary><p data-i18n="h.faq.a2"></p></details>
+          <details><summary data-i18n="h.faq.q3"></summary><p data-i18n="h.faq.a3"></p></details>
+          <details><summary data-i18n="h.faq.q4"></summary><p data-i18n="h.faq.a4"></p></details>
+          <details><summary data-i18n="h.faq.q5"></summary><p data-i18n="h.faq.a5"></p></details>
+          <details><summary data-i18n="h.faq.q6"></summary><p data-i18n="h.faq.a6"></p></details>
+        </div>
+      </section>
+
+      <section class="close">
+        <h2 class="display" data-i18n="h.close.title"></h2>
+        <a class="btn btn-primary btn-large" href="/app/" data-i18n="h.cta"></a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="footer-mark">Dashcam dashboard</p>
+      <div class="footer-cols">
+        <p data-i18n="h.footer.local"></p>
+        <div class="credits">
+          <p data-i18n="h.footer.photos"></p>
+          <ul id="credits"></ul>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/landing.js"></script>
   </body>
 </html>

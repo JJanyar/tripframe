@@ -1,11 +1,15 @@
+import './base.css';
 import './styles.css';
+import { animate, stagger } from 'motion';
 import { parseClip, groupMoments, dayKey } from './parse.js';
 import { scanHandle, scanFileList, scanEntry, supportsPicker, idbGet, idbSet } from './scan.js';
 import { requestThumb, prioritize } from './thumbs.js';
-import { openViewer } from './viewer.js';
+import { openViewer, refreshViewer } from './viewer.js';
+import { t, plural, applyI18n, bindLangSelect, onLangChange, locale } from './i18n.js';
+import { mountThemeSwitch, transition, reducedMotion } from './theme.js';
 import {
-  $, h, icon, setButton, CAMERA_LABEL, TYPE_LABEL,
-  formatSize, formatDuration, formatDay, formatDayShort, formatTime, formatRange, plural,
+  $, h, icon, setButton, camLabel, typeLabel,
+  formatSize, formatDuration, formatDay, formatDayShort, formatTime, formatRange,
 } from './ui.js';
 
 const state = {
@@ -16,12 +20,29 @@ const state = {
   type: new Set(),
   sort: localStorage.getItem('sort') || 'desc',
   visible: [],
+  lastDir: null,
 };
 
-// ---------- opening a folder ----------
+applyI18n();
+bindLangSelect($('lang'));
+mountThemeSwitch($('theme-switch'));
 
-setButton($('open-folder'), 'folder', 'Andere map openen');
-setButton($('reopen'), 'reopen', 'Laatste map');
+function renderStatic() {
+  setButton($('open-folder'), 'folder', t('app.openOther'));
+  if (state.lastDir) setButton($('reopen'), 'reopen', t('app.reopen', { name: state.lastDir.name }));
+}
+renderStatic();
+
+onLangChange(() => {
+  renderStatic();
+  if (state.moments.length) {
+    renderFilters();
+    render({ animateIn: false });
+  }
+  refreshViewer();
+});
+
+// ---------- opening a folder ----------
 
 async function pickFolder() {
   if (!supportsPicker) return $('folder-input').click();
@@ -40,7 +61,7 @@ $('open-folder-big').addEventListener('click', pickFolder);
 $('folder-input').addEventListener('change', (e) => {
   const files = e.target.files;
   if (!files.length) return;
-  const name = (files[0].webkitRelativePath || '').split('/')[0] || 'Map';
+  const name = (files[0].webkitRelativePath || '').split('/')[0] || 'DCIM';
   load(name, async () => scanFileList(files));
   e.target.value = '';
 });
@@ -49,10 +70,10 @@ $('folder-input').addEventListener('change', (e) => {
   if (!supportsPicker) return;
   const dir = await idbGet('kv', 'lastDir');
   if (!dir) return;
-  const btn = $('reopen');
-  setButton(btn, 'reopen', `${dir.name} opnieuw openen`);
-  btn.hidden = false;
-  btn.addEventListener('click', async () => {
+  state.lastDir = dir;
+  renderStatic();
+  $('reopen').hidden = false;
+  $('reopen').addEventListener('click', async () => {
     try {
       if ((await dir.requestPermission({ mode: 'read' })) !== 'granted') return;
       await load(dir.name, (p) => scanHandle(dir, p));
@@ -101,25 +122,28 @@ function show(section) {
   $('toolbar').hidden = section !== 'library';
 }
 
+function hint(text) {
+  const el = $('drop-hint');
+  el.removeAttribute('data-i18n');
+  el.textContent = text;
+  el.classList.add('error');
+}
+
 function showError(e) {
   console.error(e);
   show('empty');
-  const hint = document.querySelector('.drop-hint');
-  hint.textContent = `De map kon niet worden gelezen (${e.message || e}). Kies de map opnieuw.`;
-  hint.classList.add('error');
+  hint(t('empty.error', { error: e.message || e }));
 }
 
 async function load(name, scan) {
   show('loading');
-  $('loading-text').textContent = `${name} wordt gelezen`;
-  const found = await scan((n) => ($('loading-text').textContent = `${plural(n, 'bestand', 'bestanden')} gevonden`));
+  $('loading-text').textContent = t('loading.reading', { name });
+  const found = await scan((n) => ($('loading-text').textContent = t('loading.found', { count: plural(n, 'n.file') })));
   const clips = found.map(({ path, file }) => parseClip(path, file));
 
   if (!clips.length) {
     show('empty');
-    const hint = document.querySelector('.drop-hint');
-    hint.textContent = `In ${name} staan geen video's of foto's. Kies de map DCIM op de geheugenkaart, of de kaart zelf.`;
-    hint.classList.add('error');
+    hint(t('empty.none', { name }));
     return;
   }
 
@@ -133,8 +157,10 @@ async function load(name, scan) {
   $('filters').hidden = false;
   document.body.classList.add('has-library');
   renderFilters();
-  render();
+  render({ animateIn: true });
   show('library');
+  $('main').scrollTop = 0;
+  if (!reducedMotion()) animate('.filters, .folder-name', { opacity: [0, 1], y: [8, 0] }, { duration: 0.35, ease: [0.22, 1, 0.36, 1] });
 }
 
 // ---------- filters ----------
@@ -149,21 +175,24 @@ function renderFilters() {
         class: `chip chip-${group}-${key}`,
         'aria-pressed': String(set.has(key)),
         onclick: (e) => {
-          if (set.has(key) && set.size > 1) set.delete(key);
-          else set.add(key);
-          e.currentTarget.setAttribute('aria-pressed', String(set.has(key)));
-          render();
+          const btn = e.currentTarget;
+          transition(() => {
+            if (set.has(key) && set.size > 1) set.delete(key);
+            else set.add(key);
+            btn.setAttribute('aria-pressed', String(set.has(key)));
+            render({ animateIn: false });
+          });
         },
       },
-      h('span', { class: 'chip-dot', 'aria-hidden': 'true' }),
+      h('span', { class: 'chip-box', 'aria-hidden': 'true' }),
       h('span', {}, label),
-      h('span', { class: 'chip-count' }, n.toLocaleString('nl-NL')),
+      h('span', { class: 'chip-count' }, n.toLocaleString(locale())),
     );
 
   const cams = ['front', 'rear', 'interior', 'other'].filter((c) => state.moments.some((m) => m.files[c]));
-  $('filter-camera').replaceChildren(...cams.map((c) => chip(state.camera, c, CAMERA_LABEL[c], count((m) => m.files[c]), 'cam')));
-  const types = ['normal', 'event', 'parking', 'photo'].filter((t) => state.moments.some((m) => m.type === t));
-  $('filter-type').replaceChildren(...types.map((t) => chip(state.type, t, TYPE_LABEL[t], count((m) => m.type === t), 'type')));
+  $('filter-camera').replaceChildren(...cams.map((c) => chip(state.camera, c, camLabel(c), count((m) => m.files[c]), 'cam')));
+  const types = ['normal', 'event', 'parking', 'photo'].filter((k) => state.moments.some((m) => m.type === k));
+  $('filter-type').replaceChildren(...types.map((k) => chip(state.type, k, typeLabel(k), count((m) => m.type === k), 'type')));
 }
 
 const zoom = $('zoom');
@@ -176,17 +205,18 @@ zoom.addEventListener('input', () => {
 
 $('sort').value = state.sort;
 $('sort').addEventListener('change', (e) => {
-  state.sort = e.target.value;
-  localStorage.setItem('sort', state.sort);
-  render();
+  transition(() => {
+    state.sort = e.target.value;
+    localStorage.setItem('sort', state.sort);
+    render({ animateIn: false });
+  });
 });
 
 // ---------- library ----------
 
 let tileObserver;
-let dayObserver;
 
-function render() {
+function render({ animateIn }) {
   const visible = state.moments.filter((m) => state.type.has(m.type) && m.cameras.some((c) => state.camera.has(c)));
   state.visible = visible; // chronological, used by the viewer for previous / next
 
@@ -203,25 +233,25 @@ function render() {
   const size = all.reduce((s, m) => s + m.size, 0);
   $('library-title').textContent = state.folder;
   $('library-meta').textContent = [
-    plural(all.length, 'moment', 'momenten'),
-    plural(state.fileCount, 'bestand', 'bestanden'),
+    plural(all.length, 'n.moment'),
+    plural(state.fileCount, 'n.file'),
     formatRange(all[0]?.date, all.at(-1)?.date),
     formatSize(size),
   ].filter(Boolean).join(', ');
 
   tileObserver?.disconnect();
-  dayObserver?.disconnect();
   tileObserver = new IntersectionObserver(onTilesVisible, { rootMargin: '600px 0px' });
 
   const lib = $('library');
   if (!visible.length) {
     lib.replaceChildren(
       h('div', { class: 'no-results' },
-        h('h2', {}, 'Geen opnames met deze filters'),
-        h('p', {}, 'Zet een camera of soort opname weer aan in de zijbalk.'),
+        h('h2', {}, t('lib.noResults')),
+        h('p', {}, t('lib.noResultsHint')),
       ),
     );
     $('day-list').replaceChildren();
+    updateActiveDay();
     return;
   }
 
@@ -232,63 +262,58 @@ function render() {
     const events = list.filter((m) => m.type === 'event').length;
     return h(
       'section',
-      { class: 'day', id: `day-${k}`, 'aria-labelledby': `dayh-${k}` },
+      { class: 'day', id: `day-${k}`, dataset: { day: k }, 'aria-labelledby': `dayh-${k}` },
       h('header', { class: 'day-head' },
         h('h2', { id: `dayh-${k}` }, formatDay(list[0].date)),
         h('p', {},
-          [plural(list.length, 'moment', 'momenten'), events ? plural(events, 'event', 'events') : null, formatSize(daySize)].filter(Boolean).join(', '),
+          [plural(list.length, 'n.moment'), events ? plural(events, 'n.event') : null, formatSize(daySize)].filter(Boolean).join(', '),
         ),
       ),
       h('div', { class: 'grid' }, list.map(tile)),
     );
   });
   lib.replaceChildren(...sections);
-  lib.querySelectorAll('.tile').forEach((t) => tileObserver.observe(t));
+  lib.querySelectorAll('.tile').forEach((el) => tileObserver.observe(el));
 
-  // Day list in the sidebar, with the day in view highlighted.
   $('day-list').replaceChildren(
     ...keys.map((k) => {
       const list = days.get(k);
       return h('li', {},
         h('a', { href: `#day-${k}`, class: 'day-link', dataset: { day: k }, onclick: (e) => {
           e.preventDefault();
-          document.getElementById(`day-${k}`).scrollIntoView({ block: 'start' });
+          scrollToDay(k);
         } },
           h('span', {}, formatDayShort(list[0].date)),
-          h('span', { class: 'day-count' }, list.length.toLocaleString('nl-NL')),
+          h('span', { class: 'day-count' }, list.length.toLocaleString(locale())),
         ),
       );
     }),
   );
-  dayObserver = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        const k = e.target.id.slice(4);
-        document.querySelectorAll('.day-link').forEach((a) => a.toggleAttribute('aria-current', a.dataset.day === k));
-      }
-    },
-    { root: $('main'), rootMargin: '-10% 0px -80% 0px' },
-  );
-  lib.querySelectorAll('.day').forEach((s) => dayObserver.observe(s));
+  activeDay = null;
+  requestAnimationFrame(updateActiveDay);
+
+  if (animateIn && !reducedMotion()) {
+    const first = [...lib.querySelectorAll('.day-head, .tile')].slice(0, 28);
+    animate(first, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, delay: stagger(0.025), ease: [0.22, 1, 0.36, 1] });
+  }
 }
 
 function tile(m) {
   const second = m.cameras.length > 1 ? m.files[m.cameras[1]] : null;
-  const label = `${formatTime(m.date)}, ${m.cameras.map((c) => CAMERA_LABEL[c]).join(' en ')}${m.type !== 'normal' && m.type !== 'photo' ? `, ${TYPE_LABEL[m.type]}` : ''}`;
+  const label = `${formatTime(m.date)}, ${m.cameras.map(camLabel).join(` ${t('and')} `)}${m.type === 'event' || m.type === 'parking' ? `, ${typeLabel(m.type)}` : ''}`;
   return h(
     'button',
-    { type: 'button', class: `tile type-${m.type}`, dataset: { id: m.id }, 'aria-label': label, onclick: () => openViewer(m, state.visible) },
+    { type: 'button', class: `tile type-${m.type}`, dataset: { id: m.id }, 'aria-label': label, onclick: (e) => openViewer(m, state.visible, e.currentTarget) },
     h('div', { class: 'thumb' },
       h('div', { class: 'thumb-main' }),
       second ? h('div', { class: 'thumb-inset' }) : null,
-      m.type === 'event' ? h('span', { class: 'tag tag-event' }, 'Event') : null,
-      m.type === 'parking' ? h('span', { class: 'tag tag-parking' }, 'Parkeren') : null,
+      m.type === 'event' ? h('span', { class: 'tag tag-event' }, typeLabel('event')) : null,
+      m.type === 'parking' ? h('span', { class: 'tag tag-parking' }, typeLabel('parking')) : null,
       m.isPhoto ? null : h('span', { class: 'duration' }),
     ),
     h('div', { class: 'tile-meta' },
-      h('span', { class: 'tile-time', title: m.dateFromFile ? 'Tijd uit de bestandsdatum, niet uit de naam' : null }, formatTime(m.date)),
-      h('span', { class: 'cams' }, m.cameras.map((c) => h('span', { class: `cam cam-${c}` }, CAMERA_LABEL[c]))),
+      h('span', { class: 'tile-time', title: m.dateFromFile ? t('lib.fileTime') : null }, formatTime(m.date)),
+      h('span', { class: 'cams' }, m.cameras.map((c) => h('span', { class: `cam cam-${c}` }, camLabel(c)))),
     ),
   );
 }
@@ -297,17 +322,17 @@ function fill(el, clip, onDuration) {
   if (!el || el.dataset.loading) return;
   el.dataset.loading = '1';
   prioritize(clip);
-  requestThumb(clip).then((t) => {
-    if (t?.url) {
-      const img = h('img', { src: t.url, alt: '', decoding: 'async' });
+  requestThumb(clip).then((th) => {
+    if (th?.url) {
+      const img = h('img', { src: th.url, alt: '', decoding: 'async' });
       img.addEventListener('load', () => el.classList.add('ready'), { once: true });
       el.replaceChildren(img);
     } else {
       el.classList.add('failed');
       el.replaceChildren(icon('warn', 20));
-      el.title = 'Geen voorbeeld: deze browser kan dit videoformaat niet lezen';
+      el.title = t('lib.noPreview');
     }
-    if (t?.duration && onDuration) onDuration(t.duration);
+    if (th?.duration && onDuration) onDuration(th.duration);
   });
 }
 
@@ -321,6 +346,72 @@ function onTilesVisible(entries) {
     if (m.cameras.length > 1) fill(e.target.querySelector('.thumb-inset'), m.files[m.cameras[1]]);
   }
 }
+
+// ---------- the day list follows the scroll position ----------
+
+let activeDay = null;
+let scrollQueued = false;
+
+function scroller() {
+  return matchMedia('(max-width: 820px)').matches ? document.scrollingElement : $('main');
+}
+
+function scrollToDay(k) {
+  const section = document.getElementById(`day-${k}`);
+  const sc = scroller();
+  const offset = sc === $('main') ? $('toolbar').offsetHeight : 0;
+  const top = section.getBoundingClientRect().top - (sc === $('main') ? $('main').getBoundingClientRect().top : 0) + sc.scrollTop - offset + 2;
+  sc.scrollTo({ top, behavior: reducedMotion() ? 'auto' : 'smooth' });
+}
+
+function updateActiveDay() {
+  scrollQueued = false;
+  const sections = [...document.querySelectorAll('.day')];
+  if (!sections.length) return;
+  const main = $('main');
+  const line = main.getBoundingClientRect().top + $('toolbar').offsetHeight + 24;
+  let current = sections[0];
+  for (const s of sections) {
+    if (s.getBoundingClientRect().top <= line) current = s;
+    else break;
+  }
+  // At the very bottom the last day wins, even when it is too short to reach the line.
+  if (main.scrollTop + main.clientHeight >= main.scrollHeight - 4) current = sections.at(-1);
+  setActiveDay(current.dataset.day);
+}
+
+function setActiveDay(k) {
+  if (k === activeDay) return;
+  activeDay = k;
+  const links = document.querySelectorAll('.day-link');
+  let link = null;
+  links.forEach((a) => {
+    const on = a.dataset.day === k;
+    a.toggleAttribute('aria-current', on);
+    if (on) link = a;
+  });
+  const indicator = $('day-indicator');
+  if (!link) return (indicator.style.opacity = 0);
+  const y = link.offsetTop;
+  const opts = reducedMotion() || indicator.style.opacity !== '1' ? { duration: 0 } : { type: 'spring', stiffness: 420, damping: 38 };
+  animate(indicator, { y, height: link.offsetHeight }, opts);
+  indicator.style.opacity = 1;
+
+  // Keep the active day visible inside the sidebar list.
+  const box = $('day-scroll');
+  if (y < box.scrollTop + 8 || y + link.offsetHeight > box.scrollTop + box.clientHeight - 8) {
+    box.scrollTo({ top: y - box.clientHeight / 2 + link.offsetHeight / 2, behavior: reducedMotion() ? 'auto' : 'smooth' });
+  }
+}
+
+const queueActive = () => {
+  if (!scrollQueued) {
+    scrollQueued = true;
+    requestAnimationFrame(updateActiveDay);
+  }
+};
+$('main').addEventListener('scroll', queueActive, { passive: true });
+window.addEventListener('resize', queueActive);
 
 // Development hook for testing without a real SD card.
 if (import.meta.env.DEV) window.__loadFiles = (name, list) => load(name, async () => list);
