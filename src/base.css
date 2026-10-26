@@ -16,7 +16,7 @@
   --press: #cbc8be;
   --ink: #17191e;
   --ink-2: #474a52;
-  --ink-3: #686c75;
+  --ink-3: #5d6169;
   --primary: #17191e;
   --primary-hover: #2c2f36;
   --on-primary: #f6f4ee;
@@ -27,7 +27,6 @@
   --radius: 6px;
   --radius-sm: 4px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --font: 'Manrope', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   --font-display: var(--font);
   color-scheme: light;
@@ -91,7 +90,7 @@
     --hover: #d8d5cc;
     --ink: #17191e;
     --ink-2: #474a52;
-    --ink-3: #686c75;
+    --ink-3: #5d6169;
     --primary: #17191e;
     --primary-hover: #2c2f36;
     --on-primary: #f6f4ee;
@@ -106,7 +105,7 @@
   --hover: #d8d5cc;
   --ink: #17191e;
   --ink-2: #474a52;
-  --ink-3: #686c75;
+  --ink-3: #5d6169;
   --primary: #17191e;
   --primary-hover: #2c2f36;
   --on-primary: #f6f4ee;

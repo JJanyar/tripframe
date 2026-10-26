@@ -1,337 +1,503 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-25T23:10:00Z",
-  "title": "Design System: Dashcam dashboard",
+  "generatedAt": "2026-10-26T13:54:05.195Z",
+  "title": "Design System: Tripframe",
   "extensions": {
     "colorMeta": {
-      "graphite-ground": {
-        "role": "neutral",
-        "displayName": "Graphite Ground",
-        "canonical": "#1c1d20",
+      "asphalt": {
+        "role": "primary",
+        "displayName": "Asphalt",
+        "canonical": "#17191e",
         "tonalRamp": [
-          "oklch(15% 0.006 270)",
-          "oklch(23% 0.006 270)",
-          "oklch(27% 0.006 270)",
-          "oklch(39% 0.006 270)",
-          "oklch(51% 0.006 270)",
-          "oklch(63% 0.006 270)",
-          "oklch(80% 0.005 270)",
-          "oklch(95% 0.003 270)"
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
         ]
       },
-      "graphite-panel": {
-        "role": "neutral",
-        "displayName": "Graphite Panel",
-        "canonical": "#232428",
+      "chalk": {
+        "role": "primary",
+        "displayName": "Chalk",
+        "canonical": "#f6f4ee",
         "tonalRamp": [
-          "oklch(15% 0.007 270)",
-          "oklch(25% 0.007 270)",
-          "oklch(35% 0.007 270)",
-          "oklch(45% 0.007 270)",
-          "oklch(57% 0.007 270)",
-          "oklch(69% 0.006 270)",
-          "oklch(82% 0.005 270)",
-          "oklch(95% 0.003 270)"
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
         ]
       },
-      "graphite-raised": {
-        "role": "neutral",
-        "displayName": "Graphite Raised",
-        "canonical": "#2b2c31",
+      "asphalt-lift": {
+        "role": "primary",
+        "displayName": "Asphalt Lift",
+        "canonical": "#2c2f36",
         "tonalRamp": [
-          "oklch(15% 0.008 270)",
-          "oklch(28% 0.008 270)",
-          "oklch(38% 0.008 270)",
-          "oklch(48% 0.008 270)",
-          "oklch(59% 0.007 270)",
-          "oklch(70% 0.006 270)",
-          "oklch(83% 0.005 270)",
-          "oklch(95% 0.003 270)"
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
         ]
       },
-      "graphite-hover": {
-        "role": "neutral",
-        "displayName": "Graphite Hover",
-        "canonical": "#34353b",
+      "signal-yellow": {
+        "role": "secondary",
+        "displayName": "Signal Yellow",
+        "canonical": "#ffc21a",
         "tonalRamp": [
-          "oklch(15% 0.009 270)",
-          "oklch(25% 0.009 270)",
-          "oklch(32% 0.009 270)",
-          "oklch(45% 0.009 270)",
-          "oklch(57% 0.008 270)",
-          "oklch(69% 0.007 270)",
-          "oklch(82% 0.005 270)",
-          "oklch(95% 0.003 270)"
+          "oklch(18% 0.077 85)",
+          "oklch(30% 0.111 85)",
+          "oklch(42% 0.145 85)",
+          "oklch(54% 0.170 85)",
+          "oklch(66% 0.170 85)",
+          "oklch(78% 0.153 85)",
+          "oklch(88% 0.102 85)",
+          "oklch(95% 0.051 85)"
         ]
       },
-      "graphite-press": {
-        "role": "neutral",
-        "displayName": "Graphite Press",
-        "canonical": "#3c3d44",
+      "kerb-grey": {
+        "role": "tertiary",
+        "displayName": "Kerb Grey",
+        "canonical": "#8c919a",
         "tonalRamp": [
-          "oklch(15% 0.01 270)",
-          "oklch(25% 0.01 270)",
-          "oklch(35% 0.01 270)",
-          "oklch(45% 0.01 270)",
-          "oklch(57% 0.009 270)",
-          "oklch(69% 0.008 270)",
-          "oklch(82% 0.006 270)",
-          "oklch(95% 0.003 270)"
+          "oklch(18% 0.009 260)",
+          "oklch(30% 0.013 260)",
+          "oklch(42% 0.017 260)",
+          "oklch(54% 0.020 260)",
+          "oklch(66% 0.020 260)",
+          "oklch(78% 0.018 260)",
+          "oklch(88% 0.012 260)",
+          "oklch(95% 0.006 260)"
+        ]
+      },
+      "rec-red": {
+        "role": "tertiary",
+        "displayName": "Rec Red",
+        "canonical": "#e5484d",
+        "tonalRamp": [
+          "oklch(18% 0.086 25)",
+          "oklch(30% 0.124 25)",
+          "oklch(42% 0.162 25)",
+          "oklch(54% 0.190 25)",
+          "oklch(66% 0.190 25)",
+          "oklch(78% 0.171 25)",
+          "oklch(88% 0.114 25)",
+          "oklch(95% 0.057 25)"
+        ]
+      },
+      "chalk-panel": {
+        "role": "neutral",
+        "displayName": "Chalk Panel",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "chalk-raised": {
+        "role": "neutral",
+        "displayName": "Chalk Raised",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "chalk-hover": {
+        "role": "neutral",
+        "displayName": "Chalk Hover",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "chalk-press": {
+        "role": "neutral",
+        "displayName": "Chalk Press",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "asphalt-ink-2": {
+        "role": "neutral",
+        "displayName": "Asphalt Ink 2",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "asphalt-ink-3": {
+        "role": "neutral",
+        "displayName": "Asphalt Ink 3",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "asphalt-panel": {
+        "role": "neutral",
+        "displayName": "Asphalt Panel",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "asphalt-raised": {
+        "role": "neutral",
+        "displayName": "Asphalt Raised",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "asphalt-hover": {
+        "role": "neutral",
+        "displayName": "Asphalt Hover",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "asphalt-press": {
+        "role": "neutral",
+        "displayName": "Asphalt Press",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "chalk-ink-2": {
+        "role": "neutral",
+        "displayName": "Chalk Ink 2",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "chalk-ink-3": {
+        "role": "neutral",
+        "displayName": "Chalk Ink 3",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "tonalRamp": [
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
         ]
       },
       "stage-black": {
         "role": "neutral",
         "displayName": "Stage Black",
-        "canonical": "#0c0d0e",
         "tonalRamp": [
-          "oklch(15% 0.003 250)",
-          "oklch(27% 0.003 250)",
-          "oklch(39% 0.003 250)",
-          "oklch(51% 0.003 250)",
-          "oklch(63% 0.003 250)",
-          "oklch(75% 0.003 250)",
-          "oklch(85% 0.002 250)",
-          "oklch(95% 0.002 250)"
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
         ]
       },
-      "ink": {
+      "media-scrim": {
         "role": "neutral",
-        "displayName": "Ink",
-        "canonical": "#ececef",
+        "displayName": "Media Scrim",
         "tonalRamp": [
-          "oklch(15% 0.005 285)",
-          "oklch(27% 0.005 285)",
-          "oklch(39% 0.005 285)",
-          "oklch(51% 0.005 285)",
-          "oklch(63% 0.005 285)",
-          "oklch(75% 0.005 285)",
-          "oklch(85% 0.004 285)",
-          "oklch(94% 0.004 285)"
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
         ]
       },
-      "ink-secondary": {
+      "scrim-chalk": {
         "role": "neutral",
-        "displayName": "Ink Secondary",
-        "canonical": "#b0b2ba",
+        "displayName": "Scrim Chalk",
         "tonalRamp": [
-          "oklch(15% 0.01 270)",
-          "oklch(27% 0.01 270)",
-          "oklch(39% 0.01 270)",
-          "oklch(51% 0.01 270)",
-          "oklch(63% 0.01 270)",
-          "oklch(76% 0.01 270)",
-          "oklch(85% 0.008 270)",
-          "oklch(95% 0.004 270)"
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
         ]
       },
-      "ink-tertiary": {
+      "scrim-asphalt": {
         "role": "neutral",
-        "displayName": "Ink Tertiary",
-        "canonical": "#868993",
+        "displayName": "Scrim Asphalt",
         "tonalRamp": [
-          "oklch(15% 0.012 270)",
-          "oklch(27% 0.012 270)",
-          "oklch(39% 0.012 270)",
-          "oklch(51% 0.012 270)",
-          "oklch(63% 0.012 270)",
-          "oklch(75% 0.01 270)",
-          "oklch(85% 0.008 270)",
-          "oklch(95% 0.004 270)"
-        ]
-      },
-      "library-blue": {
-        "role": "primary",
-        "displayName": "Library Blue",
-        "canonical": "#5b9dff",
-        "tonalRamp": [
-          "oklch(15% 0.06 258)",
-          "oklch(27% 0.1 258)",
-          "oklch(39% 0.14 258)",
-          "oklch(51% 0.17 258)",
-          "oklch(63% 0.17 258)",
-          "oklch(70% 0.15 258)",
-          "oklch(85% 0.08 258)",
-          "oklch(95% 0.03 258)"
-        ]
-      },
-      "library-blue-strong": {
-        "role": "primary",
-        "displayName": "Library Blue Strong",
-        "canonical": "#3f86f5",
-        "tonalRamp": [
-          "oklch(15% 0.06 260)",
-          "oklch(27% 0.1 260)",
-          "oklch(39% 0.15 260)",
-          "oklch(51% 0.18 260)",
-          "oklch(63% 0.18 260)",
-          "oklch(75% 0.13 260)",
-          "oklch(85% 0.08 260)",
-          "oklch(95% 0.03 260)"
-        ]
-      },
-      "library-blue-soft": {
-        "role": "primary",
-        "displayName": "Library Blue Soft",
-        "canonical": "rgba(91, 157, 255, 0.16)",
-        "tonalRamp": [
-          "rgba(91, 157, 255, 0.04)",
-          "rgba(91, 157, 255, 0.08)",
-          "rgba(91, 157, 255, 0.12)",
-          "rgba(91, 157, 255, 0.16)",
-          "rgba(91, 157, 255, 0.24)",
-          "rgba(91, 157, 255, 0.32)",
-          "rgba(91, 157, 255, 0.48)",
-          "rgba(91, 157, 255, 0.64)"
-        ]
-      },
-      "on-accent": {
-        "role": "neutral",
-        "displayName": "On Accent White",
-        "canonical": "#ffffff",
-        "tonalRamp": [
-          "oklch(15% 0 0)",
-          "oklch(27% 0 0)",
-          "oklch(39% 0 0)",
-          "oklch(51% 0 0)",
-          "oklch(63% 0 0)",
-          "oklch(75% 0 0)",
-          "oklch(85% 0 0)",
-          "oklch(100% 0 0)"
-        ]
-      },
-      "event-red": {
-        "role": "secondary",
-        "displayName": "Event Red",
-        "canonical": "#ff6f61",
-        "tonalRamp": [
-          "oklch(15% 0.05 28)",
-          "oklch(27% 0.09 28)",
-          "oklch(39% 0.13 28)",
-          "oklch(51% 0.17 28)",
-          "oklch(63% 0.19 28)",
-          "oklch(71% 0.18 28)",
-          "oklch(85% 0.08 28)",
-          "oklch(95% 0.03 28)"
-        ]
-      },
-      "parking-amber": {
-        "role": "secondary",
-        "displayName": "Parking Amber",
-        "canonical": "#f0b54a",
-        "tonalRamp": [
-          "oklch(15% 0.04 78)",
-          "oklch(27% 0.07 78)",
-          "oklch(39% 0.1 78)",
-          "oklch(51% 0.12 78)",
-          "oklch(63% 0.14 78)",
-          "oklch(80% 0.14 78)",
-          "oklch(88% 0.09 78)",
-          "oklch(95% 0.04 78)"
-        ]
-      },
-      "rear-teal": {
-        "role": "tertiary",
-        "displayName": "Rear Teal",
-        "canonical": "#4fc7b4",
-        "tonalRamp": [
-          "oklch(15% 0.03 178)",
-          "oklch(27% 0.06 178)",
-          "oklch(39% 0.08 178)",
-          "oklch(51% 0.1 178)",
-          "oklch(63% 0.11 178)",
-          "oklch(76% 0.11 178)",
-          "oklch(86% 0.07 178)",
-          "oklch(95% 0.03 178)"
-        ]
-      },
-      "interior-lilac": {
-        "role": "tertiary",
-        "displayName": "Interior Lilac",
-        "canonical": "#c9a7ff",
-        "tonalRamp": [
-          "oklch(15% 0.05 300)",
-          "oklch(27% 0.08 300)",
-          "oklch(39% 0.11 300)",
-          "oklch(51% 0.13 300)",
-          "oklch(63% 0.13 300)",
-          "oklch(77% 0.12 300)",
-          "oklch(86% 0.07 300)",
-          "oklch(95% 0.03 300)"
+          "#0e0f12",
+          "#17191e",
+          "#272a31",
+          "#3a3d46",
+          "#5d6169",
+          "#9a9ea6",
+          "#e2dfd7",
+          "#f6f4ee"
         ]
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The empty-state heading only."
+        "purpose": "Closing homepage headline."
+      },
+      "hero-display": {
+        "displayName": "Hero display",
+        "purpose": "Homepage hero headline beside the looping video."
+      },
+      "display-2": {
+        "displayName": "Display 2",
+        "purpose": "Privacy field heading."
       },
       "headline": {
         "displayName": "Headline",
+        "purpose": "Homepage section headings."
+      },
+      "step-title": {
+        "displayName": "Step title",
+        "purpose": "Homepage step headings; route speed uses 700 at 30px."
+      },
+      "file-name": {
+        "displayName": "File name",
+        "purpose": "Decoded dashcam file names on the homepage."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Homepage hero paragraph, in ink-2."
+      },
+      "body-large": {
+        "displayName": "Body large",
+        "purpose": "Homepage running text."
+      },
+      "app-display": {
+        "displayName": "App display",
+        "purpose": "Empty-state heading."
+      },
+      "app-headline": {
+        "displayName": "App headline",
         "purpose": "Library title in the sticky toolbar."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Sticky day headings, no-results heading; viewer heading at 17px."
+        "purpose": "Day headings and the no-results heading; 17px step in the viewer."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Running text, max 44ch in the empty state."
+        "purpose": "App running text; global default with tabular figures."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Buttons, selects, tile times, playback time, filter rows."
+        "purpose": "Buttons, selects, tile times, filter rows, links."
       },
       "caption": {
         "displayName": "Caption",
-        "purpose": "Counts, metadata, group labels (600 in ink-tertiary), hints, local-only note."
+        "purpose": "Counts, metadata, group labels, hints."
       },
       "tag": {
         "displayName": "Tag",
-        "purpose": "State tags, camera labels, duration badges."
+        "purpose": "State tags and camera captions."
+      },
+      "key": {
+        "displayName": "Key",
+        "purpose": "Key caps in the shortcuts card."
+      },
+      "speed": {
+        "displayName": "Speed",
+        "purpose": "GPS speed numeral in the viewer."
       }
     },
     "shadows": [
       {
         "name": "transient-overlay",
         "value": "0 8px 24px rgba(0, 0, 0, 0.4)",
-        "purpose": "Toast only; floats over video briefly. No resting surface carries a shadow."
+        "purpose": "Toast floating over video for 2.6s."
+      },
+      {
+        "name": "popover",
+        "value": "0 16px 48px rgba(0, 0, 0, 0.45)",
+        "purpose": "Keyboard shortcuts card over the stage while open."
       }
     ],
     "motion": [
       {
         "name": "ease-out",
         "value": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "purpose": "Press scale, thumbnail hover zoom, viewer entrance, toast entrance, toggle knob."
+        "purpose": "Entrances, morphs, presses and sliding pills; also the motion-library ease."
       },
       {
-        "name": "state-fast",
-        "value": "120ms ease",
-        "purpose": "Background and colour changes on buttons, filter rows, day links, segments."
+        "name": "state",
+        "value": "140ms ease",
+        "purpose": "Background and colour changes on buttons, links and selects."
       },
       {
-        "name": "viewer-in",
-        "value": "220ms ease-out, opacity 0 and scale 0.985 to 1",
-        "purpose": "Viewer dialog entrance."
-      },
-      {
-        "name": "thumb-fade",
+        "name": "theme-fade",
         "value": "200ms ease",
-        "purpose": "Thumbnail image fade-in once decoded."
+        "purpose": "Ground and ink colour change on surfaces when the theme flips."
       },
       {
-        "name": "placeholder-pulse",
-        "value": "1.4s ease-in-out infinite",
-        "purpose": "Thumbnail placeholder while generating."
+        "name": "press",
+        "value": "160ms ease-out, scale(0.97)",
+        "purpose": "Button press."
+      },
+      {
+        "name": "theme-reveal",
+        "value": "560ms ease-out, circle clip-path from the pressed button",
+        "purpose": "Theme switch view transition."
+      },
+      {
+        "name": "tile-morph",
+        "value": "420ms ease-out",
+        "purpose": "Tile thumbnails morph into viewer camera views and back (view transition)."
+      },
+      {
+        "name": "clip-slide",
+        "value": "out 300ms / in 380ms ease-out, 36 to 48px vertical",
+        "purpose": "Previous or next clip in the viewer."
+      },
+      {
+        "name": "segment-pill",
+        "value": "clip-path 320ms ease-out",
+        "purpose": "Segmented layout switch selection."
+      },
+      {
+        "name": "day-indicator-spring",
+        "value": "spring, stiffness 420, damping 38",
+        "purpose": "Sliding day-list indicator."
+      },
+      {
+        "name": "toast-spring",
+        "value": "spring, stiffness 520, damping 34",
+        "purpose": "Toast entrance."
+      },
+      {
+        "name": "tile-stagger",
+        "value": "420ms, 14px rise, 25ms stagger",
+        "purpose": "Library tiles entering."
+      },
+      {
+        "name": "section-stagger",
+        "value": "700ms, 28px rise, 75ms stagger",
+        "purpose": "Homepage sections entering view."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "durations 1ms; view transitions and entrances skipped",
+        "purpose": "prefers-reduced-motion."
       }
     ],
     "breakpoints": [
       {
-        "name": "compact-tools",
+        "name": "app-compact",
         "value": "1100px"
       },
       {
-        "name": "stacked",
+        "name": "app-stacked",
         "value": "820px"
+      },
+      {
+        "name": "home-single-column",
+        "value": "1000px"
+      },
+      {
+        "name": "home-small",
+        "value": "560px"
       }
     ]
   },
@@ -340,138 +506,153 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The single primary action per view: choose or reopen a folder.",
-      "html": "<button class=\"ds-btn ds-btn-primary\" type=\"button\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2\"/></svg><span>Map kiezen</span></button>",
-      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--raised, #2b2c31); color: var(--ink, #ececef); font: 600 14px/1.5 system-ui, sans-serif; cursor: pointer; white-space: nowrap; transition: background-color 120ms ease, transform 120ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 2px; } .ds-btn:active { transform: scale(0.97); } .ds-btn-primary { background: var(--accent-strong, #3f86f5); color: #fff; } .ds-btn-primary:hover { background: var(--accent, #5b9dff); } .ds-btn-primary:active { background: var(--accent-strong, #3f86f5); }"
+      "description": "Ink fill on ground; one per view (open the app, choose folder).",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Choose folder</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 6px; font-family: Manrope, \"Segoe UI\", system-ui, sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: background-color 140ms ease, color 140ms ease, transform 160ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-primary { background: var(--primary, #17191e); color: var(--on-primary, #f6f4ee); } .ds-btn-primary:hover { background: var(--primary-hover, #2c2f36); } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 2px solid var(--ink, #17191e); outline-offset: 2px; }"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Raised graphite action, e.g. save the current frame.",
-      "html": "<button class=\"ds-btn-secondary\" type=\"button\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21\"/><path d=\"m14 19 3 3v-5.5\"/><path d=\"m17 22 3-3\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/></svg><span>Frame opslaan</span></button>",
-      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: var(--raised, #2b2c31); color: var(--ink, #ececef); font: 600 14px/1.5 system-ui, sans-serif; cursor: pointer; transition: background-color 120ms ease, transform 120ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-secondary:hover { background: var(--hover, #34353b); } .ds-btn-secondary:active { background: var(--press, #3c3d44); transform: scale(0.97); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 2px; }"
-    },
-    {
-      "name": "Ghost Toggle Button",
-      "kind": "button",
-      "refersTo": "button-ghost-pressed",
-      "description": "Transparent tool button; pressed state takes the soft blue wash.",
-      "html": "<button class=\"ds-btn-ghost\" type=\"button\" aria-pressed=\"true\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z\"/><path d=\"M15 5.764v15\"/><path d=\"M9 3.236v15\"/></svg><span>Kaart</span></button>",
-      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: transparent; color: var(--ink, #ececef); font: 600 14px/1.5 system-ui, sans-serif; cursor: pointer; transition: background-color 120ms ease, color 120ms ease; } .ds-btn-ghost:hover { background: var(--raised, #2b2c31); } .ds-btn-ghost[aria-pressed='true'] { background: var(--accent-soft, rgba(91, 157, 255, 0.16)); color: var(--accent, #5b9dff); } .ds-btn-ghost:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 2px; }"
-    },
-    {
-      "name": "Filter Row",
-      "kind": "chip",
-      "refersTo": "filter-row",
-      "description": "Sidebar filter: coloured check box, label, count.",
-      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" type=\"button\" aria-pressed=\"true\"><span class=\"ds-chip-dot\"></span><span>Voor</span><span class=\"ds-chip-count\">5</span></button><button class=\"ds-chip\" type=\"button\" aria-pressed=\"false\"><span class=\"ds-chip-dot\"></span><span>Binnen</span><span class=\"ds-chip-count\">0</span></button></div>",
-      "css": ".ds-chips { display: flex; flex-direction: column; gap: 2px; width: 232px; } .ds-chip { display: flex; align-items: center; gap: 10px; min-height: 34px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--ink, #ececef); font: 400 15px/1.5 system-ui, sans-serif; text-align: left; cursor: pointer; transition: background-color 120ms ease, color 120ms ease; } .ds-chip:hover { background: var(--hover, #34353b); } .ds-chip:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 2px; } .ds-chip-dot { position: relative; width: 14px; height: 14px; border-radius: 4px; background: var(--press, #3c3d44); } .ds-chip[aria-pressed='true'] .ds-chip-dot { background: var(--accent, #5b9dff); } .ds-chip[aria-pressed='true'] .ds-chip-dot::after { content: ''; position: absolute; left: 4.5px; top: 1.5px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); } .ds-chip[aria-pressed='false'] { color: var(--ink-3, #868993); } .ds-chip-count { margin-left: auto; color: var(--ink-3, #868993); font-size: 13px; }"
+      "description": "Raised fill for quiet actions such as Save frame.",
+      "html": "<button class=\"ds-btn ds-btn-secondary\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>Save frame</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 6px; font-family: Manrope, \"Segoe UI\", system-ui, sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: background-color 140ms ease, color 140ms ease, transform 160ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-secondary { background: var(--raised, #e2dfd7); color: var(--ink, #17191e); } .ds-btn-secondary:hover { background: var(--hover, #d8d5cc); } .ds-btn-secondary:active { background: var(--press, #cbc8be); transform: scale(0.97); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--ink, #17191e); outline-offset: 2px; }"
     },
     {
       "name": "State Tags",
       "kind": "chip",
       "refersTo": "tag-event",
-      "description": "Small solid tags for event and parking recordings.",
-      "html": "<span class=\"ds-tag ds-tag-event\">Event</span> <span class=\"ds-tag ds-tag-parking\">Parkeren</span>",
-      "css": ".ds-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 4px; font: 650 12px/1 system-ui, sans-serif; } .ds-tag-event { background: var(--event, #ff6f61); color: #2a0905; } .ds-tag-parking { background: var(--parking, #f0b54a); color: #2a1a00; }"
+      "description": "Event in signal yellow with asphalt text; parking as the ink tag.",
+      "html": "<span class=\"ds-tag ds-tag-event\">Event</span> <span class=\"ds-tag ds-tag-parking\">Parking</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 4px; font-family: Manrope, \"Segoe UI\", system-ui, sans-serif; font-size: 12px; font-weight: 650; line-height: 1; } .ds-tag-event { background: var(--signal, #ffc21a); color: var(--on-signal, #17191e); } .ds-tag-parking { background: var(--ink, #17191e); color: var(--bg, #f6f4ee); }"
     },
     {
-      "name": "Moment Tile",
-      "kind": "card",
-      "refersTo": "moment-tile-thumb",
-      "description": "One moment: front thumbnail with rear inset, tag, duration, time and camera dots.",
-      "html": "<button class=\"ds-tile\" type=\"button\"><div class=\"ds-thumb\"><div class=\"ds-thumb-main\"></div><span class=\"ds-tag-e\">Event</span><span class=\"ds-duration\">2:59</span><div class=\"ds-inset\"></div></div><div class=\"ds-meta\"><span class=\"ds-time\">14:32:22</span><span class=\"ds-cams\"><span class=\"ds-cam\">Voor</span><span class=\"ds-cam ds-cam-rear\">Achter</span></span></div></button>",
-      "css": ".ds-tile { display: block; width: 260px; padding: 0; border: 0; background: none; color: var(--ink, #ececef); font: 400 15px/1.5 system-ui, sans-serif; text-align: left; cursor: pointer; border-radius: 6px; } .ds-tile:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 4px; } .ds-thumb { position: relative; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: var(--panel, #232428); } .ds-thumb-main { position: absolute; inset: 0; background: var(--raised, #2b2c31); transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-tile:hover .ds-thumb-main { transform: scale(1.03); } .ds-tile:hover .ds-thumb::after { content: ''; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.05); } .ds-inset { position: absolute; right: 8px; bottom: 8px; width: 32%; aspect-ratio: 16 / 9; border-radius: 4px; background: var(--hover, #34353b); outline: 2px solid var(--bg, #1c1d20); z-index: 1; } .ds-tag-e { position: absolute; top: 8px; left: 8px; z-index: 2; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 4px; background: var(--event, #ff6f61); color: #2a0905; font: 650 12px/1 system-ui, sans-serif; } .ds-duration { position: absolute; left: 8px; bottom: 8px; z-index: 2; padding: 2px 6px; border-radius: 4px; background: rgba(12, 13, 14, 0.72); color: #fff; font-size: 12px; font-weight: 600; } .ds-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 2px 0; } .ds-time { font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums; } .ds-cams { display: flex; gap: 6px; } .ds-cam { display: inline-flex; align-items: center; gap: 5px; color: var(--ink-2, #b0b2ba); font-size: 12px; font-weight: 600; } .ds-cam::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent, #5b9dff); } .ds-cam-rear::before { background: var(--rear, #4fc7b4); }"
+      "name": "Filter Row",
+      "kind": "chip",
+      "refersTo": "filter-row",
+      "description": "Sidebar toggle row: check box, label, count.",
+      "html": "<button class=\"ds-chip\" aria-pressed=\"true\"><span class=\"ds-chip-box\"></span>Front<span class=\"ds-chip-count\">128</span></button><button class=\"ds-chip\" aria-pressed=\"false\"><span class=\"ds-chip-box\"></span>Interior<span class=\"ds-chip-count\">12</span></button>",
+      "css": ".ds-chip { display: flex; align-items: center; gap: 10px; width: 240px; min-height: 34px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--ink, #17191e); font-family: Manrope, \"Segoe UI\", system-ui, sans-serif; font-size: 15px; cursor: pointer; transition: background-color 140ms ease; } .ds-chip:hover { background: var(--hover, #d8d5cc); } .ds-chip:focus-visible { outline: 2px solid var(--ink, #17191e); outline-offset: 2px; } .ds-chip[aria-pressed=\"false\"] { color: var(--ink-3, #5d6169); } .ds-chip-box { position: relative; width: 16px; height: 16px; border-radius: 4px; box-shadow: inset 0 0 0 2px var(--ink-3, #5d6169); } .ds-chip[aria-pressed=\"true\"] .ds-chip-box { background: var(--ink, #17191e); box-shadow: none; } .ds-chip[aria-pressed=\"true\"] .ds-chip-box::after { content: \"\"; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid var(--panel, #eceae4); border-width: 0 2px 2px 0; transform: rotate(45deg); } .ds-chip-count { margin-left: auto; color: var(--ink-3, #5d6169); font-size: 13px; }"
     },
     {
       "name": "Select",
       "kind": "input",
       "refersTo": "select",
-      "description": "Borderless raised select with drawn chevron (sort, playback speed).",
-      "html": "<label class=\"ds-select\"><select><option>Nieuwste eerst</option><option>Oudste eerst</option></select></label>",
-      "css": ".ds-select select { appearance: none; min-height: 36px; padding: 0 34px 0 12px; border: 0; border-radius: 6px; color: var(--ink, #ececef); background: var(--raised, #2b2c31) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b0b2ba' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\") no-repeat right 12px center; font: 600 14px/1.5 system-ui, sans-serif; cursor: pointer; } .ds-select select:hover { background-color: var(--hover, #34353b); } .ds-select select:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 2px; }"
+      "description": "Raised select with a drawn chevron; language and playback speed.",
+      "html": "<label class=\"ds-select\"><select aria-label=\"Language\"><option>English</option><option>Nederlands</option><option>Deutsch</option></select></label>",
+      "css": ".ds-select select { appearance: none; min-height: 36px; padding: 0 34px 0 12px; border: 0; border-radius: 6px; background: var(--raised, #e2dfd7) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\") no-repeat right 12px center; color: var(--ink, #17191e); font-family: Manrope, \"Segoe UI\", system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 140ms ease; } .ds-select select:hover { background-color: var(--hover, #d8d5cc); } .ds-select select:focus-visible { outline: 2px solid var(--ink, #17191e); outline-offset: 2px; }"
     },
     {
-      "name": "Toggle",
-      "kind": "input",
-      "description": "Pill switch with label (autoplay next moment).",
-      "html": "<label class=\"ds-toggle\"><input type=\"checkbox\" checked /><span>Doorspelen</span></label>",
-      "css": ".ds-toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 10px; border-radius: 6px; color: var(--ink-2, #b0b2ba); font: 600 14px/1.5 system-ui, sans-serif; cursor: pointer; } .ds-toggle:hover { background: var(--raised, #2b2c31); color: var(--ink, #ececef); } .ds-toggle input { appearance: none; position: relative; width: 30px; height: 18px; margin: 0; border-radius: 9px; background: var(--press, #3c3d44); cursor: pointer; transition: background-color 150ms ease; } .ds-toggle input::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-toggle input:checked { background: var(--accent-strong, #3f86f5); } .ds-toggle input:checked::after { transform: translateX(12px); } .ds-toggle input:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 2px; }"
+      "name": "Theme Switch",
+      "kind": "nav",
+      "refersTo": "theme-switch",
+      "description": "System / light / dark radio group; choosing reveals the new theme in a circle from the button.",
+      "html": "<div class=\"ds-theme\" role=\"radiogroup\" aria-label=\"Theme\"><button role=\"radio\" aria-checked=\"true\" aria-label=\"System\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M8 20h8M12 16v4\"/></svg></button><button role=\"radio\" aria-checked=\"false\" aria-label=\"Light\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/></svg></button><button role=\"radio\" aria-checked=\"false\" aria-label=\"Dark\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z\"/></svg></button></div>",
+      "css": ".ds-theme { display: inline-flex; padding: 3px; border-radius: 8px; background: var(--raised, #e2dfd7); } .ds-theme button { display: grid; place-items: center; width: 32px; height: 28px; border: 0; border-radius: 5px; background: transparent; color: var(--ink-3, #5d6169); cursor: pointer; transition: background-color 160ms ease, color 160ms ease; } .ds-theme button:hover { color: var(--ink, #17191e); } .ds-theme button:focus-visible { outline: 2px solid var(--ink, #17191e); outline-offset: 2px; } .ds-theme button[aria-checked=\"true\"] { background: var(--bg, #f6f4ee); color: var(--ink, #17191e); }"
     },
     {
       "name": "Day List",
       "kind": "nav",
-      "refersTo": "day-link-current",
-      "description": "Sidebar day navigation; current day takes the soft blue wash.",
-      "html": "<ol class=\"ds-days\"><li><a class=\"ds-day\" href=\"#\" aria-current=\"true\"><span>za 16 mrt</span><span class=\"ds-day-count\">2</span></a></li><li><a class=\"ds-day\" href=\"#\"><span>vr 15 mrt</span><span class=\"ds-day-count\">3</span></a></li></ol>",
-      "css": ".ds-days { list-style: none; margin: 0; padding: 0; width: 232px; font: 400 15px/1.5 system-ui, sans-serif; } .ds-day { display: flex; justify-content: space-between; align-items: center; min-height: 32px; padding: 0 10px; border-radius: 6px; color: var(--ink-2, #b0b2ba); text-decoration: none; font-size: 14px; transition: background-color 120ms ease; } .ds-day:hover { background: var(--hover, #34353b); color: var(--ink, #ececef); } .ds-day[aria-current] { background: var(--accent-soft, rgba(91, 157, 255, 0.16)); color: var(--ink, #ececef); } .ds-day:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 2px; } .ds-day-count { color: var(--ink-3, #868993); font-size: 13px; }"
+      "refersTo": "day-indicator",
+      "description": "Sidebar day links; the current day sits on a Raised pill in 600-weight ink.",
+      "html": "<ul class=\"ds-days\"><li><a href=\"#\" class=\"ds-day ds-day-current\">Sat 24 Oct<span>18</span></a></li><li><a href=\"#\" class=\"ds-day\">Fri 23 Oct<span>6</span></a></li><li><a href=\"#\" class=\"ds-day\">Wed 21 Oct<span>11</span></a></li></ul>",
+      "css": ".ds-days { list-style: none; margin: 0; padding: 0; width: 232px; font-family: Manrope, \"Segoe UI\", system-ui, sans-serif; font-feature-settings: \"tnum\" 1; } .ds-day { position: relative; display: flex; justify-content: space-between; align-items: center; min-height: 32px; padding: 0 10px; border-radius: 6px; color: var(--ink-3, #5d6169); text-decoration: none; font-size: 14px; transition: color 160ms ease; } .ds-day:hover { color: var(--ink, #17191e); } .ds-day:focus-visible { outline: 2px solid var(--ink, #17191e); outline-offset: 2px; } .ds-day span { font-size: 13px; font-weight: 400; } .ds-day-current { background: var(--raised, #e2dfd7); color: var(--ink, #17191e); font-weight: 600; }"
     },
     {
-      "name": "Segmented Layout Switch",
-      "kind": "nav",
-      "refersTo": "segmented",
-      "description": "Viewer layout radio group: side by side, picture-in-picture, single.",
-      "html": "<div class=\"ds-seg-track\" role=\"radiogroup\"><button class=\"ds-seg\" role=\"radio\" aria-checked=\"true\" type=\"button\">Naast elkaar</button><button class=\"ds-seg\" role=\"radio\" aria-checked=\"false\" type=\"button\">Beeld in beeld</button><button class=\"ds-seg\" role=\"radio\" aria-checked=\"false\" type=\"button\">Voor</button></div>",
-      "css": ".ds-seg-track { display: inline-flex; padding: 3px; border-radius: 8px; background: var(--panel, #232428); } .ds-seg { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 10px; border: 0; border-radius: 5px; background: transparent; color: var(--ink-2, #b0b2ba); font: 600 13px/1.5 system-ui, sans-serif; cursor: pointer; transition: background-color 120ms ease, color 120ms ease; } .ds-seg:hover { color: var(--ink, #ececef); } .ds-seg[aria-checked='true'] { background: var(--hover, #34353b); color: var(--ink, #ececef); } .ds-seg:focus-visible { outline: 2px solid var(--accent, #5b9dff); outline-offset: 2px; }"
+      "name": "Moment Tile",
+      "kind": "card",
+      "refersTo": "moment-tile-thumb",
+      "description": "Front thumbnail with a ground-cut rear inset, state tag, duration badge and meta row.",
+      "html": "<button class=\"ds-tile\"><span class=\"ds-thumb\"><span class=\"ds-front\"></span><span class=\"ds-inset\"></span><span class=\"ds-tag-e\">Event</span><span class=\"ds-dur\">1:00</span></span><span class=\"ds-meta\"><span>09:18</span><span class=\"ds-cams\">Front, Rear</span></span></button>",
+      "css": ".ds-tile { display: block; width: 260px; padding: 0; border: 0; background: none; color: var(--ink, #17191e); text-align: left; cursor: pointer; border-radius: 6px; font-family: Manrope, \"Segoe UI\", system-ui, sans-serif; font-feature-settings: \"tnum\" 1; transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-tile:active { transform: scale(0.98); } .ds-tile:focus-visible { outline: 2px solid var(--ink, #17191e); outline-offset: 4px; } .ds-thumb { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: var(--raised, #e2dfd7); } .ds-front { position: absolute; inset: 0; background: #8c919a; transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-tile:hover .ds-front { transform: scale(1.035); } .ds-inset { position: absolute; right: 8px; bottom: 8px; width: 32%; aspect-ratio: 16 / 9; border-radius: 4px; background: #3a3d46; outline: 2px solid var(--bg, #f6f4ee); transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-tile:hover .ds-inset { transform: translateY(-2px); } .ds-tag-e { position: absolute; top: 8px; left: 8px; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 4px; background: var(--signal, #ffc21a); color: var(--on-signal, #17191e); font-size: 12px; font-weight: 650; } .ds-dur { position: absolute; left: 8px; bottom: 8px; padding: 2px 6px; border-radius: 4px; background: rgba(10, 10, 10, 0.72); color: #fff; font-size: 12px; font-weight: 600; } .ds-meta { display: flex; justify-content: space-between; padding: 8px 2px 0; font-size: 14px; font-weight: 600; } .ds-cams { color: var(--ink-2, #474a52); font-size: 12px; }"
+    },
+    {
+      "name": "Scrubber",
+      "kind": "input",
+      "refersTo": "button-play",
+      "description": "Viewer timeline: a full-width range with signal-yellow progress on the dark stage.",
+      "html": "<div class=\"ds-scrub\"><input type=\"range\" min=\"0\" max=\"100\" value=\"40\" aria-label=\"Position\" style=\"--progress: 40%\"></div>",
+      "css": ".ds-scrub { width: 320px; padding: 12px 16px; background: #0e0f12; border-radius: 8px; } .ds-scrub input { appearance: none; display: block; width: 100%; height: 24px; background: transparent; cursor: pointer; } .ds-scrub input::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(to right, #ffc21a var(--progress), #3a3d46 var(--progress)); transition: height 160ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-scrub:hover input::-webkit-slider-runnable-track { height: 6px; } .ds-scrub input::-webkit-slider-thumb { appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: #f6f4ee; transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-scrub input:active::-webkit-slider-thumb { transform: scale(1.3); } .ds-scrub input::-moz-range-track { height: 4px; border-radius: 2px; background: #3a3d46; } .ds-scrub input::-moz-range-progress { height: 4px; border-radius: 2px; background: #ffc21a; } .ds-scrub input::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: #f6f4ee; } .ds-scrub input:focus-visible { outline: 2px solid #f6f4ee; outline-offset: 2px; }"
     }
   ],
   "narrative": {
-    "northStar": "The Quiet Photo Library",
-    "overview": "The interface behaves like the photo library already on the user's laptop: a graphite ground, a slightly lighter sidebar, and a grid of 16:9 thumbnails grouped under sticky day headings. The footage is the only colourful thing on screen. Chrome recedes into four close graphite steps, and one blue marks what is selected, focused, or the primary action.\n\nDensity is moderate and even. A 264px sidebar holds the folder action, camera and recording-type filters, and the day list. The main column is a sticky toolbar over day sections, and the tile size is user-controlled (180 to 420px). Opening a moment swaps to a near-black stage where the video is the subject and controls sit in a quiet strip underneath.\n\nThis is the category convention, chosen by the user, and it is executed straight: system UI sans with tabular figures, small 6px corners, no shadows at rest, no gradients, no glass. Personality comes from precision (exact times, frame numbers, centisecond timecodes), not from decoration.",
+    "northStar": "Asphalt, Chalk and One Lane Marking",
+    "overview": "Tripframe behaves like the photo library already on the user's laptop: a plain ground, a slightly different sidebar, and a grid of 16:9 thumbnails grouped under sticky day headings. The world is the road itself. Asphalt and chalk do almost all of the work, a cool kerb grey draws routes, and signal yellow is the one lane marking. Yellow marks where you are and what matters on the timeline: scrubber progress, the event tag, resize handles and the map position. Light (chalk ground) and dark (asphalt ground) themes both ship. The system follows the OS setting by default, and a three-way switch (system, light, dark) overrides it. The viewer is dark in both themes.\n\nThe app is moderately and evenly dense: a 264px sidebar and a fluid main column with a sticky toolbar over day sections, at a tile size the user sets. Opening a moment morphs the tile's thumbnails into a near-black stage, where the video is the subject and the controls sit in a quiet strip underneath. The homepage uses the same tokens and the same face (Manrope) at poster scale: an 800-weight headline beside a looping drive, a working fragment of the app in its own section, one inverted field for the privacy promise, and a footer that inverts the chosen theme.\n\nThe direction is the category convention, which the user chose, executed straight: small corners, flat surfaces, no gradients on surfaces, no glass. Personality comes from precision (exact times, frame numbers, centisecond timecodes), from the brand's yellow used sparingly, and from motion that explains where things went: thumbnails morph into the player, the theme switch reveals itself in a circle from the button you pressed, and clips slide when you step to the previous or next one.",
     "keyCharacteristics": [
-      "Graphite tonal steps carry all hierarchy; there are no borders or shadows at rest.",
-      "One blue accent, used for selection, focus and the primary action.",
-      "Event red and parking amber appear as small solid state tags.",
+      "Asphalt and chalk in two mirrored themes, with warm grey tonal steps carrying all hierarchy, no borders and no shadows at rest.",
+      "Ink is the action colour. Primary buttons, pressed toggles, checked boxes and selection invert to ink on ground.",
+      "Signal yellow is the single accent, used as a fill or mark, never as text on light.",
+      "Recording red appears only while recording or on the record control.",
       "Front and rear camera are one tile: the rear sits as an inset in the corner of the front thumbnail.",
-      "Tabular figures everywhere, because the content is times, durations and counts."
+      "The viewer is always dark (forced), so footage reads as the brightest thing on screen.",
+      "Motion is spatial: view transitions morph, reveal and slide, and entrances stagger in on one ease-out curve."
     ],
     "rules": [
       {
-        "name": "The One Blue Rule",
-        "body": "Blue means \"this is selected, focused, or the thing to do\". It is never decorative and never a second brand colour.",
+        "name": "The One Lane Marking Rule",
+        "body": "Signal yellow is the only accent, and it marks position or significance: playback progress, events, handles, the map marker. It is not used as a side stripe or selection tab; selection is ink and tone. It is a fill or a stroke, never text on a light ground (about 1.6:1). On light it carries asphalt text; on dark it may stand alone.",
         "section": "colors"
       },
       {
-        "name": "The Small Signal Rule",
-        "body": "Red and amber appear as small solid tags (22px high), an inline error line, or a warning icon. They never fill a panel, tint a tile, or become a background.",
+        "name": "The Ink Is The Action Rule",
+        "body": "Buttons and selections do not use yellow. Emphasis on controls comes from inverting to ink on ground: the primary button, the pressed toggle, the checked box, the homepage privacy field.",
         "section": "colors"
+      },
+      {
+        "name": "The Red Means Recording Rule",
+        "body": "`--rec` belongs to the recording state. Parking is the ink tag, not a hue. Cameras are told apart by dot shape (filled, ring, square), not by colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Role-Variable Rule",
+        "body": "Components reference the role variables, so they work in light, in dark, inside `.force-dark` and inside `.inverse` without modification.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Face Rule",
+        "body": "Manrope is the only family. Hierarchy comes from size and weight (800 for homepage headlines, 650 to 700 for app headings, 600 for labels, 400 for text), never from a second face.",
+        "section": "typography"
       },
       {
         "name": "The Tabular Rule",
-        "body": "Every number is set with tabular figures. Timecodes use a comma for centiseconds (0:00,00), following Dutch convention.",
+        "body": "Every number uses tabular figures. Timecodes write centiseconds after the locale's decimal separator (0:00,00 in Dutch and German, 0:00.00 in English).",
         "section": "typography"
       },
       {
         "name": "The Sentence-Case Rule",
-        "body": "Labels, legends and tags are in sentence case at normal tracking. Nothing is uppercase or letter-spaced.",
+        "body": "Labels, legends, tags and headings are in sentence case. Nothing is uppercase or letter-spaced for decoration.",
         "section": "typography"
       },
       {
         "name": "The Flat-At-Rest Rule",
-        "body": "Surfaces separate by graphite step, not by border or shadow. The only shadow belongs to a transient message floating over video.",
+        "body": "Surfaces separate by grey step, not by border or shadow. Shadows belong only to things that float temporarily over video (toast, popover).",
         "section": "elevation"
       },
       {
         "name": "The Ground-Cut Rule",
-        "body": "When one image overlaps another, cut it out with a 2px outline in the colour beneath it.",
+        "body": "When one image overlaps another, cut it out with an outline in the colour beneath it: 2px for the tile rear inset and the stage picture-in-picture, 3px for the larger homepage pair.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do separate surfaces by graphite step (ground, panel, raised, hover, press) rather than by border or shadow.",
-      "Do reserve Library Blue for selection, focus and the single primary action per view.",
-      "Do keep thumbnails 16:9 at 6px radius and show the rear camera as a 32% inset cut out with a 2px ground outline.",
-      "Do set every number with tabular figures, and write timecodes as m:ss,cc.",
-      "Do run state transitions at 120ms, with entrances on the ease-out curve (cubic-bezier(0.22, 1, 0.36, 1)), and collapse all motion under prefers-reduced-motion.",
-      "Do draw icons as inline stroke SVGs at 18px with stroke-width 2."
+      "Do style every component against the role variables (`--bg`, `--panel`, `--raised`, `--ink`, `--primary`, `--signal`, `--rec`) so it works in light, in dark, inside `.force-dark` and inside `.inverse`.",
+      "Do separate surfaces by grey step (ground, panel, raised, hover, press) rather than by border or shadow.",
+      "Do use signal yellow for position and significance (playback progress, events, handles, map marker), as a fill with asphalt text or a bare mark.",
+      "Do make emphasis on controls by inverting to ink on ground.",
+      "Do keep the viewer and anything that frames footage dark in both themes (`.force-dark`, stage black).",
+      "Do keep thumbnails 16:9 at 6px corners and show the rear camera as a 32% inset with a ground-cut outline.",
+      "Do set every number with tabular figures, with centiseconds after the locale's decimal separator.",
+      "Do run state changes at 140 to 200ms, and entrances and morphs on the ease-out curve (cubic-bezier(0.22, 1, 0.36, 1)) through view transitions or the motion library. Under prefers-reduced-motion, skip every transition and entrance.",
+      "Do use the brand-kit logo inline (it follows the text colour; the road dash stays yellow), and draw icons as inline stroke SVGs (stroke-width 2, round caps)."
     ],
     "donts": [
-      "Don't add gradients, glass or backdrop blur, or resting shadows to any surface. The toast's transient shadow is the only one.",
-      "Don't use Event Red or Parking Amber as a panel fill, a tile tint, or a large area of colour.",
-      "Don't use uppercase or letter-spaced labels; group labels are sentence case in 13px 600 ink-tertiary.",
-      "Don't introduce radii outside 4 / 6 / 8 / 12px, apart from the circular play button and pill-shaped toggles and slider thumbs.",
-      "Don't tint the stage. The viewer background stays stage black so the footage is the brightest thing on screen."
+      "Don't set signal yellow as text on a light ground, use it as a panel fill or large area of colour, or use it as a side stripe on selected rows.",
+      "Don't introduce a second accent hue; the palette is asphalt, chalk, kerb grey and signal yellow.",
+      "Don't use `--rec` red for anything but the recording state.",
+      "Don't add gradients, glass or backdrop blur, or resting shadows to any surface. Only floating overlays (toast, shortcuts popover) cast shadows.",
+      "Don't add a second typeface; Manrope carries the whole system.",
+      "Don't use uppercase or letter-spaced labels; group labels are sentence case in 13px 600 `--ink-3`.",
+      "Don't tint the stage. The viewer background stays stage black in both themes so the footage is the brightest thing on screen."
     ]
   }
 }

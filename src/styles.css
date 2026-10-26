@@ -526,7 +526,8 @@ body.dragging .drop-tile:nth-child(2) {
 }
 
 .drop .drop-hint.error {
-  color: var(--rec);
+  color: var(--ink);
+  font-weight: 600;
 }
 
 .loading {
@@ -713,7 +714,7 @@ body.dragging .drop-tile:nth-child(2) {
   z-index: 2;
   padding: 2px 6px;
   border-radius: var(--radius-sm);
-  background: rgba(10, 10, 10, 0.72);
+  background: rgba(23, 25, 30, 0.72);
   color: #fff;
   font-size: 12px;
   font-weight: 600;
@@ -944,7 +945,7 @@ body.dragging .drop-tile:nth-child(2) {
   left: 10px;
   padding: 3px 8px;
   border-radius: var(--radius-sm);
-  background: rgba(10, 10, 10, 0.72);
+  background: rgba(23, 25, 30, 0.72);
   font-size: 12px;
   font-weight: 650;
 }
@@ -959,7 +960,7 @@ body.dragging .drop-tile:nth-child(2) {
   height: 34px;
   border: 0;
   border-radius: var(--radius);
-  background: rgba(10, 10, 10, 0.72);
+  background: rgba(23, 25, 30, 0.72);
   color: #fff;
   cursor: pointer;
   opacity: 0;
@@ -1566,7 +1567,7 @@ body.resizing .stage {
 
 #record.recording {
   background: var(--rec);
-  color: #fff;
+  color: var(--asphalt);
 }
 
 #record.recording svg {
@@ -1629,10 +1630,6 @@ body.resizing .stage {
   font-weight: 700;
 }
 
-.keys-head .btn {
-  font-size: 20px;
-  font-weight: 400;
-}
 
 .keys-list {
   display: grid;
@@ -1666,10 +1663,7 @@ body.resizing .stage {
   font: 700 12.5px/1 var(--font);
 }
 
-#keys-toggle {
-  font-size: 16px;
-  font-weight: 800;
-}
+
 
 .scrub input {
   --track-fill: var(--signal);

@@ -35,6 +35,8 @@ function renderChrome() {
   renderVolume();
   renderRecord();
   renderKeys();
+  $('keys-toggle').replaceChildren(icon('keys'));
+  $('keys-close').replaceChildren(icon('close'));
 }
 
 function setPlayIcon(playing) {

@@ -8,11 +8,11 @@ web
 
 ## Stack
 
-Vite + vanilla JavaScript (user's choice). Static build, deployed on Vercel from the GitHub repo "Dashcam-dashboard".
+Vite + vanilla JavaScript (user's choice). Static build, deployed on Vercel (tripframe.vercel.app) from the GitHub repo "tripframe".
 
 ## Users
 
-A driver who owns a dashcam (Viofo first, other brands too) and has just taken the SD card out of the camera and put it in their laptop. They want to find a specific moment (an incident, a nice drive, a parking bump) without scrolling through a Windows Explorer folder full of cryptic names like `2024_0315_143022_000123F.MP4`. Primary device: laptop/desktop. Interface language: Dutch.
+A driver who owns a dashcam (Viofo first, other brands too) and has just taken the SD card out of the camera and put it in their laptop. They want to find a specific moment (an incident, a nice drive, a parking bump) without scrolling through a Windows Explorer folder full of cryptic names like `2024_0315_143022_000123F.MP4`. Primary device: laptop/desktop. Interface languages: English (default), Dutch, German. The homepage is meant to be shared on Reddit so other dashcam owners can use it.
 
 ## Product Purpose
 
@@ -53,4 +53,4 @@ No real footage in the repo. No testimonials, users or statistics exist; none ma
 
 ## Brand Commitments
 
-Visual direction chosen by the user: the category standard, a calm media library (like Apple Photos / Google Photos / Windows Photos), executed at that craft level. Convention is the commitment; no themed costume.
+Name: Tripframe. Brand kit supplied by the user (logos, icons, palette, Manrope): asphalt, chalk, kerb grey and signal yellow as the single accent, never yellow text on light. Layout stays the category standard, a calm media library (like Apple Photos / Google Photos), mostly monochrome in light and dark.

@@ -21,6 +21,8 @@ import {
   VolumeX,
   Circle,
   Square,
+  Keyboard,
+  X,
 } from 'lucide';
 import { animate } from 'motion';
 import { t, locale } from './i18n.js';
@@ -48,6 +50,8 @@ const ICONS = {
   muted: VolumeX,
   rec: Circle,
   stop: Square,
+  keys: Keyboard,
+  close: X,
 };
 
 export function icon(name, size = 18) {
