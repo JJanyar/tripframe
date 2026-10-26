@@ -1,6 +1,10 @@
 <p align="center">
   <a href="https://tripframe.vercel.app/">
-    <img src="public/brand/tripframe-horizontal-color.svg" alt="Tripframe" width="360">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="public/brand/tripframe-horizontal-reversed.svg">
+      <source media="(prefers-color-scheme: light)" srcset="public/brand/tripframe-horizontal-color.svg">
+      <img src="public/brand/tripframe-horizontal-color.svg" alt="Tripframe" width="360">
+    </picture>
   </a>
 </p>
 
