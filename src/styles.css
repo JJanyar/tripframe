@@ -186,17 +186,6 @@ body:not(.has-library) #open-folder {
   pointer-events: none;
 }
 
-.day-indicator::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 8px;
-  bottom: 8px;
-  width: 3px;
-  border-radius: 2px;
-  background: var(--signal);
-}
-
 .day-list {
   position: relative;
   list-style: none;
@@ -1492,9 +1481,9 @@ body.dragging .drop-tile:nth-child(2) {
   left: 6px;
   width: 12px;
   height: 12px;
-  border-top: 3px solid var(--signal);
-  border-left: 3px solid var(--signal);
-  border-radius: 3px 0 0 0;
+  background: var(--signal);
+  /* An L-shaped corner grip, cut from a filled square. */
+  clip-path: polygon(0 0, 100% 0, 100% 3px, 3px 3px, 3px 100%, 0 100%);
   opacity: 0;
   transition: opacity 160ms ease, transform 200ms var(--ease-out);
 }
