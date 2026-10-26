@@ -16,6 +16,11 @@ import {
   RotateCcw,
   MapPinOff,
   TriangleAlert,
+  Volume2,
+  Volume1,
+  VolumeX,
+  Circle,
+  Square,
 } from 'lucide';
 import { animate } from 'motion';
 import { t, locale } from './i18n.js';
@@ -38,6 +43,11 @@ const ICONS = {
   reopen: RotateCcw,
   noGps: MapPinOff,
   warn: TriangleAlert,
+  volume: Volume2,
+  volumeLow: Volume1,
+  muted: VolumeX,
+  rec: Circle,
+  stop: Square,
 };
 
 export function icon(name, size = 18) {

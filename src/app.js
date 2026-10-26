@@ -7,6 +7,7 @@ import { requestThumb, prioritize } from './thumbs.js';
 import { openViewer, refreshViewer } from './viewer.js';
 import { t, plural, applyI18n, bindLangSelect, onLangChange, locale } from './i18n.js';
 import { mountThemeSwitch, transition, reducedMotion } from './theme.js';
+import { mountLogos } from './logo.js';
 import {
   $, h, icon, setButton, camLabel, typeLabel,
   formatSize, formatDuration, formatDay, formatDayShort, formatTime, formatRange,
@@ -23,6 +24,7 @@ const state = {
   lastDir: null,
 };
 
+mountLogos();
 applyI18n();
 bindLangSelect($('lang'));
 mountThemeSwitch($('theme-switch'));

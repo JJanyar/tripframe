@@ -3,7 +3,7 @@ import './landing.css';
 import { animate, inView, stagger } from 'motion';
 import { addStrings, applyI18n, bindLangSelect, onLangChange, t, locale } from './i18n.js';
 import { mountThemeSwitch, transition, reducedMotion } from './theme.js';
-import credits from './photo-credits.json';
+import { mountLogos } from './logo.js';
 
 addStrings({
   en: {
@@ -58,7 +58,6 @@ addStrings({
     'h.faq.a6': 'Yes. Pause, step to the right frame with the comma and full stop keys, and press S. The PNG is named after the date and time of that exact frame.',
     'h.close.title': 'Open the card. Find the moment.',
     'h.footer.local': 'Runs in your browser. Your footage stays on your computer.',
-    'h.footer.photos': 'Sample dashcam photos from Wikimedia Commons:',
     'h.decode.date': 'date',
     'h.decode.time': 'time',
     'h.decode.cam': 'camera',
@@ -121,7 +120,6 @@ addStrings({
     'h.faq.a6': 'Ja. Pauzeer, stap met de komma- en punttoets naar het juiste frame en druk op S. De PNG krijgt de datum en tijd van precies dat frame als naam.',
     'h.close.title': 'Open de kaart. Vind het moment.',
     'h.footer.local': 'Draait in je browser. Je beelden blijven op je computer.',
-    'h.footer.photos': 'Voorbeeldfoto’s van dashcams via Wikimedia Commons:',
     'h.decode.date': 'datum',
     'h.decode.time': 'tijd',
     'h.decode.cam': 'camera',
@@ -184,7 +182,6 @@ addStrings({
     'h.faq.a6': 'Ja. Pausiere, gehe mit Komma- und Punkttaste zum richtigen Bild und drücke S. Das PNG wird nach Datum und Uhrzeit genau dieses Bildes benannt.',
     'h.close.title': 'Karte öffnen. Moment finden.',
     'h.footer.local': 'Läuft in deinem Browser. Deine Aufnahmen bleiben auf deinem Computer.',
-    'h.footer.photos': 'Beispielfotos von Dashcams über Wikimedia Commons:',
     'h.decode.date': 'Datum',
     'h.decode.time': 'Uhrzeit',
     'h.decode.cam': 'Kamera',
@@ -197,7 +194,63 @@ addStrings({
   },
 });
 
-const setTitle = () => (document.title = `Dashcam dashboard: ${t('h.hero.title').toLowerCase()}`);
+addStrings({
+  en: {
+    'h.nav.label': 'On this page',
+    'h.nav.demo': 'Demo',
+    'h.nav.how': 'How it works',
+    'h.hero.title': 'Every drive, frame by frame',
+    'h.hero.lead': 'Tripframe opens your dashcam’s SD card in the browser. Every clip appears by day and time, front and rear together, ready to play, step through and save.',
+    'h.cta.demo': 'Try the demo',
+    'h.video.label': 'Tripframe in 20 seconds',
+    'h.video.play': 'Play video',
+    'h.video.pause': 'Pause video',
+    'h.demo.heading': 'Try it here',
+    'h.demo.caption': 'Open a moment, then swap front and rear with the button or a double-click. The demo uses sample dashcam stills.',
+    'h.frame.key3': 'records the view as a video',
+    'h.frame.body': 'Pause, then step one frame at a time to the second that matters: a plate, a brake light, a sign. Save that frame as a PNG, or record the view as you see it, layout and map included.',
+    'h.alt.junction': 'Dashcam view of a quiet road junction under a grey sky',
+    'h.footer.local': 'Tripframe runs in your browser. Your footage stays on your computer.',
+  },
+  nl: {
+    'h.nav.label': 'Op deze pagina',
+    'h.nav.demo': 'Demo',
+    'h.nav.how': 'Zo werkt het',
+    'h.hero.title': 'Elke rit, frame voor frame',
+    'h.hero.lead': 'Tripframe opent de SD-kaart van je dashcam in de browser. Elke clip staat op dag en tijd, voor en achter samen, klaar om af te spelen, door te stappen en op te slaan.',
+    'h.cta.demo': 'Probeer de demo',
+    'h.video.label': 'Tripframe in 20 seconden',
+    'h.video.play': 'Video afspelen',
+    'h.video.pause': 'Video pauzeren',
+    'h.demo.heading': 'Probeer het hier',
+    'h.demo.caption': 'Open een moment en wissel voor en achter met de knop of een dubbelklik. De demo gebruikt voorbeeldfoto’s van dashcams.',
+    'h.frame.key3': 'neemt de weergave op als video',
+    'h.frame.body': 'Pauzeer en stap frame voor frame naar de seconde die telt: een kenteken, een remlicht, een bord. Sla dat frame op als PNG, of neem de weergave op zoals je hem ziet, met indeling en kaart.',
+    'h.alt.junction': 'Dashcambeeld van een rustige kruising onder een grijze lucht',
+    'h.footer.local': 'Tripframe draait in je browser. Je beelden blijven op je computer.',
+  },
+  de: {
+    'h.nav.label': 'Auf dieser Seite',
+    'h.nav.demo': 'Demo',
+    'h.nav.how': 'So funktioniert’s',
+    'h.hero.title': 'Jede Fahrt, Bild für Bild',
+    'h.hero.lead': 'Tripframe öffnet die SD-Karte deiner Dashcam im Browser. Jeder Clip erscheint nach Tag und Uhrzeit, vorne und hinten zusammen, bereit zum Abspielen, Durchsteppen und Speichern.',
+    'h.cta.demo': 'Demo ausprobieren',
+    'h.video.label': 'Tripframe in 20 Sekunden',
+    'h.video.play': 'Video abspielen',
+    'h.video.pause': 'Video pausieren',
+    'h.demo.heading': 'Hier ausprobieren',
+    'h.demo.caption': 'Öffne einen Moment und tausche vorne und hinten per Knopf oder Doppelklick. Die Demo nutzt Beispielfotos von Dashcams.',
+    'h.frame.key3': 'nimmt die Ansicht als Video auf',
+    'h.frame.body': 'Pausiere und gehe Bild für Bild zur entscheidenden Sekunde: ein Kennzeichen, ein Bremslicht, ein Schild. Speichere das Bild als PNG oder nimm die Ansicht als Video auf, mit Anordnung und Karte.',
+    'h.alt.junction': 'Dashcam-Blick auf eine ruhige Kreuzung unter grauem Himmel',
+    'h.footer.local': 'Tripframe läuft in deinem Browser. Deine Aufnahmen bleiben auf deinem Computer.',
+  },
+});
+
+mountLogos();
+
+const setTitle = () => (document.title = `Tripframe: ${t('h.hero.title').toLowerCase()}`);
 applyI18n();
 setTitle();
 bindLangSelect(document.getElementById('lang'));
@@ -279,10 +332,10 @@ inView('#decode', (el) => {
 // ---------- hero demo: a working fragment of the app ----------
 
 const DEMO = [
-  { time: [10, 41, 37], front: 'georgia-i75nb-mm86-2-dashcam', rear: 'eb-us-84-divided-highway-ends-brooks' },
+  { time: [10, 41, 37], front: 'georgia-i75nb-mm86-2-dashcam', rear: 'sb-madison-highway-road-junction-ga-376' },
   { time: [10, 44, 2], front: 'sb-ne-colin-kelley-highway-at-ne', rear: 'sb-madison-highway-road-junction-ga-376', type: 'event' },
   { time: [10, 46, 40], front: 'sb-madison-highway-directional-road-sign-ga', rear: 'georgia-i75nb-mm86-2-dashcam' },
-  { time: [10, 49, 15], front: 'eb-us-84-divided-highway-ends-brooks', rear: 'sb-ne-colin-kelley-highway-at-ne' },
+  { time: [10, 49, 15], front: 'sb-madison-highway-directional-road-sign-ga', rear: 'georgia-i75nb-mm86-2-dashcam' },
   { time: [10, 51, 3], front: 'sb-madison-highway-road-junction-ga-376', rear: 'sb-madison-highway-directional-road-sign-ga' },
   { time: [22, 15, 0], front: 'sb-madison-highway-road-junction-ga-376', type: 'parking' },
 ];
@@ -425,22 +478,7 @@ function animateRoute(el) {
   });
 }
 
-// ---------- credits ----------
 
-function renderCredits() {
-  document.getElementById('credits').replaceChildren(
-    ...credits.map((c) => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = c.page;
-      a.textContent = c.title;
-      a.rel = 'noopener';
-      li.append(a, ` ${c.creator}, ${c.license}`);
-      return li;
-    }),
-  );
-}
-renderCredits();
 
 onLangChange(() => {
   setTitle();
@@ -453,13 +491,12 @@ onLangChange(() => {
 
 const ease = [0.22, 1, 0.36, 1];
 if (!reducedMotion()) {
-  animate('.hero .display, .hero .lead, .hero-actions', { opacity: [0, 1], y: [24, 0] }, { duration: 0.7, delay: stagger(0.08), ease });
-  animate('.demo', { opacity: [0, 1], y: [40, 0], scale: [0.98, 1] }, { duration: 0.9, delay: 0.25, ease });
-  animate('.demo-tile', { opacity: [0, 1], y: [12, 0] }, { duration: 0.5, delay: stagger(0.06, { startDelay: 0.55 }), ease });
+  animate('.hero .display, .hero .lead, .hero-actions, .hero-note', { opacity: [0, 1], y: [24, 0] }, { duration: 0.7, delay: stagger(0.08), ease });
+  animate('.hero-video', { opacity: [0, 1], y: [40, 0], scale: [0.97, 1] }, { duration: 0.9, delay: 0.2, ease });
 
   // Every section brings in its heading, then its text, then its picture.
   for (const section of document.querySelectorAll('main > section:not(.hero)')) {
-    const parts = section.querySelectorAll('.headline, .display, .display-2, .body-l, .keys, .feature-media, .private-list li, .step-list li, .steps-photo, details, .btn');
+    const parts = section.querySelectorAll('.headline, .display, .display-2, .body-l, .keys, .feature-media, .private-list li, .step-list li, .steps-photo, details, .btn, .demo, .decode');
     parts.forEach((p) => (p.style.opacity = 0));
     inView(section, () => {
       animate(parts, { opacity: [0, 1], y: [28, 0] }, { duration: 0.7, delay: stagger(0.075), ease });
@@ -486,3 +523,24 @@ inView('.route-card', (el) => animateRoute(el), { amount: 0.6 });
 // The navigation gets a background once the page scrolls under it.
 const nav = document.getElementById('nav');
 addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), { passive: true });
+
+// ---------- hero video ----------
+
+const video = document.getElementById('hero-video');
+const videoToggle = document.getElementById('video-toggle');
+function renderVideoToggle() {
+  const playing = !video.paused;
+  videoToggle.setAttribute('aria-label', t(playing ? 'h.video.pause' : 'h.video.play'));
+  videoToggle.title = t(playing ? 'h.video.pause' : 'h.video.play');
+  videoToggle.dataset.state = playing ? 'playing' : 'paused';
+}
+videoToggle.addEventListener('click', () => (video.paused ? video.play() : video.pause()));
+video.addEventListener('click', () => (video.paused ? video.play() : video.pause()));
+video.addEventListener('play', renderVideoToggle);
+video.addEventListener('pause', renderVideoToggle);
+onLangChange(renderVideoToggle);
+// Only play while it is on screen, and never on its own for reduced motion.
+if (!reducedMotion()) {
+  new IntersectionObserver(([e]) => (e.isIntersecting ? video.play().catch(() => {}) : video.pause()), { threshold: 0.25 }).observe(video);
+}
+renderVideoToggle();

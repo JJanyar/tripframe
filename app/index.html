@@ -3,18 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#141414" />
+    <meta name="theme-color" content="#17191E" />
     <meta name="description" content="Browse your dashcam footage by day and time, front and rear together. Everything stays on your computer." />
-    <title>Dashcam dashboard</title>
+    <title>Tripframe</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body class="app-page">
     <div class="app" id="app">
       <aside class="sidebar" id="sidebar" data-i18n-attr="aria-label:app.filters">
-        <a class="brand" href="/" data-i18n-attr="title:app.home">
-          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="8" width="20" height="16" rx="3" fill="currentColor"/><path d="M23 13.5 29 10v12l-6-3.5z" fill="currentColor"/><circle cx="13" cy="16" r="4" fill="var(--panel)"/></svg>
-          <span>Dashcam dashboard</span>
-        </a>
+        <a class="brand" href="/" data-i18n-attr="title:app.home;aria-label:app.home"><span class="brand-logo" data-logo></span></a>
 
         <button class="btn btn-primary btn-block" id="open-folder" type="button"></button>
         <p class="folder-name" id="folder-name" hidden></p>
@@ -114,10 +117,11 @@
           <div class="segmented" id="layout-switch" role="radiogroup" data-i18n-attr="aria-label:v.layout"></div>
           <button class="btn btn-ghost" id="swap" type="button" data-i18n-attr="title:v.swapTitle"></button>
           <button class="btn btn-ghost" id="map-toggle" type="button" aria-pressed="false"></button>
+          <button class="btn btn-ghost icon-only" id="keys-toggle" type="button" popovertarget="keys-card" data-i18n-attr="title:k.title;aria-label:k.title">?</button>
         </div>
       </header>
 
-      <div class="viewer-body">
+      <div class="viewer-body" id="viewer-body">
         <div class="stage" id="stage"></div>
         <aside class="map-panel" id="map-panel" hidden>
           <div class="map" id="map"></div>
@@ -136,7 +140,11 @@
             <button class="btn btn-play icon-only" id="play" type="button" data-i18n-attr="title:v.playTitle"></button>
             <button class="btn btn-ghost icon-only" id="frame-fwd" type="button" data-i18n-attr="title:v.frameFwd;aria-label:v.frameFwd"></button>
             <button class="btn btn-ghost icon-only" id="next-moment" type="button" data-i18n-attr="title:v.nextClip;aria-label:v.nextClip"></button>
-            <p class="time" id="time"><span id="time-now">0:00,00</span><span class="time-sep">/</span><span id="time-total">0:00</span></p>
+            <div class="volume">
+              <button class="btn btn-ghost icon-only" id="mute" type="button" data-i18n-attr="title:v.muteTitle"></button>
+              <input type="range" id="volume" min="0" max="100" step="1" value="100" data-i18n-attr="aria-label:v.volume" />
+            </div>
+            <p class="time" id="time"><span id="time-now">0:00.00</span><span class="time-sep">/</span><span id="time-total">0:00</span></p>
             <p class="frame-no" id="frame-no"></p>
           </div>
           <div class="control-group">
@@ -155,10 +163,19 @@
               <span data-i18n="v.autoplay"></span>
             </label>
             <button class="btn" id="save-frame" type="button" data-i18n-attr="title:v.saveTitle"></button>
+            <button class="btn" id="record" type="button" data-i18n-attr="title:v.recordTitle"></button>
           </div>
         </div>
       </footer>
       <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+      <div class="keys-card force-dark" id="keys-card" popover>
+        <div class="keys-head">
+          <h3 data-i18n="k.title"></h3>
+          <button class="btn btn-ghost icon-only" type="button" popovertarget="keys-card" popovertargetaction="hide" data-i18n-attr="aria-label:k.close">×</button>
+        </div>
+        <dl class="keys-list" id="keys-list"></dl>
+      </div>
     </div>
 
     <script type="module" src="/src/app.js"></script>

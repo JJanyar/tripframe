@@ -3,27 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#fafafa" />
-    <title>Dashcam dashboard: your dashcam footage, sorted by the minute</title>
+    <meta name="theme-color" content="#17191E" />
+    <title>Tripframe: every drive, frame by frame</title>
     <meta name="description" content="Open your dashcam's SD card in the browser. Every clip by day and time, front and rear in sync, frame by frame, with the route on a map. Free, no account, nothing is uploaded." />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Dashcam dashboard" />
-    <meta property="og:description" content="Your dashcam footage, sorted by the minute. Front and rear in sync, frame by frame, route on a map. Runs in your browser; nothing is uploaded." />
-    <meta property="og:image" content="https://dashcam-dashboard-vert.vercel.app/og.jpg" />
+    <meta property="og:title" content="Tripframe" />
+    <meta property="og:description" content="Every drive, frame by frame. Front and rear in sync, frame stepping, route on a map. Runs in your browser; nothing is uploaded." />
+    <meta property="og:image" content="https://dashcam-dashboard-vert.vercel.app/video/tripframe.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body class="home">
     <header class="nav" id="nav">
-      <a class="wordmark" href="/">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="8" width="20" height="16" rx="3" fill="currentColor"/><path d="M23 13.5 29 10v12l-6-3.5z" fill="currentColor"/><circle cx="13" cy="16" r="4" fill="var(--bg)"/></svg>
-        <span>Dashcam dashboard</span>
-      </a>
-      <nav class="nav-links" aria-label="Sections">
-        <a href="#moment" data-i18n="h.nav.how"></a>
+      <a class="wordmark" href="/" aria-label="Tripframe"><span data-logo></span></a>
+      <nav class="nav-links" data-i18n-attr="aria-label:h.nav.label">
+        <a href="#demo" data-i18n="h.nav.demo"></a>
+        <a href="#how" data-i18n="h.nav.how"></a>
         <a href="#private" data-i18n="h.nav.privacy"></a>
         <a href="#faq" data-i18n="h.nav.faq"></a>
       </nav>
@@ -44,18 +45,29 @@
           <p class="lead" data-i18n="h.hero.lead"></p>
           <div class="hero-actions">
             <a class="btn btn-primary btn-large" href="/app/" data-i18n="h.cta"></a>
-            <p class="hero-note" data-i18n="h.hero.note"></p>
+            <a class="btn btn-large btn-quiet" href="#demo" data-i18n="h.cta.demo"></a>
           </div>
+          <p class="hero-note" data-i18n="h.hero.note"></p>
         </div>
+        <figure class="hero-video">
+          <video id="hero-video" src="/video/tripframe.mp4" poster="/video/tripframe.jpg" width="1280" height="720" muted loop playsinline preload="metadata" data-i18n-attr="aria-label:h.video.label"></video>
+          <button class="video-toggle" id="video-toggle" type="button"></button>
+        </figure>
+      </section>
 
-        <figure class="demo" id="demo" data-ui>
+      <section class="demo-section" id="demo" aria-labelledby="demo-title">
+        <div class="section-head">
+          <h2 class="headline" id="demo-title" data-i18n="h.demo.heading"></h2>
+          <p class="body-l" data-i18n="h.demo.caption"></p>
+        </div>
+        <figure class="demo" data-ui id="demo-frame">
           <div class="demo-bar">
             <span class="demo-dots" aria-hidden="true"><i></i><i></i><i></i></span>
             <span class="demo-title">DCIM</span>
           </div>
           <div class="demo-body">
             <div class="demo-library" id="demo-library">
-              <h2 class="demo-day" id="demo-day"></h2>
+              <h3 class="demo-day" id="demo-day"></h3>
               <div class="demo-grid" id="demo-grid"></div>
             </div>
             <div class="demo-player force-dark" id="demo-player" hidden>
@@ -67,7 +79,6 @@
               </div>
             </div>
           </div>
-          <figcaption class="demo-caption" data-i18n="h.demo.caption"></figcaption>
         </figure>
       </section>
 
@@ -82,7 +93,7 @@
       <section class="feature feature-sync" aria-labelledby="sync-title">
         <div class="feature-media pair">
           <img src="/photos/georgia-i75nb-mm86-2-dashcam.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.highway" loading="lazy" decoding="async" />
-          <img src="/photos/eb-us-84-divided-highway-ends-brooks.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.divided" loading="lazy" decoding="async" />
+          <img src="/photos/sb-madison-highway-road-junction-ga-376.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.junction" loading="lazy" decoding="async" />
         </div>
         <div class="feature-copy">
           <h2 class="headline" id="sync-title" data-i18n="h.sync.title"></h2>
@@ -95,7 +106,7 @@
         <div class="feature-copy">
           <h2 class="headline" id="frame-title" data-i18n="h.frame.title"></h2>
           <p class="body-l" data-i18n="h.frame.body"></p>
-          <p class="keys"><kbd>,</kbd> <kbd>.</kbd> <span data-i18n="h.frame.key1"></span> <kbd>S</kbd> <span data-i18n="h.frame.key2"></span></p>
+          <p class="keys"><kbd>,</kbd> <kbd>.</kbd> <span data-i18n="h.frame.key1"></span> <kbd>S</kbd> <span data-i18n="h.frame.key2"></span> <kbd>R</kbd> <span data-i18n="h.frame.key3"></span></p>
         </div>
         <div class="feature-media frames" id="frames">
           <img class="frames-big" src="/photos/sb-ne-colin-kelley-highway-at-ne.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.intersection" loading="lazy" decoding="async" />
@@ -137,7 +148,7 @@
         </div>
       </section>
 
-      <section class="steps" aria-labelledby="steps-title">
+      <section class="steps" id="how" aria-labelledby="steps-title">
         <h2 class="headline" id="steps-title" data-i18n="h.steps.title"></h2>
         <ol class="step-list">
           <li><h3 data-i18n="h.steps.1t"></h3><p data-i18n="h.steps.1"></p></li>
@@ -167,13 +178,18 @@
       </section>
     </main>
 
-    <footer class="footer">
-      <p class="footer-mark">Dashcam dashboard</p>
-      <div class="footer-cols">
-        <p data-i18n="h.footer.local"></p>
-        <div class="credits">
-          <p data-i18n="h.footer.photos"></p>
-          <ul id="credits"></ul>
+    <footer class="footer inverse">
+      <div class="footer-inner">
+        <a class="footer-logo" href="/" aria-label="Tripframe"><span data-logo></span></a>
+        <div class="footer-cols">
+          <p class="footer-line" data-i18n="h.footer.local"></p>
+          <nav class="footer-links" data-i18n-attr="aria-label:h.nav.label">
+            <a href="#demo" data-i18n="h.nav.demo"></a>
+            <a href="#how" data-i18n="h.nav.how"></a>
+            <a href="#private" data-i18n="h.nav.privacy"></a>
+            <a href="#faq" data-i18n="h.nav.faq"></a>
+            <a href="/app/" data-i18n="h.cta.short"></a>
+          </nav>
         </div>
       </div>
     </footer>
