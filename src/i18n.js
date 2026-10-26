@@ -1,379 +1,53 @@
-// Interface text in Dutch, English and German. Static markup uses
-// data-i18n="key" (text) and data-i18n-attr="attr:key;attr:key".
+// Interface text in eleven languages. English ships with the page; the other
+// languages load on demand from src/locales/. Static markup uses
+// data-i18n="key" (text), data-i18n-html="key" and data-i18n-attr="attr:key;attr:key".
 
-const STRINGS = {
-  nl: {
-    'lang.name': 'Nederlands',
-    'theme.label': 'Thema',
-    'theme.system': 'Systeem',
-    'theme.light': 'Licht',
-    'theme.dark': 'Donker',
-    'lang.label': 'Taal',
+import en from './locales/en.js';
+import { LANGS, NAMES, LOCALE } from './locales/langs.js';
 
-    'app.openOther': 'Andere map openen',
-    'app.reopen': '{name} opnieuw openen',
-    'app.filters': 'Map en filters',
-    'app.camera': 'Camera',
-    'app.type': 'Soort opname',
-    'app.days': 'Dagen',
-    'app.local': 'Je beelden blijven op deze computer. Er wordt niets geüpload.',
-    'app.zoom': 'Grootte van de miniaturen',
-    'app.sort': 'Sorteren',
-    'app.sortDesc': 'Nieuwste eerst',
-    'app.sortAsc': 'Oudste eerst',
-    'app.home': 'Naar de homepage',
-    'empty.title': 'Open de map van je dashcam',
-    'empty.body': 'Kies de geheugenkaart of de map <strong>DCIM</strong>. Je ziet je opnames dan per dag en tijd, met de voor- en achtercamera als één moment.',
-    'empty.choose': 'Map kiezen',
-    'empty.hint': 'Of sleep de map hierheen. Werkt met Viofo, BlackVue, Thinkware, 70mai, Nextbase en andere merken. Je beelden blijven op deze computer.',
-    'empty.none': "In {name} staan geen video's of foto's. Kies de map DCIM op de geheugenkaart, of de kaart zelf.",
-    'empty.error': 'De map kon niet worden gelezen ({error}). Kies de map opnieuw.',
-    'drop.release': 'Laat los om deze map te openen',
-    'loading.reading': '{name} wordt gelezen',
-    'loading.found': '{count} gevonden',
-    'lib.noResults': 'Geen opnames met deze filters',
-    'lib.noResultsHint': 'Zet een camera of soort opname weer aan in de zijbalk.',
-    'lib.fileTime': 'Tijd uit de bestandsdatum, niet uit de naam',
-    'lib.noPreview': 'Geen voorbeeld: deze browser kan dit videoformaat niet lezen',
-    'n.moment': ['moment', 'momenten'],
-    'n.file': ['bestand', 'bestanden'],
-    'n.event': ['event', 'events'],
-    'and': 'en',
+const loaders = import.meta.glob(['./locales/*.js', '!./locales/en.js', '!./locales/langs.js']);
 
-    'cam.front': 'Voor',
-    'cam.rear': 'Achter',
-    'cam.interior': 'Binnen',
-    'cam.other': 'Camera',
-    'type.normal': 'Normaal',
-    'type.event': 'Event',
-    'type.parking': 'Parkeren',
-    'type.photo': "Foto's",
+export { LANGS, NAMES };
+const STRINGS = { en };
 
-    'v.back': 'Overzicht',
-    'v.backTitle': 'Terug naar overzicht (Esc)',
-    'v.layout': 'Weergave',
-    'v.side': 'Naast elkaar',
-    'v.pip': 'Beeld in beeld',
-    'v.swap': 'Wissel',
-    'v.swapTitle': 'Wissel voor en achter (W, of dubbelklik op het beeld)',
-    'v.map': 'Kaart',
-    'v.mapTitle': 'Kaart tonen of verbergen (G)',
-    'v.noGps': 'Geen GPS',
-    'v.noGpsTitle': 'Deze opname bevat geen GPS-gegevens',
-    'v.prevClip': 'Vorige clip (pijl omhoog)',
-    'v.nextClip': 'Volgende clip (pijl omlaag)',
-    'v.frameBack': 'Eén frame terug (,)',
-    'v.frameFwd': 'Eén frame verder (.)',
-    'v.play': 'Afspelen',
-    'v.pause': 'Pauzeren',
-    'v.playTitle': 'Afspelen of pauzeren (spatie)',
-    'v.position': 'Positie in de clip',
-    'v.speed': 'Afspeelsnelheid',
-    'v.autoplay': 'Doorspelen',
-    'v.autoplayTitle': 'Speel na afloop de volgende clip af',
-    'v.save': 'Frame opslaan',
-    'v.saveTitle': 'Huidig frame opslaan als PNG (S)',
-    'v.saveOne': 'Frame van {cam} opslaan',
-    'v.saved': 'Opgeslagen als {name}',
-    'v.noFrame': 'Er is nog geen beeld om op te slaan.',
-    'v.frame': 'frame',
-    'v.photo': 'Foto {cam}',
-    'v.cantPlay': 'Deze browser kan dit videoformaat niet afspelen.',
-    'v.cantPlayHint': 'Viofo en andere dashcams nemen vaak op in H.265 (HEVC). Gebruik Edge, of Chrome met HEVC-ondersteuning van Windows.',
-    'v.kmh': 'km/u',
-    'v.mapNote': 'Kaart van OpenStreetMap. Alleen de kaarttegels worden opgehaald; je beelden blijven lokaal.',
-    'dir.N': 'N', 'dir.S': 'Z', 'dir.E': 'O', 'dir.W': 'W',
-  },
-
-  en: {
-    'lang.name': 'English',
-    'theme.label': 'Theme',
-    'theme.system': 'System',
-    'theme.light': 'Light',
-    'theme.dark': 'Dark',
-    'lang.label': 'Language',
-
-    'app.openOther': 'Open another folder',
-    'app.reopen': 'Reopen {name}',
-    'app.filters': 'Folder and filters',
-    'app.camera': 'Camera',
-    'app.type': 'Recording type',
-    'app.days': 'Days',
-    'app.local': 'Your footage stays on this computer. Nothing is uploaded.',
-    'app.zoom': 'Thumbnail size',
-    'app.sort': 'Sort',
-    'app.sortDesc': 'Newest first',
-    'app.sortAsc': 'Oldest first',
-    'app.home': 'Go to the homepage',
-    'empty.title': 'Open your dashcam folder',
-    'empty.body': 'Choose the memory card or its <strong>DCIM</strong> folder. Your recordings appear by day and time, with front and rear camera together as one moment.',
-    'empty.choose': 'Choose folder',
-    'empty.hint': 'Or drag the folder here. Works with Viofo, BlackVue, Thinkware, 70mai, Nextbase and other brands. Your footage stays on this computer.',
-    'empty.none': 'There are no videos or photos in {name}. Choose the DCIM folder on the memory card, or the card itself.',
-    'empty.error': 'The folder could not be read ({error}). Choose the folder again.',
-    'drop.release': 'Drop to open this folder',
-    'loading.reading': 'Reading {name}',
-    'loading.found': '{count} found',
-    'lib.noResults': 'No recordings match these filters',
-    'lib.noResultsHint': 'Turn a camera or recording type back on in the sidebar.',
-    'lib.fileTime': 'Time taken from the file date, not the name',
-    'lib.noPreview': 'No preview: this browser cannot read this video format',
-    'n.moment': ['moment', 'moments'],
-    'n.file': ['file', 'files'],
-    'n.event': ['event', 'events'],
-    'and': 'and',
-
-    'cam.front': 'Front',
-    'cam.rear': 'Rear',
-    'cam.interior': 'Interior',
-    'cam.other': 'Camera',
-    'type.normal': 'Normal',
-    'type.event': 'Event',
-    'type.parking': 'Parking',
-    'type.photo': 'Photos',
-
-    'v.back': 'Library',
-    'v.backTitle': 'Back to the library (Esc)',
-    'v.layout': 'Layout',
-    'v.side': 'Side by side',
-    'v.pip': 'Picture in picture',
-    'v.swap': 'Swap',
-    'v.swapTitle': 'Swap front and rear (W, or double-click the video)',
-    'v.map': 'Map',
-    'v.mapTitle': 'Show or hide the map (G)',
-    'v.noGps': 'No GPS',
-    'v.noGpsTitle': 'This recording has no GPS data',
-    'v.prevClip': 'Previous clip (arrow up)',
-    'v.nextClip': 'Next clip (arrow down)',
-    'v.frameBack': 'One frame back (,)',
-    'v.frameFwd': 'One frame forward (.)',
-    'v.play': 'Play',
-    'v.pause': 'Pause',
-    'v.playTitle': 'Play or pause (space)',
-    'v.position': 'Position in the clip',
-    'v.speed': 'Playback speed',
-    'v.autoplay': 'Autoplay',
-    'v.autoplayTitle': 'Play the next clip when this one ends',
-    'v.save': 'Save frame',
-    'v.saveTitle': 'Save the current frame as PNG (S)',
-    'v.saveOne': 'Save {cam} frame',
-    'v.saved': 'Saved as {name}',
-    'v.noFrame': 'There is no picture to save yet.',
-    'v.frame': 'frame',
-    'v.photo': '{cam} photo',
-    'v.cantPlay': 'This browser cannot play this video format.',
-    'v.cantPlayHint': 'Viofo and other dashcams often record in H.265 (HEVC). Use Edge, or Chrome with the Windows HEVC extension, or Safari on a Mac.',
-    'v.kmh': 'km/h',
-    'v.mapNote': 'Map by OpenStreetMap. Only the map tiles are downloaded; your footage stays local.',
-    'dir.N': 'N', 'dir.S': 'S', 'dir.E': 'E', 'dir.W': 'W',
-  },
-
-  de: {
-    'lang.name': 'Deutsch',
-    'theme.label': 'Design',
-    'theme.system': 'System',
-    'theme.light': 'Hell',
-    'theme.dark': 'Dunkel',
-    'lang.label': 'Sprache',
-
-    'app.openOther': 'Anderen Ordner öffnen',
-    'app.reopen': '{name} erneut öffnen',
-    'app.filters': 'Ordner und Filter',
-    'app.camera': 'Kamera',
-    'app.type': 'Aufnahmeart',
-    'app.days': 'Tage',
-    'app.local': 'Deine Aufnahmen bleiben auf diesem Computer. Es wird nichts hochgeladen.',
-    'app.zoom': 'Größe der Vorschaubilder',
-    'app.sort': 'Sortieren',
-    'app.sortDesc': 'Neueste zuerst',
-    'app.sortAsc': 'Älteste zuerst',
-    'app.home': 'Zur Startseite',
-    'empty.title': 'Öffne den Ordner deiner Dashcam',
-    'empty.body': 'Wähle die Speicherkarte oder ihren Ordner <strong>DCIM</strong>. Deine Aufnahmen erscheinen nach Tag und Uhrzeit, Front- und Heckkamera zusammen als ein Moment.',
-    'empty.choose': 'Ordner wählen',
-    'empty.hint': 'Oder ziehe den Ordner hierher. Funktioniert mit Viofo, BlackVue, Thinkware, 70mai, Nextbase und anderen Marken. Deine Aufnahmen bleiben auf diesem Computer.',
-    'empty.none': 'In {name} sind keine Videos oder Fotos. Wähle den Ordner DCIM auf der Speicherkarte oder die Karte selbst.',
-    'empty.error': 'Der Ordner konnte nicht gelesen werden ({error}). Wähle den Ordner erneut.',
-    'drop.release': 'Loslassen, um diesen Ordner zu öffnen',
-    'loading.reading': '{name} wird gelesen',
-    'loading.found': '{count} gefunden',
-    'lib.noResults': 'Keine Aufnahmen mit diesen Filtern',
-    'lib.noResultsHint': 'Schalte in der Seitenleiste eine Kamera oder Aufnahmeart wieder ein.',
-    'lib.fileTime': 'Zeit aus dem Dateidatum, nicht aus dem Namen',
-    'lib.noPreview': 'Keine Vorschau: Dieser Browser kann dieses Videoformat nicht lesen',
-    'n.moment': ['Moment', 'Momente'],
-    'n.file': ['Datei', 'Dateien'],
-    'n.event': ['Ereignis', 'Ereignisse'],
-    'and': 'und',
-
-    'cam.front': 'Vorne',
-    'cam.rear': 'Hinten',
-    'cam.interior': 'Innen',
-    'cam.other': 'Kamera',
-    'type.normal': 'Normal',
-    'type.event': 'Ereignis',
-    'type.parking': 'Parken',
-    'type.photo': 'Fotos',
-
-    'v.back': 'Übersicht',
-    'v.backTitle': 'Zurück zur Übersicht (Esc)',
-    'v.layout': 'Ansicht',
-    'v.side': 'Nebeneinander',
-    'v.pip': 'Bild im Bild',
-    'v.swap': 'Tauschen',
-    'v.swapTitle': 'Vorne und hinten tauschen (W, oder Doppelklick aufs Bild)',
-    'v.map': 'Karte',
-    'v.mapTitle': 'Karte ein- oder ausblenden (G)',
-    'v.noGps': 'Kein GPS',
-    'v.noGpsTitle': 'Diese Aufnahme enthält keine GPS-Daten',
-    'v.prevClip': 'Vorheriger Clip (Pfeil hoch)',
-    'v.nextClip': 'Nächster Clip (Pfeil runter)',
-    'v.frameBack': 'Ein Bild zurück (,)',
-    'v.frameFwd': 'Ein Bild vor (.)',
-    'v.play': 'Abspielen',
-    'v.pause': 'Pause',
-    'v.playTitle': 'Abspielen oder pausieren (Leertaste)',
-    'v.position': 'Position im Clip',
-    'v.speed': 'Wiedergabegeschwindigkeit',
-    'v.autoplay': 'Weiterspielen',
-    'v.autoplayTitle': 'Danach den nächsten Clip abspielen',
-    'v.save': 'Bild speichern',
-    'v.saveTitle': 'Aktuelles Bild als PNG speichern (S)',
-    'v.saveOne': 'Bild von {cam} speichern',
-    'v.saved': 'Gespeichert als {name}',
-    'v.noFrame': 'Es gibt noch kein Bild zum Speichern.',
-    'v.frame': 'Bild',
-    'v.photo': 'Foto {cam}',
-    'v.cantPlay': 'Dieser Browser kann dieses Videoformat nicht abspielen.',
-    'v.cantPlayHint': 'Viofo und andere Dashcams nehmen oft in H.265 (HEVC) auf. Nutze Edge oder Chrome mit der HEVC-Erweiterung von Windows.',
-    'v.kmh': 'km/h',
-    'v.mapNote': 'Karte von OpenStreetMap. Nur die Kartenkacheln werden geladen; deine Aufnahmen bleiben lokal.',
-    'dir.N': 'N', 'dir.S': 'S', 'dir.E': 'O', 'dir.W': 'W',
-  },
-};
-
-// Player additions: volume, recording and the shortcuts card.
-Object.assign(STRINGS.en, {
-  'v.volume': 'Volume',
-  'v.muteTitle': 'Mute or unmute (M)',
-  'v.mute': 'Mute',
-  'v.unmute': 'Unmute',
-  'v.record': 'Save video',
-  'v.recordTitle': 'Record this view as a video, with the layout and map as shown (R)',
-  'v.stopRec': 'Stop',
-  'v.recording': 'Recording {time}',
-  'v.recSaved': 'Video saved as {name}',
-  'v.recUnsupported': 'This browser cannot record video.',
-  'v.resize': 'Drag to resize',
-  'k.title': 'Keyboard shortcuts',
-  'k.close': 'Close',
-  'k.play': 'Play or pause',
-  'k.frame': 'One frame back or forward',
-  'k.seek': '5 seconds back or forward',
-  'k.seekFine': '1 second back or forward',
-  'k.clip': 'Previous or next clip',
-  'k.swap': 'Swap front and rear',
-  'k.layout': 'Side by side, picture in picture, one camera',
-  'k.mute': 'Mute or unmute',
-  'k.volume': 'Volume down or up',
-  'k.map': 'Show or hide the map',
-  'k.save': 'Save the current frame',
-  'k.record': 'Start or stop a video recording',
-  'k.keys': 'Show these shortcuts',
-  'k.back': 'Back to the library',
-});
-Object.assign(STRINGS.nl, {
-  'v.volume': 'Volume',
-  'v.muteTitle': 'Geluid aan of uit (M)',
-  'v.mute': 'Geluid uit',
-  'v.unmute': 'Geluid aan',
-  'v.record': 'Video opslaan',
-  'v.recordTitle': 'Neem deze weergave op als video, met de indeling en kaart zoals je ze ziet (R)',
-  'v.stopRec': 'Stop',
-  'v.recording': 'Opnemen {time}',
-  'v.recSaved': 'Video opgeslagen als {name}',
-  'v.recUnsupported': 'Deze browser kan geen video opnemen.',
-  'v.resize': 'Sleep om de grootte te wijzigen',
-  'k.title': 'Sneltoetsen',
-  'k.close': 'Sluiten',
-  'k.play': 'Afspelen of pauzeren',
-  'k.frame': 'Eén frame terug of verder',
-  'k.seek': '5 seconden terug of verder',
-  'k.seekFine': '1 seconde terug of verder',
-  'k.clip': 'Vorige of volgende clip',
-  'k.swap': 'Voor en achter wisselen',
-  'k.layout': 'Naast elkaar, beeld in beeld, één camera',
-  'k.mute': 'Geluid aan of uit',
-  'k.volume': 'Volume zachter of harder',
-  'k.map': 'Kaart tonen of verbergen',
-  'k.save': 'Huidig frame opslaan',
-  'k.record': 'Video-opname starten of stoppen',
-  'k.keys': 'Deze sneltoetsen tonen',
-  'k.back': 'Terug naar het overzicht',
-});
-Object.assign(STRINGS.de, {
-  'v.volume': 'Lautstärke',
-  'v.muteTitle': 'Ton an oder aus (M)',
-  'v.mute': 'Ton aus',
-  'v.unmute': 'Ton an',
-  'v.record': 'Video speichern',
-  'v.recordTitle': 'Diese Ansicht als Video aufnehmen, mit Anordnung und Karte wie angezeigt (R)',
-  'v.stopRec': 'Stopp',
-  'v.recording': 'Aufnahme {time}',
-  'v.recSaved': 'Video gespeichert als {name}',
-  'v.recUnsupported': 'Dieser Browser kann kein Video aufnehmen.',
-  'v.resize': 'Ziehen, um die Größe zu ändern',
-  'k.title': 'Tastenkürzel',
-  'k.close': 'Schließen',
-  'k.play': 'Abspielen oder pausieren',
-  'k.frame': 'Ein Bild zurück oder vor',
-  'k.seek': '5 Sekunden zurück oder vor',
-  'k.seekFine': '1 Sekunde zurück oder vor',
-  'k.clip': 'Vorheriger oder nächster Clip',
-  'k.swap': 'Vorne und hinten tauschen',
-  'k.layout': 'Nebeneinander, Bild im Bild, eine Kamera',
-  'k.mute': 'Ton an oder aus',
-  'k.volume': 'Leiser oder lauter',
-  'k.map': 'Karte ein- oder ausblenden',
-  'k.save': 'Aktuelles Bild speichern',
-  'k.record': 'Videoaufnahme starten oder stoppen',
-  'k.keys': 'Diese Tastenkürzel zeigen',
-  'k.back': 'Zurück zur Übersicht',
-});
-
-export const LANGS = ['en', 'nl', 'de'];
-const LOCALE = { nl: 'nl-NL', en: 'en-GB', de: 'de-DE' };
+/** The homepage has a page per language (/fr/, /pl/ …); its path decides first. */
+export function langFromPath(path = location.pathname) {
+  const m = path.match(/^\/([a-z]{2})(\/|$)/);
+  return m && LANGS.includes(m[1]) ? m[1] : null;
+}
 
 function detect() {
+  const fromPath = langFromPath();
+  if (fromPath) return fromPath;
   try {
     const saved = localStorage.getItem('lang');
     if (LANGS.includes(saved)) return saved;
   } catch {}
-  const nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
-  return LANGS.includes(nav) ? nav : 'en';
+  for (const l of navigator.languages || [navigator.language || 'en']) {
+    const code = l.slice(0, 2).toLowerCase();
+    if (LANGS.includes(code)) return code;
+  }
+  return 'en';
 }
 
-let lang = detect();
+let lang = 'en';
 const listeners = new Set();
-const extra = {};
-
-/** Pages add their own strings (the homepage copy) per language. */
-export function addStrings(dict) {
-  for (const [l, s] of Object.entries(dict)) extra[l] = { ...(extra[l] || {}), ...s };
-}
 
 export const getLang = () => lang;
 export const locale = () => LOCALE[lang];
 
 export function t(key, vars) {
-  let s = extra[lang]?.[key] ?? STRINGS[lang][key] ?? extra.en?.[key] ?? STRINGS.en[key] ?? key;
-  if (vars) s = s.replace(/\{(\w+)\}/g, (_, k) => (k in vars ? vars[k] : `{${k}}`));
+  let s = STRINGS[lang]?.[key] ?? STRINGS.en[key] ?? key;
+  if (vars && typeof s === 'string') s = s.replace(/\{(\w+)\}/g, (_, k) => (k in vars ? vars[k] : `{${k}}`));
   return s;
 }
 
 export function plural(n, key) {
-  const [one, many] = t(key);
-  return `${n.toLocaleString(locale())} ${n === 1 ? one : many}`;
+  const forms = t(key);
+  const form = forms[new Intl.PluralRules(locale()).select(n)] ?? forms.other;
+  const num = n.toLocaleString(locale());
+  // Some languages put the number inside the word (Korean: "파일 {n}개").
+  return form.includes('{n}') ? form.replace('{n}', num) : `${num} ${form}`;
 }
 
 export function applyI18n(root = document) {
@@ -388,22 +62,89 @@ export function applyI18n(root = document) {
   }
 }
 
-export function setLang(next) {
-  if (!LANGS.includes(next) || next === lang) return;
+export async function setLang(next, { remember = true } = {}) {
+  if (!LANGS.includes(next)) return;
+  if (!STRINGS[next]) STRINGS[next] = (await loaders[`./locales/${next}.js`]()).default;
+  if (remember) {
+    try {
+      localStorage.setItem('lang', next);
+    } catch {}
+  }
+  if (next === lang) return;
   lang = next;
-  try {
-    localStorage.setItem('lang', next);
-  } catch {}
   applyI18n();
   listeners.forEach((fn) => fn(lang));
 }
 
 export const onLangChange = (fn) => listeners.add(fn);
 
-/** Fills a <select> with the languages and keeps it in sync. */
+/** Resolves once the detected language is loaded and applied. */
+export const ready = (() => {
+  const want = detect();
+  return want === 'en' ? Promise.resolve() : setLang(want, { remember: false });
+})();
+
+// Flag per language (Portuguese follows Brazil). SVGs from flag-icons, MIT.
+const FLAG = { en: 'gb', nl: 'nl', de: 'de', fr: 'fr', es: 'es', it: 'it', pt: 'br', pl: 'pl', ru: 'ru', ko: 'kr', ja: 'jp' };
+const flag = (l) => `<img class="flag" src="/flags/${FLAG[l]}.svg" alt="" width="20" height="15" loading="lazy" decoding="async">`;
+
+let pickerCount = 0;
+
+/**
+ * Replaces the plain language <select> with a menu that shows each language's flag.
+ * The select stays in the page (hidden) as the no-script fallback.
+ */
 export function bindLangSelect(select) {
-  select.replaceChildren(...LANGS.map((l) => new Option(STRINGS[l]['lang.name'], l)));
+  select.replaceChildren(...LANGS.map((l) => new Option(NAMES[l], l)));
   select.value = lang;
   select.addEventListener('change', () => setLang(select.value));
-  onLangChange((l) => (select.value = l));
+  const host = select.closest('label') || select;
+  host.hidden = true;
+
+  const id = `lang-menu-${++pickerCount}`;
+  const wrap = document.createElement('div');
+  wrap.className = 'lang-picker';
+  wrap.innerHTML = `<button type="button" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" popovertarget="${id}"></button>
+    <ul class="lang-menu" id="${id}" role="listbox" popover>${LANGS.map(
+      (l) => `<li><button type="button" role="option" data-lang="${l}" lang="${l}">${flag(l)}<span>${NAMES[l]}</span></button></li>`,
+    ).join('')}</ul>`;
+  host.after(wrap);
+  const btn = wrap.querySelector('.lang-btn');
+  const menu = wrap.querySelector('.lang-menu');
+
+  const render = () => {
+    btn.innerHTML = `${flag(lang).replace(' loading="lazy"', '')}<span>${NAMES[lang]}</span><svg class="chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    btn.setAttribute('aria-label', `${t('lang.label')}: ${NAMES[lang]}`);
+    for (const o of menu.querySelectorAll('[data-lang]')) o.setAttribute('aria-selected', String(o.dataset.lang === lang));
+    select.value = lang;
+  };
+  render();
+  onLangChange(render);
+
+  // Open under the button, or above it when there is no room below (the app's sidebar foot).
+  menu.addEventListener('toggle', (e) => {
+    const open = e.newState === 'open';
+    btn.setAttribute('aria-expanded', String(open));
+    if (!open) return;
+    const r = btn.getBoundingClientRect();
+    const h = menu.offsetHeight;
+    const below = innerHeight - r.bottom > h + 12;
+    menu.style.top = `${below ? r.bottom + 6 : Math.max(8, r.top - h - 6)}px`;
+    menu.style.left = `${Math.min(r.left, innerWidth - menu.offsetWidth - 8)}px`;
+    menu.querySelector('[aria-selected="true"]')?.focus();
+  });
+  menu.addEventListener('click', (e) => {
+    const opt = e.target.closest('[data-lang]');
+    if (!opt) return;
+    menu.hidePopover();
+    setLang(opt.dataset.lang);
+    btn.focus();
+  });
+  menu.addEventListener('keydown', (e) => {
+    if (!['ArrowDown', 'ArrowUp'].includes(e.key)) return;
+    e.preventDefault();
+    const opts = [...menu.querySelectorAll('[data-lang]')];
+    const i = opts.indexOf(document.activeElement);
+    opts[(i + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length].focus();
+  });
 }

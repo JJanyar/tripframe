@@ -313,6 +313,105 @@ a {
   color: var(--ink);
 }
 
+/* ---------- language picker ---------- */
+
+.flag {
+  flex: none;
+  width: 20px;
+  height: 15px;
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--raised);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.lang-btn:hover {
+  background: var(--hover);
+}
+
+.lang-btn .chev {
+  color: var(--ink-3);
+  transition: transform 200ms var(--ease-out);
+}
+
+.lang-btn[aria-expanded='true'] .chev {
+  transform: rotate(180deg);
+}
+
+.lang-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: 200px;
+  max-height: min(420px, calc(100vh - 24px));
+  padding: 6px;
+  overflow: auto;
+  list-style: none;
+  border: 0;
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 220ms var(--ease-out), overlay 220ms allow-discrete, display 220ms allow-discrete;
+}
+
+.lang-menu:popover-open {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .lang-menu:popover-open {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.lang-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lang-menu button:hover,
+.lang-menu button:focus-visible {
+  background: var(--hover);
+  outline: none;
+}
+
+.lang-menu button[aria-selected='true'] {
+  background: var(--raised);
+  font-weight: 700;
+}
+
 /* ---------- view transitions ---------- */
 
 ::view-transition-old(root),
@@ -345,5 +444,11 @@ a {
     animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .nav .lang-btn span {
+    display: none;
   }
 }

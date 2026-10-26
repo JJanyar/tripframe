@@ -12,7 +12,7 @@ Vite + vanilla JavaScript (user's choice). Static build, deployed on Vercel (tri
 
 ## Users
 
-A driver who owns a dashcam (Viofo first, other brands too) and has just taken the SD card out of the camera and put it in their laptop. They want to find a specific moment (an incident, a nice drive, a parking bump) without scrolling through a Windows Explorer folder full of cryptic names like `2024_0315_143022_000123F.MP4`. Primary device: laptop/desktop. Interface languages: English (default), Dutch, German. The homepage is meant to be shared on Reddit so other dashcam owners can use it.
+A driver who owns a dashcam (Viofo first, other brands too) and has just taken the SD card out of the camera and put it in their laptop. They want to find a specific moment (an incident, a nice drive, a parking bump) without scrolling through a Windows Explorer folder full of cryptic names like `2024_0315_143022_000123F.MP4`. Primary device: laptop/desktop. Interface languages: English (default), Dutch, German, French, Spanish, Italian, Portuguese (Brazil), Polish, Russian, Korean, Japanese; each has its own homepage URL (/, /nl/, /de/ …). The homepage is meant to be shared on Reddit so other dashcam owners can use it.
 
 ## Product Purpose
 
@@ -32,6 +32,8 @@ Nothing is uploaded. Files are read locally through the browser's File System Ac
 - GPS is embedded in the MP4 on Viofo/Novatek cameras (`freeGPS` blocks), as NMEA in BlackVue files, or as sidecar files on some brands.
 
 ## Capabilities and Constraints
+
+- Secondary use: any ordinary folder of photos and videos is sorted by day and time (file-name date, else file date). Mentioned, not the focus.
 
 - Timeline grouped per day, front+rear paired into one moment.
 - Filters: camera, recording type (normal / event / parking), date.
