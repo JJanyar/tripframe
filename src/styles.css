@@ -791,7 +791,9 @@ body.dragging .drop-tile:nth-child(2) {
   inset: 0;
   z-index: 50;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  /* minmax(0, …) keeps large photos and videos from stretching the viewer past the screen. */
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   background: var(--stage);
   color: var(--ink);
 }
@@ -899,7 +901,10 @@ body.dragging .drop-tile:nth-child(2) {
   position: relative;
   flex: 1;
   min-width: 0;
+  min-height: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   gap: 8px;
   view-transition-name: stage;
 }
@@ -924,6 +929,7 @@ body.dragging .drop-tile:nth-child(2) {
   min-height: 0;
   height: 100%;
   display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   place-items: center;
   overflow: hidden;
   border-radius: var(--radius);
@@ -1118,7 +1124,11 @@ body.dragging .drop-tile:nth-child(2) {
 }
 
 .viewer.photo-mode .controls {
-  visibility: hidden;
+  display: none;
+}
+
+.viewer.photo-mode .viewer-body {
+  padding-bottom: 16px;
 }
 
 .scrub input {
