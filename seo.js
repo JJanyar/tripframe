@@ -71,7 +71,7 @@ function structuredData(lang, s) {
           description: s['meta.description'],
           thumbnailUrl: `${SITE}/video/tripframe.jpg`,
           contentUrl: `${SITE}/video/tripframe.mp4`,
-          uploadDate: '2026-10-26',
+          uploadDate: '2026-10-26T14:42:00+01:00',
           duration: 'PT20S',
         },
         featureList: [s['h.moment.title'], s['h.sync.title'], s['h.frame.title'], s['h.map.title'], s['h.private.title']],
