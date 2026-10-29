@@ -119,6 +119,7 @@ export default {
   "h.nav.how": "Zo werkt het",
   "h.nav.privacy": "Privacy",
   "h.nav.faq": "Vragen",
+  "h.nav.blog": "Blog",
   "h.cta": "Open je dashcam-map",
   "h.cta.short": "Open de app",
   "h.hero.title": "Elke rit, frame voor frame",

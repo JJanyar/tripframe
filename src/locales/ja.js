@@ -110,6 +110,7 @@ export default {
   "h.nav.how": "使い方",
   "h.nav.privacy": "プライバシー",
   "h.nav.faq": "よくある質問",
+  "h.nav.blog": "ブログ",
   "h.cta": "ドラレコのフォルダを開く",
   "h.cta.short": "アプリを開く",
   "h.hero.title": "すべてのドライブを、1 コマずつ",

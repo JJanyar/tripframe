@@ -110,6 +110,7 @@ export default {
   "h.nav.how": "Cómo funciona",
   "h.nav.privacy": "Privacidad",
   "h.nav.faq": "Preguntas",
+  "h.nav.blog": "Blog",
   "h.cta": "Abrir la carpeta de la dashcam",
   "h.cta.short": "Abrir la app",
   "h.hero.title": "Cada viaje, fotograma a fotograma",

@@ -119,6 +119,7 @@ export default {
   "h.nav.how": "How it works",
   "h.nav.privacy": "Privacy",
   "h.nav.faq": "Questions",
+  "h.nav.blog": "Blog",
   "h.cta": "Open your dashcam folder",
   "h.cta.short": "Open the app",
   "h.hero.title": "Every drive, frame by frame",

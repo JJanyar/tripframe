@@ -110,6 +110,7 @@ export default {
   "h.nav.how": "사용 방법",
   "h.nav.privacy": "개인정보",
   "h.nav.faq": "자주 묻는 질문",
+  "h.nav.blog": "블로그",
   "h.cta": "블랙박스 폴더 열기",
   "h.cta.short": "앱 열기",
   "h.hero.title": "모든 주행을 프레임 단위로",

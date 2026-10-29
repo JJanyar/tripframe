@@ -15,8 +15,8 @@ function date(y, mo, d, h, mi, s) {
 
 function typeFromPath(path) {
   const dirs = path.split('/').slice(0, -1).join('/');
-  if (/(^|\/)(ro|event\w*|emr|emer\w*|lock\w*|protect\w*|sos|evt|manual|incident)(\/|$)/i.test(dirs)) return 'event';
-  if (/park/i.test(dirs)) return 'parking';
+  if (/(^|\/)(ro|event\w*|emr|emer\w*|lock\w*|protect\w*|sos|evt|manual|incident|saved\w*)(\/|$)/i.test(dirs)) return 'event';
+  if (/park|sentry/i.test(dirs)) return 'parking';
   if (/(photo|picture|snapshot|image)/i.test(dirs)) return 'photo';
   return null;
 }

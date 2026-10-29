@@ -110,6 +110,7 @@ export default {
   "h.nav.how": "Jak to działa",
   "h.nav.privacy": "Prywatność",
   "h.nav.faq": "Pytania",
+  "h.nav.blog": "Blog",
   "h.cta": "Otwórz folder kamery",
   "h.cta.short": "Otwórz aplikację",
   "h.hero.title": "Każda trasa, klatka po klatce",

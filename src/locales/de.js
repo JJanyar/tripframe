@@ -119,6 +119,7 @@ export default {
   "h.nav.how": "So funktioniert’s",
   "h.nav.privacy": "Datenschutz",
   "h.nav.faq": "Fragen",
+  "h.nav.blog": "Blog",
   "h.cta": "Dashcam-Ordner öffnen",
   "h.cta.short": "App öffnen",
   "h.hero.title": "Jede Fahrt, Bild für Bild",
