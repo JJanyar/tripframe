@@ -35,11 +35,23 @@ function withToc(html) {
   return { body, toc };
 }
 
+// Values may be quoted as in YAML: "double" (with \" escapes) or 'single' (with '' for a quote).
+export function unquote(v) {
+  if (/^".*"$/.test(v)) {
+    try {
+      return JSON.parse(v);
+    } catch {
+      return v.slice(1, -1);
+    }
+  }
+  return /^'.*'$/.test(v) ? v.slice(1, -1).replace(/''/g, "'") : v;
+}
+
 function readPost(file, slug) {
   const src = readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
   const m = src.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!m) throw new Error(`${file}: missing front matter`);
-  const meta = Object.fromEntries(m[1].split('\n').map((l) => [l.slice(0, l.indexOf(':')).trim(), l.slice(l.indexOf(':') + 1).trim()]));
+  const meta = Object.fromEntries(m[1].split('\n').map((l) => [l.slice(0, l.indexOf(':')).trim(), unquote(l.slice(l.indexOf(':') + 1).trim())]));
   for (const k of ['title', 'description', 'date']) if (!meta[k]) throw new Error(`${file}: missing ${k}`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(meta.date)) throw new Error(`${file}: date must be YYYY-MM-DD`);
   return { ...meta, slug, words: m[2].split(/\s+/).length, ...withToc(marked.parse(m[2])) };

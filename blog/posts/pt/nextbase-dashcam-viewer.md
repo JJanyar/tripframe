@@ -29,7 +29,7 @@ Cada trajeto aparece por dia e horário. Os clipes da pasta `Protected` são mar
 
 ## Teclas úteis
 
-- `Espaço` reproduzir e pausar
+- `Space` reproduzir e pausar
 - `,` e `.` voltar ou avançar um quadro
 - `S` salvar o quadro atual como PNG
 - `R` gravar a visualização (as duas câmeras no layout atual) como um novo vídeo
