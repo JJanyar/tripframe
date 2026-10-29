@@ -32,7 +32,7 @@ The map tiles come from OpenStreetMap. That is the only thing Tripframe loads fr
 
 ## Exporting GPS data
 
-If you need the GPS track as a file, for example GPX or KML for Google Earth, use a desktop program such as Dashcam Viewer or Registrator Viewer. See [the best dashcam software](/blog/best-dashcam-software/).
+Need the route as a file? Under the map in Tripframe, choose **GPX** (for most mapping and sports apps), **KML** (for Google Earth) or **CSV** (a spreadsheet with time, position, speed and heading for every point). For brands Tripframe cannot read yet, use a desktop program such as Dashcam Viewer or Registrator Viewer. See [the best dashcam software](/blog/best-dashcam-software/).
 
 ## No GPS showing up?
 

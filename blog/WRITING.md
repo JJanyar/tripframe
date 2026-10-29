@@ -21,7 +21,7 @@ Opening paragraph...
 - English, plain and practical. Short paragraphs, `##` sections, tables where they help.
 - One clear search intent per post. Check the existing posts first and do not repeat a topic.
 - Only state facts you are sure of. Give prices as rough ranges "at the time of writing". No invented specs, test results or quotes.
-- Be honest about Tripframe: say what it does not do (GPS export, GPS for Thinkware/Nextbase/Garmin/70mai).
+- Be honest about Tripframe: say what it does not do (telemetry graphs, GPS for Thinkware/Nextbase/Garmin/70mai).
 - Link to two or three related posts with `/blog/<slug>/` and to the app with `/app/`.
 - No images needed; the page design carries it.
 - Every `##` heading becomes an entry in the table of contents next to the post, so keep headings short.

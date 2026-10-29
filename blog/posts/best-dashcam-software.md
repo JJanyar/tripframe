@@ -24,10 +24,10 @@ Full disclosure: we make Tripframe, so it is first on this list. We have tried t
 - Recognises Viofo, BlackVue, Thinkware, 70mai and Nextbase names, plus Tesla and any name with a date in it
 - Synced cameras: side by side, picture in picture (resizable) or one camera
 - Frame-by-frame stepping, PNG stills, and recording the current view (including the map) as a video
-- GPS route and speed for Viofo (Novatek) and BlackVue files
+- GPS route and speed for Viofo (Novatek) and BlackVue files, exportable as GPX, KML or CSV
 - Free and open source, no account, **nothing is uploaded**
 
-Where it falls short: no GPX/KML export, no camera settings, and GPS for some brands is not supported yet.
+Where it falls short: no telemetry graphs, no camera settings, and GPS for some brands is not supported yet.
 
 ## 2. Dashcam Viewer (Earthshine Software)
 
@@ -54,9 +54,10 @@ Plays any single file, but knows nothing about dates, cameras or events. Fine fo
 | Sort by day and time | Yes | Yes | Yes | Partly | No |
 | Front and rear in sync | Yes | Yes | Yes | Yes | No |
 | GPS map | Some brands | Many brands | Many brands | Own brand | No |
+| GPS export | GPX, KML, CSV | GPX, KML, CSV | Yes | Varies | No |
 | Multi-brand | Yes | Yes | Yes | No | Any file |
 | Uploads footage | Never | No | No | Cloud optional | No |
 
 ## Our advice
 
-Start with [Tripframe](/app/): it is free and takes ten seconds to try. If you need GPS exports or telemetry, add Dashcam Viewer.
+Start with [Tripframe](/app/): it is free and takes ten seconds to try. If you need telemetry graphs or GPS from more brands, add Dashcam Viewer.

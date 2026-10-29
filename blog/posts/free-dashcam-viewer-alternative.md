@@ -21,7 +21,7 @@ If you want something free that you can use right now, without installing anythi
 | Save a still frame | Yes, PNG named after the exact time | Yes |
 | Record the view as a new video | Yes, including the map | No equivalent |
 | GPS route and speed on a map | Viofo (Novatek) and BlackVue | Many brands |
-| GPS export (GPX, KML, CSV) | No | Yes |
+| GPS export (GPX, KML, CSV) | Yes, for Viofo (Novatek) and BlackVue | Yes, many brands |
 | Telemetry graphs (G-sensor, altitude) | No | Yes |
 | Account needed | No | No |
 | Footage uploaded | Never | No |
@@ -35,7 +35,6 @@ If you want something free that you can use right now, without installing anythi
 
 ## Where Dashcam Viewer is the better choice
 
-- **You need GPS data out of the footage**, as GPX or KML for mapping or evidence.
 - **You need telemetry**, like G-force graphs.
 - **Your brand's GPS format is not supported by Tripframe yet**, such as Thinkware, Nextbase or Garmin.
 
