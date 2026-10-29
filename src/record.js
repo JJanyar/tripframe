@@ -177,16 +177,16 @@ function drawMap(ctx, map, panel, info, s) {
     const r = map(readout.getBoundingClientRect());
     const pad = 16 * s;
     ctx.fillStyle = '#f6f4ee';
-    ctx.font = `700 ${30 * s}px Manrope, 'Segoe UI', sans-serif`;
+    ctx.font = `700 ${30 * s}px 'Manrope Variable', 'Segoe UI', sans-serif`;
     ctx.textBaseline = 'top';
     const speed = String(info.speed ?? '');
     ctx.fillText(speed, r.x + pad, r.y + 14 * s);
     const w = ctx.measureText(speed).width;
     ctx.fillStyle = '#9a9ea6';
-    ctx.font = `600 ${14 * s}px Manrope, 'Segoe UI', sans-serif`;
+    ctx.font = `600 ${14 * s}px 'Manrope Variable', 'Segoe UI', sans-serif`;
     ctx.fillText(info.unit || '', r.x + pad + w + 6 * s, r.y + 28 * s);
     ctx.fillStyle = '#c9cbd0';
-    ctx.font = `500 ${13 * s}px Manrope, 'Segoe UI', sans-serif`;
+    ctx.font = `500 ${13 * s}px 'Manrope Variable', 'Segoe UI', sans-serif`;
     ctx.fillText(info.pos || '', r.x + pad, r.y + 52 * s);
   }
   ctx.restore();

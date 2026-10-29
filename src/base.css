@@ -1,3 +1,4 @@
+@import '@fontsource-variable/manrope';
 /* Shared foundation for the homepage and the app: monochrome tokens in
    light and dark, reset, buttons, form controls and view transitions. */
 
@@ -27,7 +28,7 @@
   --radius: 6px;
   --radius-sm: 4px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --font: 'Manrope', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font: 'Manrope Variable', 'Manrope', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   --font-display: var(--font);
   color-scheme: light;
 }
