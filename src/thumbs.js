@@ -2,6 +2,8 @@
 // and caches them in IndexedDB so reopening the same card is instant.
 
 import { idbGet, idbSet } from './scan.js';
+import { readTracks } from './mp4.js';
+import { codecString } from './merge.js';
 
 const WIDTH = 480;
 const MAX_ACTIVE = 3;
@@ -27,6 +29,12 @@ export function prioritize(clip) {
   if (i > 0) queue.unshift(...queue.splice(i, 1));
 }
 
+// Forgets thumbnails still waiting (not the ones being made), e.g. of clips a filter just hid.
+export function dropQueued() {
+  for (const q of queue) memory.delete(q.key);
+  queue.length = 0;
+}
+
 function pump() {
   while (active < MAX_ACTIVE && queue.length) {
     const job = queue.shift();
@@ -44,7 +52,7 @@ async function build(clip, key) {
   const cached = await idbGet('thumbs', key);
   if (cached?.blob) return { url: URL.createObjectURL(cached.blob), duration: cached.duration };
 
-  const result = clip.isPhoto ? await fromImage(clip.file) : await fromVideo(clip.file);
+  const result = clip.isPhoto ? await fromImage(clip.file) : ((await fromKeyframe(clip.file).catch(() => null)) ?? (await fromVideo(clip.file)));
   if (!result) return null;
   if (!result.blob) return { url: null, duration: result.duration };
   idbSet('thumbs', key, result);
@@ -65,6 +73,37 @@ async function fromImage(file) {
   const blob = await toBlob(bmp, bmp.width, bmp.height);
   bmp.close();
   return { blob, duration: null };
+}
+
+// One keyframe near 1.5 s decoded on its own: reads the header and that frame (a few hundred KB)
+// instead of playing the first seconds of the clip. Null when the browser or codec can't, so the
+// <video> way below takes over.
+async function fromKeyframe(file) {
+  if (typeof VideoDecoder === 'undefined' || !/\.(mp4|mov)$/i.test(file.name)) return null;
+  const v = (await readTracks(file))?.video;
+  if (!v) return null;
+  const duration = v.duration / v.timescale;
+  const at = Math.min(1.5, duration / 4) * v.timescale;
+  const s = v.samples.findLast((x) => x.key && x.cts <= at) ?? v.samples.find((x) => x.key);
+  if (!s) return null;
+  const data = new Uint8Array(await file.slice(s.offset, s.offset + s.size).arrayBuffer());
+  const frames = [];
+  const dec = new VideoDecoder({ output: (f) => frames.push(f), error: () => {} });
+  try {
+    dec.configure({ codec: codecString(v), description: v.config, codedWidth: v.width, codedHeight: v.height });
+    dec.decode(new EncodedVideoChunk({ type: 'key', timestamp: 0, data }));
+    await dec.flush();
+  } finally {
+    if (dec.state !== 'closed') dec.close();
+  }
+  const [frame, ...rest] = frames;
+  rest.forEach((f) => f.close());
+  if (!frame) return null;
+  try {
+    return { blob: await toBlob(frame, frame.displayWidth, frame.displayHeight), duration };
+  } finally {
+    frame.close();
+  }
 }
 
 function once(el, ok, ms = 10000) {

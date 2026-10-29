@@ -3,11 +3,11 @@ import './styles.css';
 import { animate, stagger } from 'motion';
 import { parseClip, groupMoments, dayKey } from './parse.js';
 import { scanHandle, scanFileList, scanEntry, supportsPicker, idbGet, idbSet } from './scan.js';
-import { requestThumb, prioritize } from './thumbs.js';
+import { requestThumb, prioritize, dropQueued } from './thumbs.js';
 import { openViewer, refreshViewer } from './viewer.js';
 import { readDuration, readInfo } from './mp4.js';
 import { findLoudMoments } from './audio.js';
-import { mergeClips, mergeLayout, canLayout } from './merge.js';
+import { mergeClips, mergeLayout, canLayout, MergeError } from './merge.js';
 import { toGpx } from './route.js';
 import { speedIn, speedUnit } from './units.js';
 import { t, plural, applyI18n, bindLangSelect, onLangChange, locale, ready, setLang } from './i18n.js';
@@ -27,8 +27,8 @@ const state = {
   sort: localStorage.getItem('sort') || 'desc',
   visible: [],
   lastDir: null,
-  load: 0, // increases with every folder, so work for an older folder can tell it is stale
-  durations: new Map(), // moment id → seconds
+  measuring: 0, // increases whenever the shown clips change, so older length reading can tell it is stale
+  durations: new Map(), // moment id → seconds, or null when unreadable
   tripsReady: false,
   loud: new Map(), // moment id → loud moments found by the scan
   loudOnly: false,
@@ -165,9 +165,7 @@ async function load(name, scan) {
   state.folder = name;
   state.fileCount = clips.length;
   state.moments = groupMoments(clips);
-  const token = ++state.load;
   state.durations = new Map();
-  state.tripsReady = false;
   if (state.scanning) state.scanning.stop = true;
   state.loud = new Map();
   state.loudOnly = false;
@@ -185,26 +183,27 @@ async function load(name, scan) {
   show('library');
   $('main').scrollTop = 0;
   if (!reducedMotion()) animate('.filters, .folder-name', { opacity: [0, 1], y: [8, 0] }, { duration: 0.35, ease: [0.22, 1, 0.36, 1] });
-  measureDurations(token);
 }
 
 // ---------- trips ----------
 
-// Reads every clip's length from its header (a few kilobytes each), then groups the clips into trips.
-async function measureDurations(token) {
-  const list = state.moments.filter((m) => !m.isPhoto);
+// Reads the length of each shown clip from its header (a few kilobytes each), then groups the clips
+// into trips. Clips a filter hides are not read until they are shown.
+async function measureDurations(visible) {
+  const run = ++state.measuring;
+  const list = visible.filter((m) => !m.isPhoto && !state.durations.has(m.id));
+  state.tripsReady = !list.length;
+  if (!list.length) return;
   let next = 0;
   const worker = async () => {
-    while (next < list.length && state.load === token) {
+    while (next < list.length && state.measuring === run) {
       const m = list[next++];
       const d = await readDuration(m.primary.file).catch(() => null);
-      if (d) state.durations.set(m.id, d);
+      if (state.measuring === run) state.durations.set(m.id, d);
     }
   };
   await Promise.all(Array.from({ length: 6 }, worker));
-  if (state.load !== token) return;
-  state.tripsReady = true;
-  render({ animateIn: false });
+  if (state.measuring === run) render({ animateIn: false });
 }
 
 const TRIP_GAP = 60; // seconds between two clips that still belong to one trip
@@ -343,7 +342,7 @@ async function joinTrip(g, choice, btn, status) {
     if (e.name === 'AbortError') end('');
     else {
       console.error(e);
-      end(e.code ? t(`tr.${e.code}`, { name: e.file || '' }) : t('tr.failed', { error: e.message }));
+      end(e instanceof MergeError ? t(`tr.${e.code}`, { name: e.file || '' }) : t('tr.failed', { error: e.message }));
     }
   }
 }
@@ -491,6 +490,7 @@ let tileObserver;
 function render({ animateIn }) {
   const visible = state.moments.filter((m) => state.type.has(m.type) && m.cameras.some((c) => state.camera.has(c)) && (!state.loudOnly || state.loud.has(m.id)));
   state.visible = visible; // chronological, used by the viewer for previous / next
+  measureDurations(visible);
 
   const days = new Map();
   for (const m of visible) {
@@ -513,6 +513,9 @@ function render({ animateIn }) {
 
   tileObserver?.disconnect();
   tileObserver = new IntersectionObserver(onTilesVisible, { rootMargin: '600px 0px' });
+  // Work queued for the old tiles is dropped; the new tiles near the screen ask again.
+  dropQueued();
+  speedJobs.length = 0;
 
   const lib = $('library');
   if (!visible.length) {

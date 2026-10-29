@@ -5,7 +5,7 @@
 import { readInfo } from './mp4.js';
 import { startRecording, createComposer, canRecord } from './record.js';
 import { exportReverse, canReverse } from './clip.js';
-import { mergeLayout, canLayout } from './merge.js';
+import { mergeLayout, canLayout, MergeError } from './merge.js';
 import { ROUTE_FORMATS, toGpx, waypointsFromGpx, cumulativeKm, gradients } from './route.js';
 import { STILL_FORMATS, canvasToBlob } from './stills.js';
 import { findLoudMoments, knownLoudMoments } from './audio.js';
@@ -453,7 +453,7 @@ async function saveVideo() {
   } catch (e) {
     if (e.name !== 'AbortError') {
       console.error(e);
-      toast(e.code ? t(`tr.${e.code}`, { name: e.file || '' }) : t('tr.failed', { error: e.message }));
+      toast(e instanceof MergeError ? t(`tr.${e.code}`, { name: e.file || '' }) : t('tr.failed', { error: e.message }));
     }
   } finally {
     if (busy === job) busy = null;

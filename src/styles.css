@@ -418,7 +418,6 @@ input[type='range']:active::-webkit-slider-thumb {
   width: min(560px, 100%);
   padding: 48px 44px 40px;
   border-radius: 12px;
-  background: var(--panel);
   text-align: center;
   transition: background-color 200ms ease, transform 260ms var(--ease-out);
   animation: rise 520ms var(--ease-out) both;

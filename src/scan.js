@@ -15,13 +15,15 @@ export async function scanHandle(dir, onProgress) {
       if (entry.kind === 'directory') {
         if (!SKIP_DIR.test(entry.name)) await walk(entry, `${prefix}${entry.name}/`);
       } else if (isMedia(entry.name)) {
-        out.push({ path: prefix + entry.name, file: await entry.getFile() });
+        // Not awaited one by one: the browser answers all of them at once, much sooner.
+        const path = prefix + entry.name;
+        out.push(entry.getFile().then((file) => ({ path, file })));
         if (out.length % 25 === 0) onProgress?.(out.length);
       }
     }
   }
   await walk(dir, '');
-  return out;
+  return Promise.all(out);
 }
 
 export function scanFileList(list) {

@@ -20,10 +20,15 @@ export class MergeError extends Error {
 
 const same = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
 
-// Chrome and Edge stream to a file the user picks; elsewhere (or without picker) the file is built in memory.
-async function openTarget(name, bytes, picker = true) {
-  if (picker && window.showSaveFilePicker) {
-    const handle = await window.showSaveFilePicker({ suggestedName: name, types: [{ description: 'MP4', accept: { 'video/mp4': ['.mp4'] } }] });
+// Asked before the clips are read: the browser shows the picker only within a few seconds of the click.
+async function pickFile(name, picker = true) {
+  if (!picker || !window.showSaveFilePicker) return null;
+  return window.showSaveFilePicker({ suggestedName: name, types: [{ description: 'MP4', accept: { 'video/mp4': ['.mp4'] } }] });
+}
+
+// Chrome and Edge stream to the picked file; elsewhere (or without picker) the file is built in memory.
+async function openTarget(handle, bytes) {
+  if (handle) {
     const stream = await handle.createWritable();
     return { stream, target: new FileSystemWritableFileStreamTarget(stream) };
   }
@@ -39,6 +44,7 @@ export async function mergeClips(files, { name, onProgress, signal }) {
   const stop = () => {
     if (signal?.aborted) throw new DOMException('Stopped', 'AbortError');
   };
+  const handle = await pickFile(name);
   const parts = [];
   for (const file of files) {
     stop();
@@ -54,7 +60,7 @@ export async function mergeClips(files, { name, onProgress, signal }) {
   const withAudio = !!a0 && parts.every((p) => p.audio && same(p.audio.config, a0.config));
   const total = files.reduce((n, f) => n + f.size, 0);
   stop();
-  const { stream, target } = await openTarget(name, total);
+  const { stream, target } = await openTarget(handle, total);
 
   try {
     stop();
@@ -215,6 +221,7 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
   const stop = () => {
     if (signal?.aborted) throw new DOMException('Stopped', 'AbortError');
   };
+  const handle = await pickFile(name, picker);
   const parts = [];
   const checked = new Set();
   for (const m of moments) {
@@ -254,7 +261,7 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
   const frames = parts.reduce((n, p) => n + p.main.video.samples.length, 0);
   const a0 = parts[0].main.audio;
   const withAudio = !!a0 && parts.every((p) => p.main.audio && same(p.main.audio.config, a0.config));
-  const { stream, target } = await openTarget(name, (bitrate / 8) * seconds, picker);
+  const { stream, target } = await openTarget(handle, (bitrate / 8) * seconds);
 
   const canvas = new OffscreenCanvas(W, H);
   const ctx = canvas.getContext('2d');
