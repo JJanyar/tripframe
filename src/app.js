@@ -697,18 +697,22 @@ window.addEventListener('resize', queueActive);
 // Development hook for testing without a real SD card.
 if (import.meta.env.DEV) window.__loadFiles = (name, list) => load(name, async () => list);
 
-// The homepage embeds /app/?demo=<lang>: the app opens on the sample clips in public/demo.
+// The homepage embeds /app/?demo=<lang>: the app opens on the sample clips in public/demo,
+// short Viofo clips in the folders the camera writes them to (RO holds events).
 const demoLang = new URLSearchParams(location.search).get('demo');
 if (demoLang != null) {
-  const DEMO = ['20241221_104130_N', '20250215_092212_N', '20250215_092222_N', '20250215_093047_E'].flatMap((n) => [`${n}F`, `${n}R`]);
+  const DEMO = [
+    'Movie/2026_1017_165841_066930F', 'Movie/2026_1017_165841_066931R', 'Movie/2026_1017_165906_066930F', 'Movie/2026_1017_165906_066931R',
+    'Movie/RO/2026_1017_165946_066934F', 'Movie/RO/2026_1017_165946_066935R', 'Movie/2026_1025_202143_069986F', 'Movie/2026_1025_202143_069987R',
+  ];
   ready.then(() => setLang(demoLang, { remember: false }));
   for (const a of document.querySelectorAll('a[href^="/"]')) a.target = '_top';
   load('DCIM', () =>
     Promise.all(
-      DEMO.map(async (n) => {
-        const res = await fetch(`/demo/${n}.mp4`);
-        if (!res.ok) throw new Error(`${n}: ${res.status}`);
-        return { path: `Record/${n}.mp4`, file: new File([await res.blob()], `${n}.mp4`, { type: 'video/mp4' }) };
+      DEMO.map(async (p) => {
+        const res = await fetch(`/demo/${p}.MP4`);
+        if (!res.ok) throw new Error(`${p}: ${res.status}`);
+        return { path: `${p}.MP4`, file: new File([await res.blob()], `${p.split('/').pop()}.MP4`, { type: 'video/mp4' }) };
       }),
     ),
   ).catch(showError);

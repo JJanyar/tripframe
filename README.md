@@ -144,7 +144,7 @@ Contributions are welcome, especially support for more dashcam brands, translati
 
 ## Credits
 
-Sample dashcam photos on the homepage, and the demo clips in `public/demo` made from them, are from Wikimedia Commons and are in the public domain or CC0. Flags from [flag-icons](https://github.com/lipis/flag-icons) (MIT). Map data © OpenStreetMap contributors.
+Sample dashcam photos on the homepage are from Wikimedia Commons and are in the public domain or CC0. The demo clips in `public/demo` are the author's own Viofo A229 Pro footage: 10 seconds each, without sound, with the camera's stamped text cropped away. Flags from [flag-icons](https://github.com/lipis/flag-icons) (MIT). Map data © OpenStreetMap contributors.
 
 ## License
 
