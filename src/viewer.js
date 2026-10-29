@@ -3,6 +3,7 @@
 
 import { readInfo } from './mp4.js';
 import { startRecording, canRecord } from './record.js';
+import { ROUTE_FORMATS } from './route.js';
 import { t, locale } from './i18n.js';
 import { transition } from './theme.js';
 import {
@@ -356,11 +357,7 @@ async function stopRec() {
   const d = new Date(r.moment.date.getTime() + r.stampTime * 1000);
   const p = (n) => String(n).padStart(2, '0');
   const name = `tripframe_${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}-${p(d.getSeconds())}_${r.layout}${r.map ? '-map' : ''}.${ext}`;
-  const a = h('a', { href: URL.createObjectURL(blob), download: name });
-  document.body.append(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  saveBlob(blob, name);
   toast(t('v.recSaved', { name }));
 }
 
@@ -673,6 +670,14 @@ function onKey(e) {
 
 // ---------- save frame ----------
 
+function saveBlob(blob, name) {
+  const a = h('a', { href: URL.createObjectURL(blob), download: name });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+}
+
 function stamp(time) {
   const d = new Date(cur.moment.date.getTime() + time * 1000);
   const p = (n) => String(n).padStart(2, '0');
@@ -700,11 +705,7 @@ function saveFrame(only) {
 
   const name = `tripframe_${stamp(master().currentTime)}_${vids.map((v) => camLabel(v.cam).toLowerCase()).join('-')}.png`;
   canvas.toBlob((blob) => {
-    const a = h('a', { href: URL.createObjectURL(blob), download: name });
-    document.body.append(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    saveBlob(blob, name);
     toast(t('v.saved', { name }));
   }, 'image/png');
   // A short flash on the saved pictures confirms what went into the file.
@@ -778,10 +779,25 @@ async function renderMap() {
   $('gps-readout').replaceChildren(
     h('div', { class: 'gps-speed' }, h('span', { id: 'gps-speed' }, '0'), h('span', { class: 'unit' }, t('v.kmh'))),
     h('p', { id: 'gps-pos', class: 'gps-pos' }),
+    h(
+      'div',
+      { class: 'gps-export' },
+      h('span', {}, t('v.export')),
+      ...Object.keys(ROUTE_FORMATS).map((ext) => h('button', { class: 'btn btn-ghost', type: 'button', 'data-route': ext }, ext.toUpperCase())),
+    ),
     h('p', { class: 'gps-note' }, t('v.mapNote')),
   );
   followMap(master()?.currentTime || 0, true);
 }
+
+$('gps-readout').addEventListener('click', (e) => {
+  const ext = e.target.closest('[data-route]')?.dataset.route;
+  if (!ext || !cur?.gps.length) return;
+  const name = `tripframe_${stamp(0).slice(0, 19)}_route.${ext}`;
+  const { make, type } = ROUTE_FORMATS[ext];
+  saveBlob(new Blob([make(cur.gps, `Tripframe ${stamp(0).slice(0, 19)}`)], { type }), name);
+  toast(t('v.saved', { name }));
+});
 
 const coord = (v) => Math.abs(v).toLocaleString(locale(), { minimumFractionDigits: 5, maximumFractionDigits: 5 });
 

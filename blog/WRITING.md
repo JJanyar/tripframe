@@ -24,3 +24,14 @@ Opening paragraph...
 - Be honest about Tripframe: say what it does not do (GPS export, GPS for Thinkware/Nextbase/Garmin/70mai).
 - Link to two or three related posts with `/blog/<slug>/` and to the app with `/app/`.
 - No images needed; the page design carries it.
+- Every `##` heading becomes an entry in the table of contents next to the post, so keep headings short.
+
+## Translations
+
+Every post exists in all eleven languages: English in `blog/posts/<slug>.md`, the others in `blog/posts/<lang>/<slug>.md` with the **same file name** (`nl`, `de`, `fr`, `es`, `it`, `pt`, `pl`, `ru`, `ko`, `ja`). They become `/<lang>/blog/<slug>/`. A translation without an English post with the same name stops the build.
+
+- Translate `title` and `description`; keep `date` (and `updated`) the same as the English post.
+- Write natural, native text, not a word-for-word copy. Match the tone of `src/locales/<lang>.js` (for example "je" in Dutch, "du" in German, Brazilian Portuguese for `pt`). Usual words for "dashcam": 블랙박스 (ko), ドライブレコーダー / ドラレコ (ja), видеорегистратор (ru), kamera samochodowa (pl); "dashcam" elsewhere.
+- Keep the Markdown structure, tables and headings in the same order.
+- Do not translate brand and product names, file names, folder names and keys in `code`, or prices.
+- Keep every link exactly as in the English post (`/blog/<slug>/`, `/app/`, `/#moment`). The build points them at the right language.

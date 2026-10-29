@@ -1092,6 +1092,28 @@ body.dragging .drop-tile:nth-child(2) {
   font-size: 13px;
 }
 
+.gps-export {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.gps-export span {
+  margin-right: 6px;
+}
+
+.gps-export .btn {
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
 .gps-note {
   margin-top: 10px;
   color: var(--ink-3);

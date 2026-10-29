@@ -8,7 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { LANGS, LOCALE } from './src/locales/langs.js';
-import { loadPosts } from './blog.js';
+import { blogSitemap, localizeLinks } from './blog.js';
 
 export const SITE = 'https://tripframe.vercel.app';
 const REPO = 'https://github.com/JJanyar/tripframe';
@@ -17,7 +17,7 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const attr = (s) => esc(s).replace(/"/g, '&quot;');
 const pageUrl = (lang) => (lang === 'en' ? `${SITE}/` : `${SITE}/${lang}/`);
 
-async function loadStrings() {
+export async function loadStrings() {
   const out = {};
   for (const lang of LANGS) {
     const url = pathToFileURL(resolve(import.meta.dirname, `src/locales/${lang}.js`)).href;
@@ -27,7 +27,7 @@ async function loadStrings() {
 }
 
 /** Puts the text of `s` into every data-i18n, data-i18n-html and data-i18n-attr element. */
-function fill(html, s, en) {
+export function fill(html, s, en) {
   const get = (k) => s[k] ?? en[k] ?? '';
   html = html.replace(/(<([a-z0-9]+)\b[^>]*\bdata-i18n="([^"]+)"[^>]*>)([\s\S]*?)(<\/\2>)/g, (_, open, _tag, key, _inner, close) => open + esc(get(key)) + close);
   html = html.replace(/(<([a-z0-9]+)\b[^>]*\bdata-i18n-html="([^"]+)"[^>]*>)([\s\S]*?)(<\/\2>)/g, (_, open, _tag, key, _inner, close) => open + get(key) + close);
@@ -116,9 +116,7 @@ function sitemap() {
   const alt = LANGS.map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${pageUrl(l)}"/>`).join('\n');
   const urls = LANGS.map((l) => `  <url>\n    <loc>${pageUrl(l)}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${l === 'en' ? '1.0' : '0.9'}</priority>\n${alt}\n    <xhtml:link rel="alternate" hreflang="x-default" href="${pageUrl('en')}"/>\n  </url>`);
   urls.push(`  <url>\n    <loc>${SITE}/app/</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>`);
-  const posts = loadPosts();
-  urls.push(`  <url>\n    <loc>${SITE}/blog/</loc>\n    <lastmod>${posts[0]?.date ?? ''}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`);
-  for (const p of posts) urls.push(`  <url>\n    <loc>${SITE}/blog/${p.slug}/</loc>\n    <lastmod>${p.updated || p.date}</lastmod>\n    <priority>0.7</priority>\n  </url>`);
+  urls.push(...blogSitemap());
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;
 }
 
@@ -154,7 +152,7 @@ export default function seo() {
       for (const lang of LANGS) {
         if (lang === 'en') continue;
         mkdirSync(resolve(outDir, lang), { recursive: true });
-        writeFileSync(resolve(outDir, lang, 'index.html'), head(fill(base, strings[lang], strings.en), lang, strings[lang]));
+        writeFileSync(resolve(outDir, lang, 'index.html'), localizeLinks(head(fill(base, strings[lang], strings.en), lang, strings[lang]), lang));
       }
       writeFileSync(resolve(outDir, 'sitemap.xml'), sitemap());
     },

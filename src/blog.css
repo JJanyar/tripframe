@@ -37,7 +37,11 @@
   background: var(--raised);
 }
 
-.post-card time {
+.post-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
   color: var(--ink-3);
   font-size: 13px;
   font-weight: 600;
@@ -61,9 +65,94 @@
 
 /* ---------- a post ---------- */
 
+.post-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 720px) 240px;
+  justify-content: center;
+  gap: clamp(48px, 6vw, 96px);
+  margin-top: clamp(40px, 7vw, 96px);
+}
+
 .post {
-  max-width: 720px;
-  margin: clamp(40px, 7vw, 96px) auto 0;
+  min-width: 0;
+}
+
+/* ---------- table of contents ---------- */
+
+.toc {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  padding-top: 6px;
+}
+
+.toc-title {
+  margin: 0 0 14px;
+  color: var(--ink-3);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.toc-track {
+  position: relative;
+  border-left: 2px solid var(--raised);
+}
+
+.toc-track ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toc-track a {
+  display: block;
+  padding: 7px 0 7px 16px;
+  color: var(--ink-3);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.toc-track a:hover,
+.toc-track a[aria-current] {
+  color: var(--ink);
+}
+
+/* Slides to the current section. */
+.toc-indicator {
+  position: absolute;
+  top: 0;
+  left: -2px;
+  width: 3px;
+  height: 0;
+  border-radius: 2px;
+  background: var(--signal);
+  opacity: 0;
+  transition: transform 360ms var(--ease-out), height 360ms var(--ease-out), opacity 200ms ease;
+}
+
+.toc-indicator.on {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc-indicator,
+  .toc-track a {
+    transition: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .post-layout {
+    grid-template-columns: minmax(0, 720px);
+  }
+  .toc {
+    display: none;
+  }
 }
 
 .post-meta {
@@ -99,6 +188,7 @@
 }
 
 .prose h2 {
+  scroll-margin-top: 96px;
   margin: 2.2em 0 0.5em;
   font-size: clamp(24px, 2.4vw, 30px);
   font-weight: 800;

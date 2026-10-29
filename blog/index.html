@@ -15,15 +15,23 @@
     <!--head--><title>Tripframe blog</title><!--/head-->
   </head>
   <body class="home blog">
+    <!-- Same navigation and footer as the homepage (index.html), with links back to its sections. -->
     <header class="nav" id="nav">
       <a class="wordmark" href="/" aria-label="Tripframe"><span data-logo></span></a>
-      <nav class="nav-links" aria-label="Site">
-        <a href="/">Home</a>
-        <a href="/blog/">Blog</a>
+      <nav class="nav-links" data-i18n-attr="aria-label:h.nav.label">
+        <a href="/#demo" data-i18n="h.nav.demo"></a>
+        <a href="/#how" data-i18n="h.nav.how"></a>
+        <a href="/#private" data-i18n="h.nav.privacy"></a>
+        <a href="/#faq" data-i18n="h.nav.faq"></a>
+        <a href="/blog/" data-i18n="h.nav.blog" aria-current="page"></a>
       </nav>
       <div class="nav-prefs">
         <div id="theme-switch"></div>
-        <a class="btn btn-primary" href="/app/">Open the app</a>
+        <label class="select compact">
+          <span class="visually-hidden" data-i18n="lang.label"></span>
+          <select id="lang"></select>
+        </label>
+        <a class="btn btn-primary" href="/app/" data-i18n="h.cta.short"></a>
       </div>
     </header>
 
@@ -33,13 +41,14 @@
       <div class="footer-inner">
         <a class="footer-logo" href="/" aria-label="Tripframe"><span data-logo></span></a>
         <div class="footer-cols">
-          <p class="footer-line">Tripframe runs in your browser. Your footage stays on your computer.</p>
-          <nav class="footer-links" aria-label="Site">
-            <a href="/">Home</a>
-            <a href="/blog/">Blog</a>
-            <a href="/#faq">Questions</a>
-            <a href="https://github.com/JJanyar/tripframe">GitHub</a>
-            <a href="/app/">Open the app</a>
+          <p class="footer-line" data-i18n="h.footer.local"></p>
+          <nav class="footer-links" data-i18n-attr="aria-label:h.nav.label">
+            <a href="/#demo" data-i18n="h.nav.demo"></a>
+            <a href="/#how" data-i18n="h.nav.how"></a>
+            <a href="/#private" data-i18n="h.nav.privacy"></a>
+            <a href="/#faq" data-i18n="h.nav.faq"></a>
+            <a href="/blog/" data-i18n="h.nav.blog"></a>
+            <a href="/app/" data-i18n="h.cta.short"></a>
           </nav>
         </div>
       </div>
