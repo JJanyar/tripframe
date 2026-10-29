@@ -30,7 +30,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test src/*.test.js"
+    "test": "node --test src/*.test.js",
+    "i18n:check": "node scripts/i18n-check.mjs"
   },
   "devDependencies": {
     "marked": "^15.0.12",
