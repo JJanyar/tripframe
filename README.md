@@ -33,12 +33,19 @@ Dashcams name every clip with a string of digits, like `2024_0315_143022_000123F
 ## Features
 
 - **Timeline by day and time:** date, time, camera and recording type are read straight from the file names.
+- **Trips:** clips that follow each other become a trip, with its length and the time since the previous one. Every clip with GPS shows its top speed.
 - **Front, rear and interior in one moment:** the cameras of the same second are paired, with a thumbnail of each.
-- **Synced playback:** side by side, picture in picture or one camera. Swap front and rear with a button, the `W` key or a double-click. Drag the small picture's corner or the split line to resize.
+- **Synced playback:** side by side, picture in picture or one camera. Swap front and rear with a button, the `W` key or a double-click. Drag the small picture's corner or the split line to resize. Scroll to zoom into the picture and drag to pan.
 - **Frame by frame:** step with `,` and `.`; the real clock time and frame number are shown.
-- **Save a frame** as PNG, of one camera or all cameras side by side, named with the exact date and time.
-- **Save a video of the view:** records what you see, picture in picture or side by side, with the map included when it is open.
-- **GPS route on a map:** read from the video itself (Viofo/Novatek and BlackVue), with the speed alongside. Map by OpenStreetMap.
+- **Save frames** as PNG, JPG or BMP, of one camera or all cameras side by side, named with the exact date and time; also one frame every N seconds.
+- **Save a video of the view:** records what you see, with zoom, the map and the data overlay included.
+- **Export part of a clip** faster, slower or backwards, with or without sound (`I` and `O` set the start and end).
+- **Join a trip into one video** without re-encoding, with the route as GPX.
+- **GPS on a map:** read from the video itself (Viofo/Novatek, BlackVue, GoPro). Map, satellite or hybrid view, the route coloured by speed, a heading arrow, km/h or mph.
+- **Telemetry:** graphs of speed, distance, heading, altitude, gradient, G-force, satellites and HDOP; a data table; driving data on the video (`H`).
+- **Markers** on the route (`T`), with optional street addresses; export and import as GPX. Route export as GPX, KML, CSV or GeoJSON.
+- **Weather** at the time and place of the drive, if you switch online lookups on.
+- **Loud moments:** finds bumps and horns in the sound of one clip, or of every clip in the folder.
 - **Filters** for camera and recording type (normal, event/locked, parking, photos), a day list that follows your scroll, and autoplay of the next clip.
 - **Keyboard first:** press `?` in the player for every shortcut.
 - **11 languages:** English, Nederlands, Deutsch, Français, Español, Italiano, Português, Polski, Русский, 한국어 and 日本語. Light and dark theme.
@@ -54,7 +61,7 @@ Dashcams name every clip with a string of digits, like `2024_0315_143022_000123F
 | 70mai | `NO20240315-143022-000123F.mp4` | date, time, camera, normal/event/parking |
 | Nextbase | `240315_143022_001_FH.MP4` | date, time, camera |
 
-Locked clips in folders such as `RO`, `Event` or `Protect` are marked as events, and `Parking` folders as parking. Other cameras work when the file name contains a date; otherwise the file's modification date is used. GPS is read from Viofo/Novatek `freeGPS` blocks and BlackVue NMEA data.
+Locked clips in folders such as `RO`, `Event` or `Protect` are marked as events, and `Parking` folders as parking. Other cameras work when the file name contains a date; otherwise the file's modification date is used. GPS is read from Viofo/Novatek `freeGPS` blocks, BlackVue NMEA data (with altitude and satellites from GGA lines) and the GoPro GPMF telemetry track (with altitude and the accelerometer).
 
 Is your camera missing or named differently? [Open an issue](https://github.com/JJanyar/tripframe/issues) with a few example file names.
 
@@ -86,18 +93,22 @@ Many dashcams record in **H.265 (HEVC)**. Edge plays it on most Windows PCs, Chr
 | `M` | Mute or unmute |
 | `-` / `+` | Volume down or up |
 | `G` | Show or hide the map |
+| `H` | Show or hide driving data on the video |
+| `T` | Add a marker on the route |
 | `S` | Save the current frame |
+| `I` / `O` | Set the start or end of the part to export |
 | `R` | Start or stop a video recording |
+| `0` | Reset zoom |
 | `?` | Show the shortcuts |
 | `Esc` | Back to the library |
 
 ## Privacy
 
-Tripframe is a static web page. Your browser reads the folder you choose and nothing is sent anywhere: no uploads, no account, no analytics. It only reads files and never changes anything on the SD card. When a clip has GPS, the map tiles are loaded from OpenStreetMap.
+Tripframe is a static web page. Your browser reads the folder you choose and your footage is never sent anywhere: no uploads, no account, no analytics, no cookies. It only reads files and never changes anything on the SD card. When a clip with GPS is shown on the map, map pictures are loaded from OpenStreetMap, or from Esri for the satellite views. Weather (Open-Meteo) and street addresses (OpenStreetMap Nominatim) are only looked up when you switch that on. See the [privacy page](https://tripframe.vercel.app/privacy/).
 
 ## Development
 
-Tripframe is plain JavaScript with [Vite](https://vite.dev/), [Leaflet](https://leafletjs.com/) for the map, [Motion](https://motion.dev/) for animation and [Lucide](https://lucide.dev/) icons. No framework, no backend.
+Tripframe is plain JavaScript with [Vite](https://vite.dev/), [Leaflet](https://leafletjs.com/) for the map, [Motion](https://motion.dev/) for animation, [Lucide](https://lucide.dev/) icons and [mp4-muxer](https://github.com/Vanilagy/mp4-muxer) for writing joined and reversed videos. No framework, no backend. `npm test` runs the unit tests.
 
 ```bash
 git clone https://github.com/JJanyar/tripframe.git
@@ -106,18 +117,24 @@ npm install
 npm run dev
 ```
 
-`npm run build` writes a static site to `dist/`. The build also writes a homepage per language (`/nl/`, `/de/` …) with the text in the HTML, a `sitemap.xml` and structured data, so search engines and AI assistants can read the pages without running JavaScript.
+`npm run build` writes a static site to `dist/`. The build also writes every site page and blog post per language (`/nl/`, `/de/features/` …) with the text in the HTML, a `sitemap.xml` and structured data, so search engines and AI assistants can read the pages without running JavaScript.
 
 ### Project layout
 
 | Path | What it holds |
 | --- | --- |
 | `index.html`, `src/landing.*` | The homepage |
-| `app/index.html`, `src/app.js` | The library: folder scan, filters, day list |
-| `src/viewer.js`, `src/record.js` | The player, frame export and video recording |
+| `features/`, `dashcams/`, `how-it-works/`, `faq/`, `privacy/`, `404.html` | The other site pages; `src/page.js` and `src/pages.css` are shared |
+| `src/partials/` | The navigation and footer, put into every page at build time |
+| `app/index.html`, `src/app.js` | The library: folder scan, filters, trips, day list |
+| `src/viewer.js`, `src/record.js`, `src/clip.js` | The player, frame and clip export, video recording |
+| `src/merge.js` | Joining clips into one MP4 |
+| `src/route.js`, `src/plot.js`, `src/geotags.js`, `src/online.js` | GPS export, graphs, markers, weather and addresses |
+| `src/audio.js` | Finding loud moments |
 | `src/parse.js` | File name parsing and front/rear pairing |
-| `src/mp4.js` | Frame rate and embedded GPS from MP4 files |
+| `src/mp4.js` | Frame rate, tracks, and GPS and telemetry from MP4 files |
 | `src/locales/` | All interface text, one file per language |
+| `blog/`, `blog.js` | Blog posts in Markdown (per language) and their build step |
 | `seo.js` | Build step for static text, language pages and the sitemap |
 | `public/brand/` | Logo and icons |
 

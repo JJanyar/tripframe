@@ -1,38 +1,5 @@
-import './base.css';
-import './landing.css';
-import './blog.css';
-import { bindLangSelect, getLang, onLangChange, ready, setLang } from './i18n.js';
-import { mountThemeSwitch, reducedMotion } from './theme.js';
-import { mountLogos } from './logo.js';
-
-mountLogos();
-mountThemeSwitch(document.getElementById('theme-switch'));
-
-const nav = document.getElementById('nav');
-addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), { passive: true });
-
-// ---------- language ----------
-
-// Each page is written in one language; the build lists its translations as hreflang links.
-const pageLang = document.documentElement.lang;
-const translation = (l) => {
-  const link = document.querySelector(`link[rel="alternate"][hreflang="${l}"]`);
-  return link && new URL(link.href).pathname;
-};
-
-ready.then(() => {
-  // A reader who chose another language before goes to that translation when there is one.
-  if (getLang() !== pageLang) {
-    const path = translation(getLang());
-    if (path) return location.replace(path + location.hash);
-    setLang(pageLang, { remember: false });
-  }
-  bindLangSelect(document.getElementById('lang'));
-  onLangChange((l) => {
-    const path = translation(l);
-    if (path && path !== location.pathname) location.href = path;
-  });
-});
+import './page.js';
+import { reducedMotion } from './theme.js';
 
 // ---------- table of contents ----------
 

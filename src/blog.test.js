@@ -18,4 +18,5 @@ test('links point at the translation when it exists', () => {
     '<a href="/nl/">x</a><a href="/nl/#faq">x</a><a href="/nl/blog/">x</a><a href="/nl/blog/a/">x</a><a href="/blog/b/">x</a><a href="/app/">x</a>',
   );
   assert.equal(localizeLinks(html, 'en', all), html);
+  assert.equal(localizeLinks('<a href="/features/#map">x</a><a href="/flags/nl.svg">x</a>', 'de', all), '<a href="/de/features/#map">x</a><a href="/flags/nl.svg">x</a>');
 });

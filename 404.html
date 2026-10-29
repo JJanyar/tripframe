@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#17191E" />
+    <meta name="robots" content="noindex" />
+    <title data-i18n="nf.meta">Page not found | Tripframe</title>
+    <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <!-- Translated in the browser: the language comes from the address (/nl/…) or the reader's choice. -->
+  <body class="home page notfound" data-client-i18n>
+    <!--nav-->
+
+    <main class="nf-main">
+      <div class="nf-copy">
+        <p class="nf-code" data-i18n="nf.code"></p>
+        <h1 class="display" data-i18n="nf.title"></h1>
+        <p class="body-l" data-i18n="nf.body"></p>
+        <div class="nf-actions">
+          <a class="btn btn-primary btn-large" href="/" data-i18n="nf.home"></a>
+          <a class="btn btn-large" href="/app/" data-i18n="h.cta.short"></a>
+        </div>
+        <nav class="nf-links" data-i18n-attr="aria-label:h.nav.site">
+          <a href="/features/" data-i18n="h.nav.features"></a>
+          <a href="/dashcams/" data-i18n="h.nav.dashcams"></a>
+          <a href="/blog/" data-i18n="h.nav.blog"></a>
+          <a href="/faq/" data-i18n="h.nav.faq"></a>
+        </nav>
+      </div>
+
+      <figure class="nf-art">
+        <svg viewBox="0 0 800 480" role="img" aria-labelledby="nf-art-title">
+          <title id="nf-art-title" data-i18n="nf.alt"></title>
+          <defs>
+            <linearGradient id="nf-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0e0f12" />
+              <stop offset="1" stop-color="#2a2d34" />
+            </linearGradient>
+            <linearGradient id="nf-road" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2c2f36" />
+              <stop offset="1" stop-color="#1b1d22" />
+            </linearGradient>
+            <pattern id="nf-stripes" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="12" height="24" fill="#ffc21a" />
+              <rect x="12" width="12" height="24" fill="#17191e" />
+            </pattern>
+            <clipPath id="nf-screen"><rect x="0" y="0" width="800" height="480" rx="18" /></clipPath>
+          </defs>
+
+          <g clip-path="url(#nf-screen)">
+            <rect width="800" height="480" fill="url(#nf-sky)" />
+            <g class="nf-cam">
+              <!-- far hills on the horizon -->
+              <path d="M0 262 C 90 238, 160 246, 240 254 S 380 236, 470 250 S 640 232, 800 256 L 800 270 L 0 270 Z" fill="#202329" />
+              <!-- the road, narrowing to the barrier -->
+              <path d="M70 480 L 352 266 L 448 266 L 730 480 Z" fill="url(#nf-road)" />
+              <path d="M70 480 L 352 266" stroke="#8c919a" stroke-width="4" />
+              <path d="M730 480 L 448 266" stroke="#8c919a" stroke-width="4" />
+              <!-- centre line: dashes grow towards the camera -->
+              <g fill="#ffc21a">
+                <path d="M398 272 h4 l1 10 h-6 Z" />
+                <path d="M397 292 h6 l1.6 16 h-9.2 Z" />
+                <path d="M395.6 322 h8.8 l2.4 24 h-13.6 Z" />
+                <path d="M390 428 h20 l5 52 h-30 Z" />
+              </g>
+              <!-- 404 painted on the asphalt -->
+              <text class="nf-road-text" x="400" y="0" text-anchor="middle" transform="translate(0 410) scale(1 0.45)">404</text>
+              <!-- barrier where the road ends -->
+              <rect x="331" y="226" width="6" height="44" fill="#9a9ea6" />
+              <rect x="463" y="226" width="6" height="44" fill="#9a9ea6" />
+              <rect x="316" y="230" width="168" height="24" rx="3" fill="url(#nf-stripes)" stroke="#17191e" stroke-width="2" />
+              <circle class="nf-lamp" cx="334" cy="222" r="7" fill="#ffc21a" />
+              <circle class="nf-lamp nf-lamp-b" cx="466" cy="222" r="7" fill="#ffc21a" />
+            </g>
+
+            <!-- viewfinder corners, as in the Tripframe logo -->
+            <g fill="none" stroke="#f6f4ee" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+              <path d="M28 76 V 28 H 76" />
+              <path d="M724 28 H 772 V 76" />
+              <path d="M772 404 V 452 H 724" />
+              <path d="M76 452 H 28 V 404" />
+            </g>
+
+            <!-- the camera's on-screen display -->
+            <g class="nf-osd" fill="#f6f4ee">
+              <circle class="nf-rec" cx="62" cy="62" r="7" fill="#e5484d" />
+              <text x="78" y="68">REC</text>
+              <text x="738" y="68" text-anchor="end">GPS</text>
+              <text x="62" y="428">2026/10/29 04:04:04</text>
+              <text x="738" y="428" text-anchor="end">0 km/h</text>
+            </g>
+          </g>
+        </svg>
+      </figure>
+    </main>
+
+    <!--footer-->
+
+    <script type="module" src="/src/notfound.js"></script>
+  </body>
+</html>

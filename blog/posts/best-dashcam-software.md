@@ -2,6 +2,7 @@
 title: The best dashcam viewer software in 2026
 description: Brand apps, desktop GPS players, ordinary video players and browser-based viewers compared. Which dashcam software is best for watching, sorting and saving your footage?
 date: 2026-10-29
+updated: 2026-10-30
 ---
 
 Every dashcam records good footage. Watching it is another story: a card full of files with cryptic names, front and rear split apart, events in another folder. The right software turns that into something you can actually use.
@@ -21,17 +22,20 @@ Full disclosure: we make Tripframe, so it is first on this list. We have tried t
 
 [Tripframe](/) runs in your browser. Open the SD card and every clip appears by day and time, with front, rear and interior paired into one moment.
 
-- Recognises Viofo, BlackVue, Thinkware, 70mai and Nextbase names, plus Tesla and any name with a date in it
-- Synced cameras: side by side, picture in picture (resizable) or one camera
-- Frame-by-frame stepping, PNG stills, and recording the current view (including the map) as a video
-- GPS route and speed for Viofo (Novatek) and BlackVue files, exportable as GPX, KML or CSV
+- Recognises Viofo, BlackVue, Thinkware, 70mai and Nextbase names, plus Tesla, GoPro and any name with a date in it
+- Trips with their length and the time between them, and the top speed of every clip
+- Synced cameras: side by side, picture in picture (resizable) or one camera, with zoom
+- Frame-by-frame stepping, stills as PNG, JPG or BMP, and recording the current view (including the map) as a video
+- Export part of a clip faster, slower or backwards, and join a trip into one video without re-encoding
+- GPS route, speed, altitude and G-force for Viofo (Novatek), BlackVue and GoPro files, with graphs, markers and export as GPX, KML, CSV or GeoJSON
+- Finds loud moments in the sound
 - Free and open source, no account, **nothing is uploaded**
 
-Where it falls short: no telemetry graphs, no camera settings, and GPS for some brands is not supported yet.
+Where it falls short: no camera settings, and GPS for Thinkware, Nextbase, Garmin and 70mai is not supported yet.
 
 ## 2. Dashcam Viewer (Earthshine Software)
 
-A long-standing desktop app for Windows and Mac with very wide GPS support, telemetry graphs and export to GPX and KML. If you need detailed telemetry or exports, it is the most complete option. The advanced features need a paid licence. See our [free Dashcam Viewer alternative](/blog/free-dashcam-viewer-alternative/) comparison.
+A long-standing desktop app for Windows and Mac with very wide GPS support: it reads more than 140 camera models. Telemetry graphs, GPS export, clip export and joining clips are all there. The free version opens two files at a time; Plus and Pro licences lift the limits. See our [free Dashcam Viewer alternative](/blog/free-dashcam-viewer-alternative/) comparison.
 
 ## 3. Registrator Viewer
 
@@ -53,11 +57,12 @@ Plays any single file, but knows nothing about dates, cameras or events. Fine fo
 | Install | None (browser) | Desktop app | Windows app | App per brand | Desktop app |
 | Sort by day and time | Yes | Yes | Yes | Partly | No |
 | Front and rear in sync | Yes | Yes | Yes | Yes | No |
-| GPS map | Some brands | Many brands | Many brands | Own brand | No |
-| GPS export | GPX, KML, CSV | GPX, KML, CSV | Yes | Varies | No |
+| GPS map | Viofo, BlackVue, GoPro | Many brands | Many brands | Own brand | No |
+| Telemetry graphs | Yes | Yes | Yes | Varies | No |
+| GPS export | GPX, KML, CSV, GeoJSON | GPX, KML, CSV, GeoJSON | Yes | Varies | No |
 | Multi-brand | Yes | Yes | Yes | No | Any file |
 | Uploads footage | Never | No | No | Cloud optional | No |
 
 ## Our advice
 
-Start with [Tripframe](/app/): it is free and takes ten seconds to try. If you need telemetry graphs or GPS from more brands, add Dashcam Viewer.
+Start with [Tripframe](/app/): it is free and takes ten seconds to try. If your camera stores GPS in a format Tripframe cannot read yet, add Dashcam Viewer.

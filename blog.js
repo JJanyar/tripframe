@@ -86,11 +86,18 @@ const has = (all, lang, slug) => (slug ? all[lang].some((p) => p.slug === slug) 
 export function localizeLinks(html, lang, all = loadAll()) {
   if (lang === 'en') return html;
   return html.replace(/(<a\b[^>]*?\shref=")(\/[^"]*)"/g, (tag, open, path) => {
-    if (path === '/' || path.startsWith('/#')) return `${open}/${lang}${path}"`;
     const m = path.match(/^\/blog\/([^/#]*)\/?(#.*)?$/);
-    if (m && has(all, lang, m[1])) return `${open}/${lang}${path}"`;
+    if (m) return has(all, lang, m[1]) ? `${open}/${lang}${path}"` : tag;
+    // The homepage and the site pages (/features/, /faq/#q3 …) exist in every language; the app is shared.
+    if (/^\/(?!app\/)([a-z-]+\/)?(#.*)?$/.test(path)) return `${open}/${lang}${path}"`;
     return tag;
   });
+}
+
+/** The newest posts in a language, as cards for the homepage. */
+export function latestCards(lang, s, all = loadAll(), n = 3) {
+  const posts = (all[lang].length ? all[lang] : all.en).slice(0, n);
+  return `<ol class="post-list">${posts.map((p) => card(p, all[lang].length ? lang : 'en', s)).join('')}</ol>`;
 }
 
 function card(p, lang, s) {

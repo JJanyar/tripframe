@@ -37,6 +37,10 @@ import {
   Images,
   Combine,
   ZoomOut,
+  ZoomIn,
+  Route,
+  ChartLine,
+  Layers,
 } from 'lucide';
 import { animate } from 'motion';
 import { t, locale } from './i18n.js';
@@ -80,6 +84,10 @@ const ICONS = {
   frames: Images,
   join: Combine,
   zoomOut: ZoomOut,
+  zoomIn: ZoomIn,
+  route: Route,
+  chart: ChartLine,
+  layers: Layers,
 };
 
 export function icon(name, size = 18) {
