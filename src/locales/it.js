@@ -469,5 +469,6 @@ export default {
   "tr.encode": "Entrambe le telecamere in un’immagine, richiede più tempo",
   "tr.noDecode": "Questo browser non riesce a decodificare {name}. Prova Chrome o Edge.",
   "tr.noEncode": "Questo browser non riesce a creare un nuovo video. Prova Chrome o Edge.",
-  "v.saving": "Salvataggio {pct}%"
+  "v.saving": "Salvataggio {pct}%",
+  "v.saveStopped": "Salvataggio interrotto. Non è stato salvato nulla."
 };

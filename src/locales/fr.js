@@ -469,5 +469,6 @@ export default {
   "tr.encode": "Les deux caméras dans une image, plus long",
   "tr.noDecode": "Ce navigateur ne peut pas décoder {name}. Essayez Chrome ou Edge.",
   "tr.noEncode": "Ce navigateur ne peut pas créer de nouvelle vidéo. Essayez Chrome ou Edge.",
-  "v.saving": "Enregistrement {pct} %"
+  "v.saving": "Enregistrement {pct} %",
+  "v.saveStopped": "Enregistrement arrêté. Rien n’a été enregistré."
 };

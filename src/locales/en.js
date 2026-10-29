@@ -493,5 +493,6 @@ export default {
   "tr.encode": "Both cameras in one picture, takes longer",
   "tr.noDecode": "This browser cannot decode {name}. Try Chrome or Edge.",
   "tr.noEncode": "This browser cannot create a new video. Try Chrome or Edge.",
-  "v.saving": "Saving {pct}%"
+  "v.saving": "Saving {pct}%",
+  "v.saveStopped": "Saving stopped. Nothing was saved."
 };

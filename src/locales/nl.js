@@ -493,5 +493,6 @@ export default {
   "tr.encode": "Beide camera’s in één beeld, duurt langer",
   "tr.noDecode": "Deze browser kan {name} niet decoderen. Probeer Chrome of Edge.",
   "tr.noEncode": "Deze browser kan geen nieuwe video maken. Probeer Chrome of Edge.",
-  "v.saving": "Opslaan {pct}%"
+  "v.saving": "Opslaan {pct}%",
+  "v.saveStopped": "Opslaan gestopt. Er is niets opgeslagen."
 };

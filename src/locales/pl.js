@@ -469,5 +469,6 @@ export default {
   "tr.encode": "Obie kamery w jednym obrazie, trwa dłużej",
   "tr.noDecode": "Ta przeglądarka nie potrafi zdekodować {name}. Spróbuj Chrome lub Edge.",
   "tr.noEncode": "Ta przeglądarka nie potrafi utworzyć nowego wideo. Spróbuj Chrome lub Edge.",
-  "v.saving": "Zapisywanie {pct}%"
+  "v.saving": "Zapisywanie {pct}%",
+  "v.saveStopped": "Zapisywanie zatrzymane. Nic nie zostało zapisane."
 };

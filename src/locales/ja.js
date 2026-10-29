@@ -485,5 +485,6 @@ export default {
   "tr.encode": "両方のカメラを 1 画面に、時間がかかります",
   "tr.noDecode": "このブラウザでは {name} をデコードできません。Chrome または Edge をお試しください。",
   "tr.noEncode": "このブラウザでは新しい動画を作成できません。Chrome または Edge をお試しください。",
-  "v.saving": "保存中 {pct}%"
+  "v.saving": "保存中 {pct}%",
+  "v.saveStopped": "保存を中止しました。何も保存されていません。"
 };

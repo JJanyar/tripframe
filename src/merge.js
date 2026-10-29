@@ -203,12 +203,17 @@ const SIZE = { pip: [1920, 1080], side: [2560, 720] };
  * @returns {Promise<Blob|null>} the file in memory, or null when it was written to disk
  */
 export async function mergeLayout(moments, { layout, name, onProgress, signal, picker = true }) {
+  // Checked after every wait, so stopping takes effect at once and never ends in a saved file.
+  const stop = () => {
+    if (signal?.aborted) throw new DOMException('Stopped', 'AbortError');
+  };
   const parts = [];
   const checked = new Set();
   for (const m of moments) {
     const p = {};
     for (const cam of ['first', 'second']) {
       if (!m[cam]) continue;
+      stop();
       const tr = await readTracks(m[cam]);
       if (!tr?.video) throw new MergeError('unreadable', m[cam].name);
       const codec = codecString(tr.video);
@@ -276,7 +281,9 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
   };
 
   let failed = null;
+  let encoder = null;
   try {
+    stop();
     const muxer = new Muxer({
       target,
       fastStart: stream ? false : 'in-memory',
@@ -285,7 +292,7 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
       audio: withAudio ? { codec: 'aac', numberOfChannels: a0.channels, sampleRate: a0.rate } : undefined,
     });
     const audioMeta = withAudio ? { decoderConfig: { codec: 'mp4a.40.2', numberOfChannels: a0.channels, sampleRate: a0.rate, description: a0.config } } : null;
-    const encoder = new VideoEncoder({ output: (chunk, meta) => muxer.addVideoChunk(chunk, meta), error: (e) => (failed = e) });
+    encoder = new VideoEncoder({ output: (chunk, meta) => muxer.addVideoChunk(chunk, meta), error: (e) => (failed = e) });
     encoder.configure(config);
 
     let start = 0; // µs where the current clip begins
@@ -297,6 +304,7 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
         const as = p.main.audio.timescale;
         const audioStart = Math.max(start, audioEnd);
         for (const s of p.main.audio.samples) {
+          stop();
           const ts = audioStart + (s.dts / as) * 1e6;
           muxer.addAudioChunkRaw((await read(s)).slice(), 'key', ts, (s.dur / as) * 1e6, audioMeta);
           audioEnd = ts + (s.dur / as) * 1e6;
@@ -314,7 +322,7 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
             next = (await other.next()).value ?? null;
           }
           if (failed) throw failed;
-          if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+          stop();
           draw(p.first ? f : null, p.first ? cur : f);
           const out = new VideoFrame(canvas, { timestamp: Math.round(start + f.timestamp), duration: Math.round(1e6 / fps) });
           f.close();
@@ -331,9 +339,11 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
       }
       start += (p.main.video.duration / p.main.video.timescale) * 1e6;
     }
+    stop();
     await encoder.flush();
     encoder.close();
     if (failed) throw failed;
+    stop();
     muxer.finalize();
     onProgress?.(1);
     if (stream) {
@@ -342,6 +352,7 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
     }
     return new Blob([target.buffer], { type: 'video/mp4' });
   } catch (e) {
+    if (encoder && encoder.state !== 'closed') encoder.close();
     await stream?.abort?.().catch(() => {});
     throw e;
   }

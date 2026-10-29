@@ -438,14 +438,16 @@ async function saveVideo() {
   }
   if (!canLayout()) return toast(t('tr.noEncode'));
   const name = `tripframe_${stamp(0)}_${cur.layout}.mp4`;
-  busy = { kind: 'save', abort: new AbortController(), pct: 0 };
+  const job = (busy = { kind: 'save', abort: new AbortController(), pct: 0 });
   renderRecord();
   try {
     const onProgress = (f) => {
-      busy.pct = Math.round(f * 100);
+      if (busy !== job) return;
+      job.pct = Math.round(f * 100);
       renderRecord();
     };
-    const blob = await mergeLayout([{ first: file(cur.main), second: file(other) }], { layout: cur.layout, name, picker: false, signal: busy.abort.signal, onProgress });
+    const blob = await mergeLayout([{ first: file(cur.main), second: file(other) }], { layout: cur.layout, name, picker: false, signal: job.abort.signal, onProgress });
+    if (job.abort.signal.aborted) return;
     saveBlob(blob, name);
     toast(t('v.recSaved', { name }));
   } catch (e) {
@@ -454,9 +456,17 @@ async function saveVideo() {
       toast(e.code ? t(`tr.${e.code}`, { name: e.file || '' }) : t('tr.failed', { error: e.message }));
     }
   } finally {
-    busy = null;
+    if (busy === job) busy = null;
     renderRecord();
   }
+}
+
+// Stopping shows at once; the export ends at its next step and saves nothing.
+function stopSave() {
+  busy.abort.abort();
+  busy = null;
+  renderRecord();
+  toast(t('v.saveStopped'));
 }
 
 function mapInfo() {
@@ -516,7 +526,7 @@ async function stopRec() {
 
 $('record').addEventListener('click', () => {
   if (recording) stopRec();
-  else if (busy?.kind === 'save') busy.abort.abort();
+  else if (busy?.kind === 'save') stopSave();
   else saveVideo();
 });
 
