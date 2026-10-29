@@ -23,6 +23,20 @@ import {
   Square,
   Keyboard,
   X,
+  Gauge,
+  Palette,
+  LocateFixed,
+  Scissors,
+  AudioLines,
+  ChevronDown,
+  MapPinPlus,
+  Download,
+  Upload,
+  Trash2,
+  Table,
+  Images,
+  Combine,
+  ZoomOut,
 } from 'lucide';
 import { animate } from 'motion';
 import { t, locale } from './i18n.js';
@@ -52,6 +66,20 @@ const ICONS = {
   stop: Square,
   keys: Keyboard,
   close: X,
+  hud: Gauge,
+  colours: Palette,
+  follow: LocateFixed,
+  clip: Scissors,
+  loud: AudioLines,
+  more: ChevronDown,
+  addMarker: MapPinPlus,
+  download: Download,
+  upload: Upload,
+  trash: Trash2,
+  table: Table,
+  frames: Images,
+  join: Combine,
+  zoomOut: ZoomOut,
 };
 
 export function icon(name, size = 18) {
@@ -121,6 +149,21 @@ export function formatRange(a, b) {
   if (!a) return '';
   const f = fmt({ day: 'numeric', month: 'long', year: 'numeric' });
   return a.toDateString() === b.toDateString() ? f.format(a) : f.formatRange(a, b);
+}
+
+/** "35 min", "1 hr 12 min": a duration in the reader's language. */
+export function formatSpan(sec) {
+  const min = Math.max(1, Math.round(sec / 60));
+  const unit = (n, u) => new Intl.NumberFormat(locale(), { style: 'unit', unit: u, unitDisplay: 'short' }).format(n);
+  return min < 60 ? unit(min, 'minute') : [unit(Math.floor(min / 60), 'hour'), min % 60 ? unit(min % 60, 'minute') : null].filter(Boolean).join(' ');
+}
+
+export function saveBlob(blob, name) {
+  const a = h('a', { href: URL.createObjectURL(blob), download: name });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
 }
 
 let toastTimer;

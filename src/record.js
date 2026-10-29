@@ -1,7 +1,8 @@
 // Records the viewer as it looks on screen: every visible camera in its
-// current layout (side by side, picture in picture, one camera), plus the map
-// panel when it is open. Frames are composed on a canvas and encoded with
-// MediaRecorder, so the file matches what the viewer showed while it ran.
+// current layout (side by side, picture in picture, one camera), zoomed as
+// shown, with the driving-data overlay and the map panel when they are open.
+// Frames are composed on a canvas; live recording encodes them with
+// MediaRecorder, and the reverse export (clip.js) encodes them frame by frame.
 
 const TYPES = [
   'video/mp4;codecs=avc1.640028,mp4a.40.2',
@@ -25,14 +26,13 @@ function containRect(box, w, h) {
 const visible = (el) => !!el && el.offsetParent !== null && getComputedStyle(el).display !== 'none';
 
 /**
+ * A canvas that redraws the stage (and map panel) on every draw() call.
  * @param {object} o
  * @param {HTMLElement} o.stage      the element holding the camera views
  * @param {HTMLElement} o.mapPanel   the map panel (drawn when visible)
- * @param {() => object|null} o.mapInfo  { map, points, doneIndex, speed, pos } for the route overlay
- * @param {() => HTMLMediaElement|null} o.audioSource  element whose sound is recorded
+ * @param {() => object|null} o.mapInfo  { map, points, colors, doneIndex, speed, unit, pos } for the route overlay
  */
-export function startRecording({ stage, mapPanel, mapInfo, audioSource }) {
-  const type = TYPES.find((t) => MediaRecorder.isTypeSupported(t));
+export function createComposer({ stage, mapPanel, mapInfo }) {
   const area = () => {
     const rects = [stage.getBoundingClientRect()];
     if (visible(mapPanel)) rects.push(mapPanel.getBoundingClientRect());
@@ -51,22 +51,7 @@ export function startRecording({ stage, mapPanel, mapInfo, audioSource }) {
   canvas.height = Math.round((a0.height * scale) / 2) * 2;
   const ctx = canvas.getContext('2d');
 
-  const stream = canvas.captureStream(30);
-  const audioEl = audioSource();
-  try {
-    const capture = audioEl?.captureStream?.();
-    capture?.getAudioTracks().forEach((track) => stream.addTrack(track));
-  } catch {
-    /* sound is optional */
-  }
-
-  const chunks = [];
-  const recorder = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 8_000_000 });
-  recorder.ondataavailable = (e) => e.data.size && chunks.push(e.data);
-
-  let raf = 0;
   const draw = () => {
-    raf = requestAnimationFrame(draw);
     const a = area();
     const sx = canvas.width / a.width;
     const sy = canvas.height / a.height;
@@ -87,7 +72,16 @@ export function startRecording({ stage, mapPanel, mapInfo, audioSource }) {
       ctx.clip();
       const w = media?.videoWidth || media?.naturalWidth;
       const h = media?.videoHeight || media?.naturalHeight;
-      if (w) ctx.drawImage(media, ...Object.values(containRect(box, w, h)));
+      if (w) {
+        // Same zoom and pan as the view on screen (see the zoom code in viewer.js).
+        const z = Number(media.dataset.zs) || 1;
+        const cx = box.x + box.width / 2;
+        const cy = box.y + box.height / 2;
+        ctx.translate(cx + (Number(media.dataset.zx) || 0) * sx, cy + (Number(media.dataset.zy) || 0) * sy);
+        ctx.scale(z, z);
+        ctx.translate(-cx, -cy);
+        ctx.drawImage(media, ...Object.values(containRect(box, w, h)));
+      }
       ctx.restore();
       if (!fig.classList.contains('main') && stage.dataset.layout === 'pip') {
         ctx.lineWidth = 2 * sx;
@@ -98,11 +92,42 @@ export function startRecording({ stage, mapPanel, mapInfo, audioSource }) {
       }
     }
 
+    const hud = stage.querySelector('.hud');
+    if (visible(hud)) drawHud(ctx, map(hud.getBoundingClientRect()), hud, sx);
     if (visible(mapPanel)) drawMap(ctx, map, mapPanel, mapInfo(), sx);
   };
 
+  return { canvas, draw };
+}
+
+/**
+ * @param {object} o  as createComposer, plus:
+ * @param {() => HTMLMediaElement|null} o.audioSource  element whose sound is recorded, or null for none
+ */
+export function startRecording({ stage, mapPanel, mapInfo, audioSource }) {
+  const type = TYPES.find((t) => MediaRecorder.isTypeSupported(t));
+  const { canvas, draw } = createComposer({ stage, mapPanel, mapInfo });
+
+  const stream = canvas.captureStream(30);
+  const audioEl = audioSource();
+  try {
+    const capture = audioEl?.captureStream?.();
+    capture?.getAudioTracks().forEach((track) => stream.addTrack(track));
+  } catch {
+    /* sound is optional */
+  }
+
+  const chunks = [];
+  const recorder = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 8_000_000 });
+  recorder.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+
+  let raf = 0;
+  const loop = () => {
+    raf = requestAnimationFrame(loop);
+    draw();
+  };
   recorder.start(500);
-  draw();
+  loop();
 
   return {
     canvas,
@@ -116,6 +141,24 @@ export function startRecording({ stage, mapPanel, mapInfo, audioSource }) {
         recorder.stop();
       }),
   };
+}
+
+function drawHud(ctx, box, hud, s) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(box.x, box.y, box.width, box.height, 6 * s);
+  ctx.fillStyle = 'rgba(14, 15, 18, 0.72)';
+  ctx.fill();
+  ctx.textBaseline = 'top';
+  for (const line of hud.children) {
+    const r = line.getBoundingClientRect();
+    const hr = hud.getBoundingClientRect();
+    const style = getComputedStyle(line);
+    ctx.fillStyle = style.color;
+    ctx.font = `${style.fontWeight} ${parseFloat(style.fontSize) * s}px 'Manrope Variable', 'Segoe UI', sans-serif`;
+    ctx.fillText(line.textContent, box.x + (r.left - hr.left) * s, box.y + (r.top - hr.top + (r.height - parseFloat(style.fontSize)) / 2) * s);
+  }
+  ctx.restore();
 }
 
 function drawMap(ctx, map, panel, info, s) {
@@ -134,14 +177,17 @@ function drawMap(ctx, map, panel, info, s) {
   ctx.beginPath();
   ctx.rect(mapBox.x, mapBox.y, mapBox.width, mapBox.height);
   ctx.clip();
+  // Tiles of every layer (map, satellite, labels), in the order Leaflet stacks them.
   for (const tile of mapEl.querySelectorAll('img.leaflet-tile-loaded')) {
     const b = map(tile.getBoundingClientRect());
     try {
+      ctx.globalAlpha = Number(getComputedStyle(tile.closest('.leaflet-layer') || tile).opacity) || 1;
       ctx.drawImage(tile, b.x, b.y, b.width, b.height);
     } catch {
       /* a tile without CORS headers is skipped */
     }
   }
+  ctx.globalAlpha = 1;
   if (info?.map && info.points.length > 1) {
     const toCanvas = ([lat, lon]) => {
       const p = info.map.latLngToContainerPoint([lat, lon]);
@@ -158,16 +204,30 @@ function drawMap(ctx, map, panel, info, s) {
       ctx.stroke();
     };
     line(0, pts.length, '#ffffff', 9);
-    line(0, pts.length, '#8c919a', 5);
-    line(0, info.doneIndex + 1, '#17191e', 5);
+    if (info.colors) {
+      for (let i = 0; i < pts.length - 1; i++) line(i, i + 2, info.colors[i], 5);
+    } else {
+      line(0, pts.length, '#8c919a', 5);
+      line(0, info.doneIndex + 1, '#17191e', 5);
+    }
     const [mx, my] = pts[info.doneIndex] || pts[0];
+    // The car: an arrow pointing where it drives.
+    ctx.save();
+    ctx.translate(mx, my);
+    ctx.rotate(((info.bearing || 0) * Math.PI) / 180);
     ctx.beginPath();
-    ctx.arc(mx, my, 8 * s, 0, Math.PI * 2);
+    ctx.moveTo(0, -11 * s);
+    ctx.lineTo(8 * s, 8 * s);
+    ctx.lineTo(0, 4 * s);
+    ctx.lineTo(-8 * s, 8 * s);
+    ctx.closePath();
     ctx.fillStyle = '#ffc21a';
     ctx.fill();
-    ctx.lineWidth = 3 * s;
+    ctx.lineWidth = 2.5 * s;
     ctx.strokeStyle = '#17191e';
+    ctx.lineJoin = 'round';
     ctx.stroke();
+    ctx.restore();
   }
   ctx.restore();
 

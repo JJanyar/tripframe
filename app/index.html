@@ -30,6 +30,11 @@
             <legend data-i18n="app.type"></legend>
             <div class="chips" id="filter-type"></div>
           </fieldset>
+          <div class="loud-scan">
+            <button class="btn btn-block" id="loud-scan" type="button" data-i18n-attr="title:lib.loudTitle"></button>
+            <label class="toggle" id="loud-only-wrap" hidden><input type="checkbox" id="loud-only" /> <span data-i18n="lib.loudOnly"></span></label>
+            <p class="loud-status" id="loud-status" role="status"></p>
+          </div>
           <nav class="days" data-i18n-attr="aria-label:app.days">
             <h2 class="filter-title" data-i18n="app.days"></h2>
             <div class="day-scroll" id="day-scroll">
@@ -116,6 +121,7 @@
           <div class="segmented" id="layout-switch" role="radiogroup" data-i18n-attr="aria-label:v.layout"></div>
           <button class="btn btn-ghost" id="swap" type="button" data-i18n-attr="title:v.swapTitle"></button>
           <button class="btn btn-ghost" id="map-toggle" type="button" aria-pressed="false"></button>
+          <button class="btn btn-ghost icon-only" id="hud-toggle" type="button" aria-pressed="false" data-i18n-attr="title:v.hudTitle"></button>
           <button class="btn btn-ghost icon-only" id="keys-toggle" type="button" popovertarget="keys-card" data-i18n-attr="title:k.title;aria-label:k.title"></button>
         </div>
       </header>
@@ -123,14 +129,24 @@
       <div class="viewer-body" id="viewer-body">
         <div class="stage" id="stage"></div>
         <aside class="map-panel" id="map-panel" hidden>
-          <div class="map" id="map"></div>
+          <div class="map-bar">
+            <div class="segmented" id="map-style" role="radiogroup" data-i18n-attr="aria-label:v.mapStyle"></div>
+            <button class="btn btn-ghost icon-only" id="map-colours" type="button" aria-pressed="false" data-i18n-attr="title:v.speedColours"></button>
+            <button class="btn btn-ghost icon-only" id="map-follow" type="button" aria-pressed="true" data-i18n-attr="title:v.follow"></button>
+          </div>
+          <div class="map-wrap">
+            <div class="map" id="map"></div>
+            <div class="map-legend" id="map-legend" hidden></div>
+          </div>
           <div class="gps-readout" id="gps-readout"></div>
         </aside>
       </div>
 
       <footer class="controls" id="controls">
-        <div class="scrub">
+        <div class="scrub" id="scrub">
           <input type="range" id="scrubber" min="0" max="1000" step="1" value="0" data-i18n-attr="aria-label:v.position" />
+          <span class="clip-range" id="clip-range" hidden></span>
+          <div class="loud-marks" id="loud-marks"></div>
         </div>
         <div class="control-row">
           <div class="control-group transport">
@@ -161,12 +177,71 @@
               <input type="checkbox" id="autoplay" checked />
               <span data-i18n="v.autoplay"></span>
             </label>
-            <button class="btn" id="save-frame" type="button" data-i18n-attr="title:v.saveTitle"></button>
+            <div class="split-btn">
+              <button class="btn" id="save-frame" type="button"></button>
+              <button class="btn icon-only" id="still-toggle" type="button" popovertarget="still-card" data-i18n-attr="title:s.options;aria-label:s.options"></button>
+            </div>
+            <button class="btn icon-only" id="clip-toggle" type="button" popovertarget="clip-card" data-i18n-attr="title:c.titleKey;aria-label:c.title"></button>
+            <button class="btn icon-only" id="loud" type="button" data-i18n-attr="title:a.findTitle;aria-label:a.find"></button>
             <button class="btn" id="record" type="button" data-i18n-attr="title:v.recordTitle"></button>
           </div>
         </div>
       </footer>
       <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+      <div class="keys-card tool-card force-dark" id="still-card" popover>
+        <div class="keys-head">
+          <h3 data-i18n="s.options"></h3>
+          <button class="btn btn-ghost icon-only card-close" type="button" popovertarget="still-card" popovertargetaction="hide" data-i18n-attr="aria-label:k.close"></button>
+        </div>
+        <fieldset class="card-field">
+          <legend data-i18n="s.format"></legend>
+          <div class="radio-row" id="still-format"></div>
+        </fieldset>
+        <div class="card-field">
+          <label class="inline-field"><span data-i18n="s.every"></span> <input type="number" id="still-every" min="0.1" max="600" step="0.1" value="1" /> <span data-i18n="s.seconds"></span></label>
+          <p class="card-note" data-i18n="s.note"></p>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-primary" id="still-run" type="button" data-i18n="s.start"></button>
+          <p class="card-status" id="still-status" role="status"></p>
+        </div>
+      </div>
+
+      <div class="keys-card tool-card force-dark" id="clip-card" popover>
+        <div class="keys-head">
+          <h3 data-i18n="c.title"></h3>
+          <button class="btn btn-ghost icon-only card-close" type="button" popovertarget="clip-card" popovertargetaction="hide" data-i18n-attr="aria-label:k.close"></button>
+        </div>
+        <div class="card-grid">
+          <span data-i18n="c.from"></span><output id="clip-in">0:00.00</output><button class="btn btn-ghost" id="clip-set-in" type="button" data-i18n="c.setNow"></button>
+          <span data-i18n="c.to"></span><output id="clip-out">0:00.00</output><button class="btn btn-ghost" id="clip-set-out" type="button" data-i18n="c.setNow"></button>
+        </div>
+        <p class="card-note"><span data-i18n="c.keysNote"></span> <button class="link-btn" id="clip-clear" type="button" data-i18n="c.clear" hidden></button></p>
+        <div class="card-field">
+          <label class="inline-field"><span data-i18n="c.speed"></span>
+            <select id="clip-speed">
+              <option value="0.25">0.25×</option>
+              <option value="0.5">0.5×</option>
+              <option value="1" selected>1×</option>
+              <option value="2">2×</option>
+              <option value="4">4×</option>
+            </select>
+          </label>
+        </div>
+        <fieldset class="card-field">
+          <legend data-i18n="c.direction"></legend>
+          <div class="radio-row">
+            <label><input type="radio" name="clip-dir" value="forward" checked /> <span data-i18n="c.forward"></span></label>
+            <label><input type="radio" name="clip-dir" value="reverse" /> <span data-i18n="c.reverse"></span></label>
+          </div>
+        </fieldset>
+        <label class="toggle"><input type="checkbox" id="clip-sound" checked /> <span data-i18n="c.sound"></span></label>
+        <div class="card-actions">
+          <button class="btn btn-primary" id="clip-run" type="button" data-i18n="c.export"></button>
+          <p class="card-status" id="clip-status" role="status"></p>
+        </div>
+      </div>
 
       <div class="keys-card force-dark" id="keys-card" popover>
         <div class="keys-head">
