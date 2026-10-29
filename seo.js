@@ -51,8 +51,18 @@ function structuredData(lang, s) {
   return {
     '@context': 'https://schema.org',
     '@graph': [
+      // Google takes the site name in search results from this node; without it, it shows "Vercel".
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE}/#website`,
+        name: 'Tripframe',
+        alternateName: ['Tripframe dashcam viewer', 'tripframe.vercel.app'],
+        url: `${SITE}/`,
+        inLanguage: LOCALE[lang],
+      },
       {
         '@type': 'WebApplication',
+        sameAs: [REPO],
         '@id': `${SITE}/#app`,
         name: 'Tripframe',
         url: pageUrl(lang),
