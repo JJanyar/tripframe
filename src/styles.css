@@ -254,6 +254,29 @@ body:not(.has-library) #open-folder {
   gap: 8px;
 }
 
+/* The language button takes the room left next to the theme switch, so long names (Nederlands, Português) still fit. */
+.prefs .lang-picker {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.prefs .lang-btn {
+  width: 100%;
+  gap: 7px;
+  padding: 0 9px;
+}
+
+.prefs .lang-btn span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prefs .lang-btn .chev {
+  display: none;
+}
+
 .main {
   position: relative;
   overflow: auto;
