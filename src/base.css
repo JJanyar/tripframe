@@ -171,6 +171,26 @@ a {
   display: none !important;
 }
 
+/* Hidden until a keyboard user tabs to it: jumps past the navigation. */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 160ms var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -354,7 +374,8 @@ a {
   transform: rotate(180deg);
 }
 
-.lang-menu {
+.lang-menu,
+.pop-menu {
   position: fixed;
   inset: auto;
   margin: 0;
@@ -373,19 +394,22 @@ a {
   transition: opacity 160ms ease, transform 220ms var(--ease-out), overlay 220ms allow-discrete, display 220ms allow-discrete;
 }
 
-.lang-menu:popover-open {
+.lang-menu:popover-open,
+.pop-menu:popover-open {
   opacity: 1;
   transform: none;
 }
 
 @starting-style {
-  .lang-menu:popover-open {
+  .lang-menu:popover-open,
+  .pop-menu:popover-open {
     opacity: 0;
     transform: translateY(-4px);
   }
 }
 
-.lang-menu button {
+.lang-menu button,
+.pop-menu button {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -403,7 +427,9 @@ a {
 }
 
 .lang-menu button:hover,
-.lang-menu button:focus-visible {
+.lang-menu button:focus-visible,
+.pop-menu button:hover,
+.pop-menu button:focus-visible {
   background: var(--hover);
   outline: none;
 }
@@ -413,7 +439,35 @@ a {
   font-weight: 700;
 }
 
+/* A menu of actions with a line of explanation under each (the trip's One video menu). */
+.pop-menu {
+  width: max-content;
+  max-width: min(320px, calc(100vw - 16px));
+}
+
+.pop-menu button {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 8px 12px;
+  font-weight: 650;
+}
+
+.pop-menu small {
+  color: var(--ink-3);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
 /* ---------- view transitions ---------- */
+
+/* Going to another page cross-fades instead of flashing; on the site the nav bar stays put (landing.css). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+    types: page;
+  }
+}
 
 ::view-transition-old(root),
 ::view-transition-new(root) {

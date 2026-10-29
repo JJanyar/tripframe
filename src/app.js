@@ -7,10 +7,10 @@ import { requestThumb, prioritize } from './thumbs.js';
 import { openViewer, refreshViewer } from './viewer.js';
 import { readDuration, readInfo } from './mp4.js';
 import { findLoudMoments } from './audio.js';
-import { mergeClips } from './merge.js';
+import { mergeClips, mergeLayout, canLayout } from './merge.js';
 import { toGpx } from './route.js';
 import { speedIn, speedUnit } from './units.js';
-import { t, plural, applyI18n, bindLangSelect, onLangChange, locale } from './i18n.js';
+import { t, plural, applyI18n, bindLangSelect, onLangChange, locale, ready, setLang } from './i18n.js';
 import { mountThemeSwitch, transition, reducedMotion } from './theme.js';
 import { mountLogos } from './logo.js';
 import {
@@ -248,29 +248,69 @@ function tripHead(g) {
   return h('header', { class: 'trip-head' },
     h('h3', {}, g.kind === 'parking' ? t('tr.parked') : t('tr.trip', { n: g.n })),
     h('p', {}, meta.join(', ')),
-    g.moments.length > 1
-      ? h('div', { class: 'trip-join' },
-          icon('join', 15),
-          h('span', {}, t('tr.join')),
-          cams.map((c) => h('button', { type: 'button', class: 'btn btn-ghost small', title: t('tr.joinTitle', { cam: camLabel(c).toLowerCase() }), onclick: (e) => joinTrip(g, c, e.currentTarget, status) }, camLabel(c))),
-        )
-      : null,
+    g.moments.length > 1 ? joinMenu(g, cams, status) : null,
     status,
   );
 }
 
-async function joinTrip(g, cam, btn, status) {
+let menus = 0;
+
+// "One video": one camera copied as it is, or (with front and rear) both cameras in one picture.
+function joinMenu(g, cams, status) {
+  const id = `join-menu-${++menus}`;
+  const item = (choice, label, hint) =>
+    h('button', { type: 'button', role: 'menuitem', onclick: () => (menu.hidePopover(), joinTrip(g, choice, btn, status)) }, h('span', {}, label), h('small', {}, hint));
+  const menu = h('div', { class: 'pop-menu', id, role: 'menu', popover: true },
+    cams.map((c) => item(c, camLabel(c), t('tr.copy'))),
+    cams.includes('front') && cams.includes('rear') && canLayout() ? [item('pip', t('v.pip'), t('tr.encode')), item('side', t('v.side'), t('tr.encode'))] : null,
+  );
+  const btn = h('button', { type: 'button', class: 'btn btn-ghost small', popovertarget: id, 'aria-haspopup': 'menu', 'aria-expanded': 'false', title: t('tr.joinTitle') }, icon('join', 15), h('span', {}, t('tr.join')));
+  menu.addEventListener('toggle', (e) => {
+    const open = e.newState === 'open';
+    btn.setAttribute('aria-expanded', String(open));
+    if (!open) return;
+    // Under the button, right-aligned, or above it when there is no room below.
+    const r = btn.getBoundingClientRect();
+    const below = innerHeight - r.bottom > menu.offsetHeight + 12;
+    menu.style.top = `${below ? r.bottom + 6 : Math.max(8, r.top - menu.offsetHeight - 6)}px`;
+    menu.style.left = `${Math.max(8, Math.min(r.right - menu.offsetWidth, innerWidth - menu.offsetWidth - 8))}px`;
+    menu.querySelector('button').focus();
+  });
+  menu.addEventListener('keydown', (e) => {
+    if (!['ArrowDown', 'ArrowUp'].includes(e.key)) return;
+    e.preventDefault();
+    const items = [...menu.querySelectorAll('button')];
+    items[(items.indexOf(document.activeElement) + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].focus();
+  });
+  return h('div', { class: 'trip-join' }, btn, menu);
+}
+
+// A menu stays where it opened, so scrolling the library closes it.
+$('main').addEventListener('scroll', () => document.querySelector('.pop-menu:popover-open')?.hidePopover(), { passive: true });
+
+async function joinTrip(g, choice, btn, status) {
   if (state.merging) return;
-  const files = g.moments.map((m) => m.files[cam]).filter((c) => c && !c.isPhoto).map((c) => c.file);
+  const layout = choice === 'pip' || choice === 'side';
+  const cams = layout ? ['front', 'rear'] : [choice];
+  const fileOf = (m, cam) => (m.files[cam] && !m.files[cam].isPhoto ? m.files[cam].file : null);
+  const moments = g.moments.map((m) => Object.fromEntries(cams.map((c) => [c, fileOf(m, c)])));
+  const files = moments.map((m) => m[cams[0]] || m[cams[1]]).filter(Boolean);
   const d = new Date(g.start);
   const p = (n) => String(n).padStart(2, '0');
-  const name = `tripframe_${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}_trip-${camLabel(cam).toLowerCase()}.mp4`;
+  const name = `tripframe_${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}_trip-${layout ? choice : camLabel(choice).toLowerCase()}.mp4`;
   state.merging = true;
-  const label = btn.textContent;
   btn.disabled = true;
   status.textContent = t('tr.joining', { pct: 0 });
+  status.classList.add('busy');
+  status.style.setProperty('--p', 0);
   try {
-    const blob = await mergeClips(files, { name, onProgress: (f) => (status.textContent = t('tr.joining', { pct: Math.round(f * 100) })) });
+    const onProgress = (f) => {
+      status.textContent = t('tr.joining', { pct: Math.round(f * 100) });
+      status.style.setProperty('--p', f);
+    };
+    const blob = layout
+      ? await mergeLayout(moments.map((m) => ({ first: m.front, second: m.rear })), { layout: choice, name, onProgress })
+      : await mergeClips(files, { name, onProgress });
     if (blob) saveBlob(blob, name);
     // The route of the whole trip as GPX, next to the video.
     const points = [];
@@ -285,8 +325,8 @@ async function joinTrip(g, cam, btn, status) {
     }
   } finally {
     state.merging = false;
+    status.classList.remove('busy');
     btn.disabled = false;
-    btn.textContent = label;
   }
 }
 
@@ -635,3 +675,20 @@ window.addEventListener('resize', queueActive);
 
 // Development hook for testing without a real SD card.
 if (import.meta.env.DEV) window.__loadFiles = (name, list) => load(name, async () => list);
+
+// The homepage embeds /app/?demo=<lang>: the app opens on the sample clips in public/demo.
+const demoLang = new URLSearchParams(location.search).get('demo');
+if (demoLang != null) {
+  const DEMO = ['20241221_104130_N', '20250215_092212_N', '20250215_092222_N', '20250215_093047_E'].flatMap((n) => [`${n}F`, `${n}R`]);
+  ready.then(() => setLang(demoLang, { remember: false }));
+  for (const a of document.querySelectorAll('a[href^="/"]')) a.target = '_top';
+  load('DCIM', () =>
+    Promise.all(
+      DEMO.map(async (n) => {
+        const res = await fetch(`/demo/${n}.mp4`);
+        if (!res.ok) throw new Error(`${n}: ${res.status}`);
+        return { path: `Record/${n}.mp4`, file: new File([await res.blob()], `${n}.mp4`, { type: 'video/mp4' }) };
+      }),
+    ),
+  ).catch(showError);
+}

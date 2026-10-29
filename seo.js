@@ -61,7 +61,8 @@ export function fill(html, s, en) {
 function partials(html, pageId) {
   const part = (name) => readFileSync(resolve(import.meta.dirname, `src/partials/${name}.html`), 'utf8').trim();
   const nav = part('nav').replace(new RegExp(`(<a [^>]*data-page="${pageId}")`, 'g'), '$1 aria-current="page"');
-  return html.replace('<!--nav-->', nav).replace('<!--footer-->', part('footer'));
+  // The skip link in the nav jumps to #main.
+  return html.replace('<!--nav-->', nav).replace('<!--footer-->', part('footer')).replace(/<main(?![^>]*\sid=)/, '<main id="main"');
 }
 
 const pageOf = (ctxPath) => {

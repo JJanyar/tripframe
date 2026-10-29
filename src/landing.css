@@ -62,6 +62,15 @@ kbd {
 
 /* ---------- navigation ---------- */
 
+/* In-page links (Try the demo, the contents of a post) glide instead of jumping. */
+html {
+  scroll-behavior: smooth;
+}
+
+html:active-view-transition-type(page) .nav {
+  view-transition-name: site-nav;
+}
+
 .nav {
   position: sticky;
   top: 0;
@@ -246,253 +255,21 @@ kbd {
   margin-top: var(--section);
 }
 
-/* ---------- demo: a working fragment of the app ---------- */
+/* ---------- demo: the app itself in a frame ---------- */
 
 .demo {
   margin: 48px 0 0;
   border-radius: 14px;
   overflow: hidden;
   background: var(--bg);
-  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--raised);
 }
 
-.demo-bar {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  height: 42px;
-  padding: 0 16px;
-  background: var(--panel);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-2);
-}
-
-.demo-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.demo-dots i {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--press);
-}
-
-.demo-body {
-  position: relative;
-  aspect-ratio: 16 / 7.4;
-  padding: 22px 24px;
-}
-
-.demo-library[hidden],
-.demo-player[hidden] {
-  display: none;
-}
-
-.demo-day {
-  margin-bottom: 14px;
-  font: 650 18px/1.2 var(--font-display);
-}
-
-.demo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px 14px;
-}
-
-.demo-tile {
+.demo-app {
   display: block;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-  border-radius: var(--radius);
-  transition: transform 220ms var(--ease-out);
-}
-
-.demo-tile:active {
-  transform: scale(0.98);
-}
-
-.demo-thumb {
-  position: relative;
-  display: block;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--raised);
-}
-
-.demo-front {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 600ms var(--ease-out);
-}
-
-.demo-tile:hover .demo-front {
-  transform: scale(1.04);
-}
-
-.demo-rear {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
-  width: 32%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: var(--radius-sm);
-  outline: 2px solid var(--bg);
-}
-
-.demo-thumb .tag {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-}
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  height: 22px;
-  padding: 0 8px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.tag-event {
-  background: var(--signal);
-  color: var(--on-signal);
-}
-
-.tag-parking {
-  background: var(--ink);
-  color: var(--bg);
-}
-
-.demo-meta {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 2px 0;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.demo-cams {
-  color: var(--ink-3);
-  font-size: 12px;
-}
-
-.demo-player {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  background: var(--stage);
-}
-
-.demo-stage {
-  position: relative;
-  min-height: 0;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.demo-big {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: rolling 14s linear both;
-}
-
-@keyframes rolling {
-  to {
-    transform: scale(1.12);
-  }
-}
-
-.demo-small {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
-  width: 28%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: var(--radius);
-  outline: 2px solid var(--stage);
-}
-
-.demo-label {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  background: rgba(23, 25, 30, 0.72);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.demo-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-}
-
-.demo-btn {
-  min-height: 34px;
-  padding: 0 14px;
+  height: clamp(520px, 78vh, 760px);
   border: 0;
-  border-radius: var(--radius);
-  background: var(--raised);
-  color: var(--ink);
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 140ms ease, transform 160ms var(--ease-out);
-}
-
-.demo-btn:hover {
-  background: var(--hover);
-}
-
-.demo-btn:active {
-  transform: scale(0.96);
-}
-
-.demo-time {
-  font-weight: 600;
-  font-size: 15px;
-}
-
-.demo-caption {
-  padding: 12px 16px 14px;
-  background: var(--panel);
-  color: var(--ink-3);
-  font-size: 13px;
-}
-
-::view-transition-group(demo-front),
-::view-transition-group(demo-rear) {
-  animation-duration: 460ms;
-  animation-timing-function: var(--ease-out);
-}
-
-::view-transition-old(demo-front),
-::view-transition-new(demo-front),
-::view-transition-old(demo-rear),
-::view-transition-new(demo-rear) {
-  height: 100%;
-  object-fit: cover;
 }
 
 /* ---------- file names decoded ---------- */
@@ -613,6 +390,27 @@ kbd {
 
 .keys span {
   margin-right: 10px;
+}
+
+.key {
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.key kbd {
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.key:hover kbd {
+  background: var(--press);
+}
+
+.key:active kbd {
+  transform: translateY(1px);
 }
 
 .feature-media {
@@ -833,6 +631,24 @@ details {
   border-radius: 10px;
   background: var(--panel);
   transition: background-color 200ms ease;
+  interpolate-size: allow-keywords;
+}
+
+/* The answer slides open and shut where the browser can animate to height: auto. */
+details::details-content {
+  block-size: 0;
+  overflow-y: clip;
+  transition: block-size 320ms var(--ease-out), content-visibility 320ms allow-discrete;
+}
+
+details[open]::details-content {
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details::details-content {
+    transition: none;
+  }
 }
 
 details[open],
@@ -936,6 +752,12 @@ details[open] p {
   font-size: 15px;
 }
 
+.footer-legal {
+  max-width: 70ch;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;
@@ -981,16 +803,6 @@ details[open] p {
     grid-column: auto;
     grid-row: auto;
   }
-  .demo-body {
-    aspect-ratio: auto;
-    min-height: 420px;
-  }
-  .demo-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .demo-tile:nth-child(n + 5) {
-    display: none;
-  }
   .decode-row {
     grid-template-columns: 1fr;
     gap: 8px;
@@ -1006,20 +818,6 @@ details[open] p {
   }
   .wordmark span {
     height: 24px;
-  }
-  .demo-body {
-    padding: 14px;
-    min-height: 360px;
-  }
-  .demo-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 10px;
-  }
-  .demo-meta {
-    font-size: 12px;
-  }
-  .demo-cams {
-    display: none;
   }
   .frame-strip {
     left: 10px;

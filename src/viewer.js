@@ -5,6 +5,7 @@
 import { readInfo } from './mp4.js';
 import { startRecording, createComposer, canRecord } from './record.js';
 import { exportReverse, canReverse } from './clip.js';
+import { mergeLayout, canLayout } from './merge.js';
 import { ROUTE_FORMATS, toGpx, waypointsFromGpx, cumulativeKm, gradients } from './route.js';
 import { STILL_FORMATS, canvasToBlob } from './stills.js';
 import { findLoudMoments, knownLoudMoments } from './audio.js';
@@ -37,7 +38,7 @@ let stillFormat = STILL_FORMATS.includes(localStorage.getItem('still')) ? localS
 let volume = Number(localStorage.getItem('volume') ?? 1);
 let muted = localStorage.getItem('muted') === '1';
 let recording = null; // { rec, started, stampTime, moment, layout, map, timer, stopAt, name }
-let busy = null; // { kind: 'stills' | 'reverse', abort: AbortController } while a frame-by-frame job runs
+let busy = null; // { kind: 'stills' | 'reverse' | 'save', abort: AbortController } while a frame-by-frame job runs
 
 function renderChrome() {
   setButton($('viewer-close'), 'back', t('v.back'));
@@ -407,15 +408,54 @@ function seekTo(time) {
 
 function renderRecord() {
   const btn = $('record');
-  btn.classList.toggle('recording', !!recording);
-  btn.hidden = !canRecord();
+  const saving = busy?.kind === 'save';
+  btn.classList.toggle('recording', !!recording || saving);
   if (recording) {
     const sec = Math.floor((performance.now() - recording.started) / 1000);
     btn.replaceChildren(icon('stop'), h('span', {}, `${t('v.stopRec')} ${formatDuration(sec)}`));
     btn.setAttribute('aria-label', t('v.recording', { time: formatDuration(sec) }));
+  } else if (saving) {
+    btn.replaceChildren(icon('stop'), h('span', {}, t('v.saving', { pct: busy.pct })));
+    btn.setAttribute('aria-label', `${t('v.saving', { pct: busy.pct })}. ${t('s.cancel')}`);
   } else {
-    setButton(btn, 'rec', t('v.record'));
+    setButton(btn, 'download', t('v.record'));
     btn.removeAttribute('aria-label');
+  }
+}
+
+// Save video: the clip as a file, in the layout on screen. One camera is the file itself;
+// two are drawn into one picture (merge.js), the large or left one first, without sound of the other.
+async function saveVideo() {
+  if (!cur || cur.moment.isPhoto || busy) return;
+  const m = cur.moment;
+  const file = (c) => m.files[c].file;
+  const other = cur.layout === 'single' ? null : m.cameras.find((c) => c !== cur.main && !m.files[c].isPhoto);
+  if (!other) {
+    const f = file(cur.main);
+    const name = `tripframe_${stamp(0)}_${camLabel(cur.main).toLowerCase()}${f.name.slice(f.name.lastIndexOf('.'))}`;
+    saveBlob(f, name);
+    return toast(t('v.recSaved', { name }));
+  }
+  if (!canLayout()) return toast(t('tr.noEncode'));
+  const name = `tripframe_${stamp(0)}_${cur.layout}.mp4`;
+  busy = { kind: 'save', abort: new AbortController(), pct: 0 };
+  renderRecord();
+  try {
+    const onProgress = (f) => {
+      busy.pct = Math.round(f * 100);
+      renderRecord();
+    };
+    const blob = await mergeLayout([{ first: file(cur.main), second: file(other) }], { layout: cur.layout, name, picker: false, signal: busy.abort.signal, onProgress });
+    saveBlob(blob, name);
+    toast(t('v.recSaved', { name }));
+  } catch (e) {
+    if (e.name !== 'AbortError') {
+      console.error(e);
+      toast(e.code ? t(`tr.${e.code}`, { name: e.file || '' }) : t('tr.failed', { error: e.message }));
+    }
+  } finally {
+    busy = null;
+    renderRecord();
   }
 }
 
@@ -474,7 +514,11 @@ async function stopRec() {
   toast(t('v.recSaved', { name }));
 }
 
-$('record').addEventListener('click', () => (recording ? stopRec() : startRec()));
+$('record').addEventListener('click', () => {
+  if (recording) stopRec();
+  else if (busy?.kind === 'save') busy.abort.abort();
+  else saveVideo();
+});
 
 function clipRange() {
   const d = master()?.duration;

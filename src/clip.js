@@ -6,7 +6,7 @@ import { Muxer, ArrayBufferTarget } from 'mp4-muxer';
 
 export const canReverse = () => typeof VideoEncoder !== 'undefined' && typeof VideoFrame !== 'undefined';
 
-const CODECS = ['avc1.640033', 'avc1.4d0033', 'avc1.42003e'];
+export const CODECS = ['avc1.640033', 'avc1.4d0033', 'avc1.42003e'];
 
 /**
  * @param {object} o

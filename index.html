@@ -61,25 +61,8 @@
           <h2 class="headline" id="demo-title" data-i18n="h.demo.heading"></h2>
           <p class="body-l" data-i18n="h.demo.caption"></p>
         </div>
-        <figure class="demo" data-ui id="demo-frame">
-          <div class="demo-bar">
-            <span class="demo-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="demo-title">DCIM</span>
-          </div>
-          <div class="demo-body">
-            <div class="demo-library" id="demo-library">
-              <h3 class="demo-day" id="demo-day"></h3>
-              <div class="demo-grid" id="demo-grid"></div>
-            </div>
-            <div class="demo-player force-dark" id="demo-player" hidden>
-              <div class="demo-stage" id="demo-stage"></div>
-              <div class="demo-controls">
-                <button type="button" class="demo-btn" id="demo-back" data-i18n="h.demo.back"></button>
-                <span class="demo-time" id="demo-time"></span>
-                <button type="button" class="demo-btn" id="demo-swap" data-i18n="h.demo.swap"></button>
-              </div>
-            </div>
-          </div>
+        <figure class="demo">
+          <iframe class="demo-app" id="demo-app" loading="lazy" data-i18n-attr="title:h.demo.label"></iframe>
         </figure>
       </section>
 
@@ -99,7 +82,7 @@
         <div class="feature-copy">
           <h2 class="headline" id="sync-title" data-i18n="h.sync.title"></h2>
           <p class="body-l" data-i18n="h.sync.body"></p>
-          <p class="keys"><kbd>W</kbd> <span data-i18n="h.sync.key"></span></p>
+          <p class="keys"><button class="key" type="button" data-key="w" data-i18n-attr="title:h.keys.try"><kbd>W</kbd></button> <span data-i18n="h.sync.key"></span></p>
         </div>
       </section>
 
@@ -107,7 +90,7 @@
         <div class="feature-copy">
           <h2 class="headline" id="frame-title" data-i18n="h.frame.title"></h2>
           <p class="body-l" data-i18n="h.frame.body"></p>
-          <p class="keys"><kbd>,</kbd> <kbd>.</kbd> <span data-i18n="h.frame.key1"></span> <kbd>S</kbd> <span data-i18n="h.frame.key2"></span> <kbd>R</kbd> <span data-i18n="h.frame.key3"></span></p>
+          <p class="keys"><button class="key" type="button" data-key="," data-i18n-attr="title:h.keys.try"><kbd>,</kbd></button> <button class="key" type="button" data-key="." data-i18n-attr="title:h.keys.try"><kbd>.</kbd></button> <span data-i18n="h.frame.key1"></span> <button class="key" type="button" data-key="s" data-i18n-attr="title:h.keys.try"><kbd>S</kbd></button> <span data-i18n="h.frame.key2"></span> <button class="key" type="button" data-key="r" data-i18n-attr="title:h.keys.try"><kbd>R</kbd></button> <span data-i18n="h.frame.key3"></span></p>
         </div>
         <div class="feature-media frames" id="frames">
           <img class="frames-big" src="/photos/sb-ne-colin-kelley-highway-at-ne.jpg" width="1600" height="900" alt="" data-i18n-attr="alt:h.alt.intersection" loading="lazy" decoding="async" />
@@ -152,7 +135,7 @@
         <a class="btn btn-large" href="/features/" data-i18n="home.more.link"></a>
       </section>
 
-      <section class="compare inverse" aria-labelledby="compare-title">
+      <section class="compare" aria-labelledby="compare-title">
         <div class="compare-inner">
           <h2 class="display-2" id="compare-title" data-i18n="home.compare.title"></h2>
           <div class="compare-copy">

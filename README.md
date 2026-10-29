@@ -38,9 +38,9 @@ Dashcams name every clip with a string of digits, like `2024_0315_143022_000123F
 - **Synced playback:** side by side, picture in picture or one camera. Swap front and rear with a button, the `W` key or a double-click. Drag the small picture's corner or the split line to resize. Scroll to zoom into the picture and drag to pan.
 - **Frame by frame:** step with `,` and `.`; the real clock time and frame number are shown.
 - **Save frames** as PNG, JPG or BMP, of one camera or all cameras side by side, named with the exact date and time; also one frame every N seconds.
-- **Save a video of the view:** records what you see, with zoom, the map and the data overlay included.
+- **Save video** in the layout you see: one camera is the original file, picture in picture or side by side is encoded into a new MP4.
 - **Export part of a clip** faster, slower or backwards, with or without sound (`I` and `O` set the start and end).
-- **Join a trip into one video** without re-encoding, with the route as GPX.
+- **Join a trip into one video:** one camera without re-encoding, or front and rear in one picture (picture in picture or side by side), with the route as GPX.
 - **GPS on a map:** read from the video itself (Viofo/Novatek, BlackVue, GoPro). Map, satellite or hybrid view, the route coloured by speed, a heading arrow, km/h or mph.
 - **Telemetry:** graphs of speed, distance, heading, altitude, gradient, G-force, satellites and HDOP; a data table; driving data on the video (`H`).
 - **Markers** on the route (`T`), with optional street addresses; export and import as GPX. Route export as GPX, KML, CSV or GeoJSON.
@@ -97,7 +97,7 @@ Many dashcams record in **H.265 (HEVC)**. Edge plays it on most Windows PCs, Chr
 | `T` | Add a marker on the route |
 | `S` | Save the current frame |
 | `I` / `O` | Set the start or end of the part to export |
-| `R` | Start or stop a video recording |
+| `R` | Save the clip as a video in the layout you see |
 | `0` | Reset zoom |
 | `?` | Show the shortcuts |
 | `Esc` | Back to the library |
@@ -127,8 +127,8 @@ npm run dev
 | `features/`, `dashcams/`, `how-it-works/`, `faq/`, `privacy/`, `404.html` | The other site pages; `src/page.js` and `src/pages.css` are shared |
 | `src/partials/` | The navigation and footer, put into every page at build time |
 | `app/index.html`, `src/app.js` | The library: folder scan, filters, trips, day list |
-| `src/viewer.js`, `src/record.js`, `src/clip.js` | The player, frame and clip export, video recording |
-| `src/merge.js` | Joining clips into one MP4 |
+| `src/viewer.js`, `src/record.js`, `src/clip.js` | The player, frame and clip export |
+| `src/merge.js` | Joining clips into one MP4, and two cameras into one picture |
 | `src/route.js`, `src/plot.js`, `src/geotags.js`, `src/online.js` | GPS export, graphs, markers, weather and addresses |
 | `src/audio.js` | Finding loud moments |
 | `src/parse.js` | File name parsing and front/rear pairing |
@@ -144,7 +144,7 @@ Contributions are welcome, especially support for more dashcam brands, translati
 
 ## Credits
 
-Sample dashcam photos on the homepage are from Wikimedia Commons and are in the public domain or CC0. Flags from [flag-icons](https://github.com/lipis/flag-icons) (MIT). Map data © OpenStreetMap contributors.
+Sample dashcam photos on the homepage, and the demo clips in `public/demo` made from them, are from Wikimedia Commons and are in the public domain or CC0. Flags from [flag-icons](https://github.com/lipis/flag-icons) (MIT). Map data © OpenStreetMap contributors.
 
 ## License
 

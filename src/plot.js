@@ -34,21 +34,25 @@ export function drawPlot(canvas, { xs, ys, duration, cursor, format }) {
     max += 1;
   }
   const span = duration || xs.at(-1) || 1;
-  const X = (x) => PAD.left + (x / span) * (w - PAD.left - PAD.right);
-  const Y = (y) => PAD.top + (1 - (y - min) / (max - min)) * (h - PAD.top - PAD.bottom);
-
   ctx.font = `600 10.5px ${css.fontFamily}`;
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'right';
-  for (const v of [max, (min + max) / 2, min]) {
+  const ticks = [max, (min + max) / 2, min];
+  // The widest label sets the left margin, so "112 km/h" is not cut off; plotTime reads it back.
+  const left = Math.max(PAD.left, ...ticks.map((v) => Math.ceil(ctx.measureText(format(v)).width) + 10));
+  canvas.dataset.left = left;
+  const X = (x) => left + (x / span) * (w - left - PAD.right);
+  const Y = (y) => PAD.top + (1 - (y - min) / (max - min)) * (h - PAD.top - PAD.bottom);
+
+  for (const v of ticks) {
     ctx.strokeStyle = line;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(PAD.left, Math.round(Y(v)) + 0.5);
+    ctx.moveTo(left, Math.round(Y(v)) + 0.5);
     ctx.lineTo(w - PAD.right, Math.round(Y(v)) + 0.5);
     ctx.stroke();
     ctx.fillStyle = muted;
-    ctx.fillText(format(v), PAD.left - 6, Y(v));
+    ctx.fillText(format(v), left - 6, Y(v));
   }
 
   ctx.strokeStyle = ink;
@@ -79,6 +83,7 @@ export function drawPlot(canvas, { xs, ys, duration, cursor, format }) {
 /** The clip time under a pointer position on the graph. */
 export function plotTime(canvas, clientX, duration) {
   const r = canvas.getBoundingClientRect();
-  const frac = (clientX - r.left - PAD.left) / (r.width - PAD.left - PAD.right);
+  const left = Number(canvas.dataset.left) || PAD.left;
+  const frac = (clientX - r.left - left) / (r.width - left - PAD.right);
   return Math.max(0, Math.min(1, frac)) * duration;
 }

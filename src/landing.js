@@ -1,131 +1,44 @@
 import './page.js';
 import { animate, inView, stagger } from 'motion';
-import { onLangChange, t, locale } from './i18n.js';
-import { transition, reducedMotion } from './theme.js';
+import { onLangChange, t, ready, getLang } from './i18n.js';
+import { reducedMotion } from './theme.js';
 import { mountDecode } from './decode.js';
 
 mountDecode();
 
-// ---------- hero demo: a working fragment of the app ----------
+// ---------- demo: the app itself, on sample clips ----------
 
-const DEMO = [
-  { time: [10, 41, 37], front: 'georgia-i75nb-mm86-2-dashcam', rear: 'sb-madison-highway-road-junction-ga-376' },
-  { time: [10, 44, 2], front: 'sb-ne-colin-kelley-highway-at-ne', rear: 'sb-madison-highway-road-junction-ga-376', type: 'event' },
-  { time: [10, 46, 40], front: 'sb-madison-highway-directional-road-sign-ga', rear: 'georgia-i75nb-mm86-2-dashcam' },
-  { time: [10, 49, 15], front: 'sb-madison-highway-directional-road-sign-ga', rear: 'georgia-i75nb-mm86-2-dashcam' },
-  { time: [10, 51, 3], front: 'sb-madison-highway-road-junction-ga-376', rear: 'sb-madison-highway-directional-road-sign-ga' },
-  { time: [22, 15, 0], front: 'sb-madison-highway-road-junction-ga-376', type: 'parking' },
-];
-const photo = (name) => `/photos/${name}.jpg`;
-const demoTime = (m) => new Intl.DateTimeFormat(locale(), { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date(2024, 11, 12, ...m.time));
-let demoOpen = null;
-let demoMain = 'front';
-let tickTimer = 0;
+const demo = document.getElementById('demo-app');
+const demoSrc = () => (demo.src = `/app/?demo=${getLang()}`);
+ready.then(demoSrc);
+onLangChange(demoSrc);
+const wait = async (ok, ms) => {
+  for (let i = 0; i < ms / 100 && !ok(); i++) await new Promise((r) => setTimeout(r, 100));
+  return ok();
+};
 
-function renderDemo() {
-  const day = new Intl.DateTimeFormat(locale(), { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(2024, 11, 12));
-  document.getElementById('demo-day').textContent = day.charAt(0).toUpperCase() + day.slice(1);
-  const grid = document.getElementById('demo-grid');
-  grid.replaceChildren(
-    ...DEMO.map((m, i) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'demo-tile';
-      b.dataset.i = i;
-      b.innerHTML = `
-        <span class="demo-thumb">
-          <img class="demo-front" src="${photo(m.front)}" alt="" loading="${i < 3 ? 'eager' : 'lazy'}" decoding="async" />
-          ${m.rear ? `<img class="demo-rear" src="${photo(m.rear)}" alt="" loading="lazy" decoding="async" />` : ''}
-          ${m.type ? `<span class="tag tag-${m.type}">${t(`type.${m.type}`)}</span>` : ''}
-        </span>
-        <span class="demo-meta"><span>${demoTime(m)}</span><span class="demo-cams">${t('cam.front')}${m.rear ? `, ${t('cam.rear')}` : ''}</span></span>`;
-      b.setAttribute('aria-label', `${demoTime(m)}, ${t('cam.front')}${m.rear ? ` ${t('and')} ${t('cam.rear')}` : ''}`);
-      b.addEventListener('click', () => openDemo(i, b));
-      return b;
-    }),
-  );
+// The shortcut keys shown on this page work on the demo, the same as in the app.
+async function demoKey(key) {
+  demo.loading = 'eager';
+  const r = demo.getBoundingClientRect();
+  if (r.top < 0 || r.bottom > innerHeight) demo.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'center' });
+  const doc = () => demo.contentDocument;
+  if (!(await wait(() => doc()?.querySelector('.tile'), 15000))) return;
+  if (doc().getElementById('viewer').hidden) {
+    doc().querySelector('.tile').click();
+    if (!(await wait(() => doc().querySelector('#viewer video')?.readyState >= 2, 5000))) return;
+  }
+  doc().dispatchEvent(new demo.contentWindow.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
 }
 
-function setNames(tile, on) {
-  tile.querySelector('.demo-front').style.viewTransitionName = on ? 'demo-front' : '';
-  const rear = tile.querySelector('.demo-rear');
-  if (rear) rear.style.viewTransitionName = on ? 'demo-rear' : '';
-}
-
-function renderStage() {
-  const m = DEMO[demoOpen];
-  const stage = document.getElementById('demo-stage');
-  const big = demoMain === 'rear' && m.rear ? 'rear' : 'front';
-  const small = big === 'front' ? 'rear' : 'front';
-  stage.innerHTML = `
-    <img class="demo-big" src="${photo(m[big])}" alt="" style="view-transition-name: demo-${big}" />
-    ${m.rear ? `<img class="demo-small" src="${photo(m[small])}" alt="" style="view-transition-name: demo-${small}" />` : ''}
-    <span class="demo-label">${t(`cam.${big}`)}</span>`;
-  document.getElementById('demo-swap').hidden = !m.rear;
-}
-
-function openDemo(i, tile) {
-  demoOpen = i;
-  demoMain = 'front';
-  setNames(tile, true);
-  transition(() => {
-    setNames(tile, false);
-    document.getElementById('demo-library').hidden = true;
-    document.getElementById('demo-player').hidden = false;
-    renderStage();
-  }).then(() => document.getElementById('demo-back').focus());
-  startClock();
-}
-
-function closeDemo() {
-  const tile = document.querySelector(`.demo-tile[data-i="${demoOpen}"]`);
-  clearInterval(tickTimer);
-  transition(() => {
-    document.getElementById('demo-player').hidden = true;
-    document.getElementById('demo-library').hidden = false;
-    // The tile picture morphs back from whichever camera was large.
-    if (tile) setNames(tile, true);
-  }).then(() => {
-    if (tile) {
-      setNames(tile, false);
-      tile.focus({ preventScroll: true });
-    }
-  });
-}
-
-function swapDemo() {
-  if (!DEMO[demoOpen]?.rear) return;
-  transition(() => {
-    demoMain = demoMain === 'front' ? 'rear' : 'front';
-    renderStage();
-  });
-}
-
-function startClock() {
-  const m = DEMO[demoOpen];
-  let s = 0;
-  const out = document.getElementById('demo-time');
-  const show = () => {
-    const d = new Date(2024, 11, 12, m.time[0], m.time[1], m.time[2] + s);
-    out.textContent = new Intl.DateTimeFormat(locale(), { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(d);
-  };
-  show();
-  clearInterval(tickTimer);
-  tickTimer = setInterval(() => {
-    s++;
-    show();
-  }, 1000);
-}
-
-document.getElementById('demo-back').addEventListener('click', closeDemo);
-document.getElementById('demo-swap').addEventListener('click', swapDemo);
-document.getElementById('demo-stage').addEventListener('dblclick', swapDemo);
-document.getElementById('demo').addEventListener('keydown', (e) => {
-  if (demoOpen == null || document.getElementById('demo-player').hidden) return;
-  if (e.key === 'Escape') closeDemo();
-  if (e.key.toLowerCase() === 'w') swapDemo();
+for (const b of document.querySelectorAll('.key')) b.addEventListener('click', () => demoKey(b.dataset.key));
+addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat || !document.querySelector(`.key[data-key="${CSS.escape(key)}"]`)) return;
+  if (e.target.closest('input, select, textarea, [contenteditable]')) return;
+  e.preventDefault();
+  demoKey(key);
 });
-renderDemo();
 
 // ---------- route card ----------
 
@@ -155,13 +68,6 @@ function animateRoute(el) {
     },
   });
 }
-
-
-
-onLangChange(() => {
-  renderDemo();
-  if (demoOpen != null && !document.getElementById('demo-player').hidden) renderStage();
-});
 
 // ---------- motion ----------
 
