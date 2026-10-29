@@ -298,35 +298,53 @@ async function joinTrip(g, choice, btn, status) {
   const d = new Date(g.start);
   const p = (n) => String(n).padStart(2, '0');
   const name = `tripframe_${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}_trip-${layout ? choice : camLabel(choice).toLowerCase()}.mp4`;
-  state.merging = true;
-  btn.disabled = true;
+  const job = (state.merging = new AbortController());
+  const { signal } = job;
+  // Puts the button and status back once; a stopped job that winds down later changes nothing.
+  const end = (text) => {
+    if (state.merging !== job) return;
+    state.merging = null;
+    btn.onclick = null;
+    btn.replaceChildren(icon('join', 15), h('span', {}, t('tr.join')));
+    btn.title = t('tr.joinTitle');
+    btn.setAttribute('aria-haspopup', 'menu');
+    status.classList.remove('busy');
+    status.textContent = text;
+  };
+  // While it runs, the button stops it instead of opening the menu.
+  btn.onclick = (e) => {
+    e.preventDefault();
+    job.abort();
+    end(t('v.saveStopped'));
+  };
+  btn.replaceChildren(icon('stop', 15), h('span', {}, t('s.cancel')));
+  btn.title = '';
+  btn.removeAttribute('aria-haspopup');
   status.textContent = t('tr.joining', { pct: 0 });
   status.classList.add('busy');
   status.style.setProperty('--p', 0);
   try {
     const onProgress = (f) => {
+      if (signal.aborted) return;
       status.textContent = t('tr.joining', { pct: Math.round(f * 100) });
       status.style.setProperty('--p', f);
     };
     const blob = layout
-      ? await mergeLayout(moments.map((m) => ({ first: m.front, second: m.rear })), { layout: choice, name, onProgress })
-      : await mergeClips(files, { name, onProgress });
+      ? await mergeLayout(moments.map((m) => ({ first: m.front, second: m.rear })), { layout: choice, name, onProgress, signal })
+      : await mergeClips(files, { name, onProgress, signal });
+    if (signal.aborted) return;
     if (blob) saveBlob(blob, name);
+    end(t('tr.joined', { name }));
     // The route of the whole trip as GPX, next to the video.
     const points = [];
     for (const f of files) points.push(...((await readInfo(f)).gps || []));
     if (points.length > 1) saveBlob(new Blob([toGpx(points, name.replace(/\.mp4$/, ''))], { type: 'application/gpx+xml' }), name.replace(/\.mp4$/, '.gpx'));
-    status.textContent = t('tr.joined', { name });
   } catch (e) {
-    if (e.name === 'AbortError') status.textContent = '';
+    if (e.name === 'AbortError') end('');
     else {
       console.error(e);
-      status.textContent = e.code ? t(`tr.${e.code}`, { name: e.file || '' }) : t('tr.failed', { error: e.message });
+      end(e.code ? t(`tr.${e.code}`, { name: e.file || '' }) : t('tr.failed', { error: e.message }));
     }
-  } finally {
-    state.merging = false;
-    status.classList.remove('busy');
-    btn.disabled = false;
   }
 }
 

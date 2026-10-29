@@ -35,9 +35,13 @@ async function openTarget(name, bytes, picker = true) {
  * @param {File[]} files in playing order
  * @returns {Promise<Blob|null>} the file in memory, or null when it was written to disk
  */
-export async function mergeClips(files, { name, onProgress }) {
+export async function mergeClips(files, { name, onProgress, signal }) {
+  const stop = () => {
+    if (signal?.aborted) throw new DOMException('Stopped', 'AbortError');
+  };
   const parts = [];
   for (const file of files) {
+    stop();
     const tr = await readTracks(file);
     if (!tr?.video) throw new MergeError('unreadable', file.name);
     parts.push({ file, ...tr });
@@ -49,9 +53,11 @@ export async function mergeClips(files, { name, onProgress }) {
   const a0 = parts[0].audio;
   const withAudio = !!a0 && parts.every((p) => p.audio && same(p.audio.config, a0.config));
   const total = files.reduce((n, f) => n + f.size, 0);
+  stop();
   const { stream, target } = await openTarget(name, total);
 
   try {
+    stop();
     const muxer = new Muxer({
       target,
       fastStart: stream ? false : 'in-memory',
@@ -76,6 +82,7 @@ export async function mergeClips(files, { name, onProgress }) {
       let buf = null;
       let bufStart = 0;
       for (const { s, video } of list) {
+        stop();
         if (!buf || s.offset < bufStart || s.offset + s.size > bufStart + buf.length) {
           bufStart = s.offset;
           buf = new Uint8Array(await p.file.slice(s.offset, s.offset + Math.max(WINDOW, s.size)).arrayBuffer());
@@ -95,6 +102,7 @@ export async function mergeClips(files, { name, onProgress }) {
       done += p.file.size;
       onProgress?.(done / total);
     }
+    stop();
     muxer.finalize();
     if (stream) {
       await stream.close();
@@ -321,6 +329,7 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
             cur = next;
             next = (await other.next()).value ?? null;
           }
+          if (failed || signal?.aborted) f.close(); // the frame in hand, before giving up
           if (failed) throw failed;
           stop();
           draw(p.first ? f : null, p.first ? cur : f);
