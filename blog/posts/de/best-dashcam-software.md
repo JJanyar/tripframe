@@ -2,6 +2,7 @@
 title: Die beste Dashcam-Viewer-Software 2026
 description: Marken-Apps, Desktop-GPS-Player, normale Videoplayer und Browser-Viewer im Vergleich. Welche Dashcam-Software eignet sich am besten, um Aufnahmen anzusehen, zu sortieren und zu sichern?
 date: 2026-10-29
+updated: 2026-10-30
 ---
 
 Jede Dashcam nimmt gute Aufnahmen auf. Sie anzusehen ist eine andere Geschichte: eine Karte voller Dateien mit kryptischen Namen, Front und Heck getrennt, Ereignisse in einem anderen Ordner. Die richtige Software macht daraus etwas, womit du wirklich arbeiten kannst.
@@ -21,17 +22,20 @@ Offenlegung: Wir machen Tripframe, deshalb steht es an erster Stelle dieser List
 
 [Tripframe](/) läuft in deinem Browser. Öffne die SD-Karte, und jeder Clip erscheint nach Tag und Uhrzeit, wobei Front-, Heck- und Innenkamera zu einem Moment zusammengefasst sind.
 
-- Erkennt Dateinamen von Viofo, BlackVue, Thinkware, 70mai und Nextbase sowie von Tesla und jeden Namen mit einem Datum darin
-- Synchrone Kameras: nebeneinander, Bild im Bild (in der Größe veränderbar) oder eine Kamera
-- Bild-für-Bild-Schaltung, PNG-Standbilder und das Aufzeichnen der aktuellen Ansicht (einschließlich der Karte) als Video
-- GPS-Route und Geschwindigkeit für Viofo-(Novatek-) und BlackVue-Dateien, exportierbar als GPX, KML oder CSV
+- Erkennt Dateinamen von Viofo, BlackVue, Thinkware, 70mai und Nextbase sowie von Tesla, GoPro und jeden Namen mit einem Datum darin
+- Fahrten mit ihrer Dauer und den Pausen dazwischen sowie die Höchstgeschwindigkeit jedes Clips
+- Synchrone Kameras: nebeneinander, Bild im Bild (in der Größe veränderbar) oder eine Kamera, mit Zoom
+- Bild-für-Bild-Schaltung, Standbilder als PNG, JPG oder BMP und das Aufzeichnen der aktuellen Ansicht (einschließlich der Karte) als Video
+- Einen Teil eines Clips schneller, langsamer oder rückwärts exportieren und eine Fahrt ohne Neukodierung zu einem Video zusammenfügen
+- GPS-Route, Geschwindigkeit, Höhe und G-Kraft für Viofo-(Novatek-), BlackVue- und GoPro-Dateien, mit Diagrammen, Markierungen und Export als GPX, KML, CSV oder GeoJSON
+- Findet laute Momente im Ton
 - Kostenlos und Open Source, kein Konto, **nichts wird hochgeladen**
 
-Wo es Schwächen hat: keine Telemetrie-Diagramme, keine Kameraeinstellungen, und GPS wird für einige Marken noch nicht unterstützt.
+Wo es Schwächen hat: keine Kameraeinstellungen, und GPS für Thinkware, Nextbase, Garmin und 70mai wird noch nicht unterstützt.
 
 ## 2. Dashcam Viewer (Earthshine Software)
 
-Eine langjährige Desktop-App für Windows und Mac mit sehr breiter GPS-Unterstützung, Telemetrie-Diagrammen und Export nach GPX und KML. Wenn du detaillierte Telemetrie oder Exporte brauchst, ist sie die vollständigste Option. Die erweiterten Funktionen setzen eine kostenpflichtige Lizenz voraus. Lies dazu unseren Vergleich [kostenlose Alternative zu Dashcam Viewer](/blog/free-dashcam-viewer-alternative/).
+Eine langjährige Desktop-App für Windows und Mac mit sehr breiter GPS-Unterstützung: Sie liest mehr als 140 Kameramodelle. Telemetrie-Diagramme, GPS-Export, Clip-Export und das Zusammenfügen von Clips sind alle dabei. Die kostenlose Version öffnet zwei Dateien gleichzeitig; die Lizenzen Plus und Pro heben die Grenzen auf. Lies dazu unseren Vergleich [kostenlose Alternative zu Dashcam Viewer](/blog/free-dashcam-viewer-alternative/).
 
 ## 3. Registrator Viewer
 
@@ -53,11 +57,12 @@ Spielt jede einzelne Datei ab, weiß aber nichts über Datum, Kameras oder Ereig
 | Installation | Keine (Browser) | Desktop-App | Windows-App | Eine App pro Marke | Desktop-App |
 | Nach Tag und Uhrzeit sortieren | Ja | Ja | Ja | Teilweise | Nein |
 | Front und Heck synchron | Ja | Ja | Ja | Ja | Nein |
-| GPS-Karte | Einige Marken | Viele Marken | Viele Marken | Eigene Marke | Nein |
-| GPS-Export | GPX, KML, CSV | GPX, KML, CSV | Ja | Unterschiedlich | Nein |
+| GPS-Karte | Viofo, BlackVue, GoPro | Viele Marken | Viele Marken | Eigene Marke | Nein |
+| Telemetrie-Diagramme | Ja | Ja | Ja | Unterschiedlich | Nein |
+| GPS-Export | GPX, KML, CSV, GeoJSON | GPX, KML, CSV, GeoJSON | Ja | Unterschiedlich | Nein |
 | Mehrere Marken | Ja | Ja | Ja | Nein | Jede Datei |
 | Lädt Aufnahmen hoch | Nie | Nein | Nein | Cloud optional | Nein |
 
 ## Unser Rat
 
-Fang mit [Tripframe](/app/) an: Es ist kostenlos und in zehn Sekunden ausprobiert. Wenn du Telemetrie-Diagramme oder GPS von mehr Marken brauchst, ergänze Dashcam Viewer.
+Fang mit [Tripframe](/app/) an: Es ist kostenlos und in zehn Sekunden ausprobiert. Wenn deine Kamera GPS in einem Format speichert, das Tripframe noch nicht lesen kann, ergänze Dashcam Viewer.
