@@ -464,7 +464,7 @@ html:active-view-transition-type(page) .nav {
 .frame-strip span {
   aspect-ratio: 16 / 9;
   border-radius: var(--radius-sm);
-  background: url('/photos/sb-ne-colin-kelley-highway-at-ne.jpg') var(--x) 52% / 360% auto no-repeat;
+  background: url('/photos/a2-gantry.jpg') var(--x) 66% / 360% auto no-repeat;
   opacity: 0.7;
   outline: 2px solid rgba(10, 10, 10, 0.6);
   transition: opacity 200ms ease, transform 260ms var(--ease-out);
