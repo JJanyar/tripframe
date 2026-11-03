@@ -196,6 +196,9 @@ export default function seo() {
         if (ctx.path === '/app/index.html') {
           html = html.replace('</head>', `  <link rel="canonical" href="${SITE}/app/" />\n  </head>`);
         }
+        // Fetch the Latin font with the page, not after the CSS, so the fallback font barely shows.
+        const font = Object.keys(ctx.bundle ?? {}).find((f) => /manrope-latin-wght-normal-.*\.woff2$/.test(f));
+        if (font) html = html.replace('</head>', `  <link rel="preload" href="/${font}" as="font" type="font/woff2" crossorigin />\n  </head>`);
         return html;
       },
     },
