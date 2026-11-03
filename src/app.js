@@ -329,7 +329,7 @@ async function joinTrip(g, choice, btn, status) {
       status.style.setProperty('--p', f);
     };
     const blob = layout
-      ? await mergeLayout(moments.map((m) => ({ first: m.front, second: m.rear })), { layout: choice, name, onProgress, signal })
+      ? await mergeLayout(moments.map((m) => ({ first: m.front, second: m.rear })), { layout: choice, name, onProgress, signal, width: Number(localStorage.getItem('videoWidth')) || undefined })
       : await mergeClips(files, { name, onProgress, signal });
     if (signal.aborted) return;
     if (blob) saveBlob(blob, name);

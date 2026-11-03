@@ -470,5 +470,8 @@ export default {
   "tr.noDecode": "Este navegador no puede decodificar {name}. Prueba Chrome o Edge.",
   "tr.noEncode": "Este navegador no puede crear un vídeo nuevo. Prueba Chrome o Edge.",
   "v.saving": "Guardando {pct} %",
-  "v.saveStopped": "Guardado detenido. No se ha guardado nada."
+  "v.saveStopped": "Guardado detenido. No se ha guardado nada.",
+  "vs.options": "Opciones de vídeo",
+  "vs.size": "Tamaño para dos cámaras",
+  "vs.note": "Imagen en imagen y lado a lado se vuelven a dibujar a este tamaño, también para un trayecto como un solo vídeo. Más grande tarda más y da archivos más pesados. Una sola cámara se guarda como el archivo original."
 };

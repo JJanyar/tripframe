@@ -494,5 +494,8 @@ export default {
   "tr.noDecode": "Dieser Browser kann {name} nicht dekodieren. Versuche Chrome oder Edge.",
   "tr.noEncode": "Dieser Browser kann kein neues Video erstellen. Versuche Chrome oder Edge.",
   "v.saving": "Speichern {pct} %",
-  "v.saveStopped": "Speichern abgebrochen. Es wurde nichts gespeichert."
+  "v.saveStopped": "Speichern abgebrochen. Es wurde nichts gespeichert.",
+  "vs.options": "Videooptionen",
+  "vs.size": "Größe für zwei Kameras",
+  "vs.note": "Bild im Bild und nebeneinander werden in dieser Größe neu gezeichnet, auch für eine Fahrt als ein Video. Größer dauert länger und ergibt größere Dateien. Eine Kamera wird als Originaldatei gespeichert."
 };

@@ -494,5 +494,8 @@ export default {
   "tr.noDecode": "Deze browser kan {name} niet decoderen. Probeer Chrome of Edge.",
   "tr.noEncode": "Deze browser kan geen nieuwe video maken. Probeer Chrome of Edge.",
   "v.saving": "Opslaan {pct}%",
-  "v.saveStopped": "Opslaan gestopt. Er is niets opgeslagen."
+  "v.saveStopped": "Opslaan gestopt. Er is niets opgeslagen.",
+  "vs.options": "Video-opties",
+  "vs.size": "Formaat voor twee camera’s",
+  "vs.note": "Beeld-in-beeld en naast elkaar worden op dit formaat opnieuw getekend, ook voor een rit als één video. Groter duurt langer en geeft grotere bestanden. Eén camera wordt als origineel bestand opgeslagen."
 };

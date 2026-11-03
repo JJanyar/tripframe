@@ -470,5 +470,8 @@ export default {
   "tr.noDecode": "Ce navigateur ne peut pas décoder {name}. Essayez Chrome ou Edge.",
   "tr.noEncode": "Ce navigateur ne peut pas créer de nouvelle vidéo. Essayez Chrome ou Edge.",
   "v.saving": "Enregistrement {pct} %",
-  "v.saveStopped": "Enregistrement arrêté. Rien n’a été enregistré."
+  "v.saveStopped": "Enregistrement arrêté. Rien n’a été enregistré.",
+  "vs.options": "Options vidéo",
+  "vs.size": "Taille pour deux caméras",
+  "vs.note": "L’image dans l’image et le côte à côte sont redessinés à cette taille, aussi pour un trajet en une vidéo. Plus grand prend plus de temps et donne des fichiers plus lourds. Une seule caméra est enregistrée en fichier d’origine."
 };

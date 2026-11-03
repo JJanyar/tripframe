@@ -204,7 +204,9 @@ async function* decoded(file, v) {
   }
 }
 
-const SIZE = { pip: [1920, 1080], side: [2560, 720] };
+/** Output widths to choose from; side by side puts two 16:9 pictures in that width. */
+export const VIDEO_WIDTHS = [1280, 1920, 2560, 3840];
+export const layoutSize = (layout, width) => [width, layout === 'side' ? (width * 9) / 32 : (width * 9) / 16];
 
 /**
  * Joins clips of two cameras into one picture: the second camera inset in the
@@ -212,11 +214,12 @@ const SIZE = { pip: [1920, 1080], side: [2560, 720] };
  * Every frame is decoded, drawn and encoded again, so this takes much longer
  * than mergeClips. The sound of the first camera is copied as it is.
  * @param {{first?: File, second?: File}[]} moments in playing order
- * @param {{layout: 'pip'|'side', name: string, onProgress?: (f: number) => void, signal?: AbortSignal, picker?: boolean}} o
+ * @param {{layout: 'pip'|'side', name: string, onProgress?: (f: number) => void, signal?: AbortSignal, picker?: boolean, width?: number}} o
  *   picker: false builds the file in memory instead of asking where to save it
+ *   width: one of VIDEO_WIDTHS
  * @returns {Promise<Blob|null>} the file in memory, or null when it was written to disk
  */
-export async function mergeLayout(moments, { layout, name, onProgress, signal, picker = true }) {
+export async function mergeLayout(moments, { layout, name, onProgress, signal, picker = true, width = 2560 }) {
   // Checked after every wait, so stopping takes effect at once and never ends in a saved file.
   const stop = () => {
     if (signal?.aborted) throw new DOMException('Stopped', 'AbortError');
@@ -243,10 +246,10 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
   }
   if (!parts.length) throw new MergeError('unreadable', '');
 
-  const [W, H] = SIZE[layout];
+  const [W, H] = layoutSize(layout, width);
   const v0 = parts[0].main.video;
   const fps = Math.min(60, Math.round(v0.samples.length / (v0.duration / v0.timescale)) || 30);
-  const bitrate = 8e6; // about 3.6 GB per hour
+  const bitrate = Math.round(W * H * 4); // 8 Mbit/s (3.6 GB per hour) at 1920x1080
   let config = null;
   for (const codec of CODECS) {
     const cfg = { codec, width: W, height: H, bitrate, framerate: fps };
@@ -280,14 +283,15 @@ export async function mergeLayout(moments, { layout, name, onProgress, signal, p
     fit(first || second, 0, 0, W, H);
     if (!first || !second) return;
     // The second camera bottom right, like picture in picture in the viewer.
+    const k = W / 1920;
     const w = Math.round(W * 0.3);
     const h = Math.round((w * second.displayHeight) / second.displayWidth);
-    const x = W - w - 30;
-    const y = H - h - 30;
+    const x = W - w - 30 * k;
+    const y = H - h - 30 * k;
     ctx.save();
     ctx.beginPath();
-    ctx.roundRect(x, y, w, h, 10);
-    ctx.lineWidth = 6;
+    ctx.roundRect(x, y, w, h, 10 * k);
+    ctx.lineWidth = 6 * k;
     ctx.strokeStyle = '#0e0f12';
     ctx.stroke();
     ctx.clip();

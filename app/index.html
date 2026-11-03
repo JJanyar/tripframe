@@ -184,11 +184,26 @@
             </div>
             <button class="btn icon-only" id="clip-toggle" type="button" popovertarget="clip-card" data-i18n-attr="title:c.titleKey;aria-label:c.title"></button>
             <button class="btn icon-only" id="loud" type="button" data-i18n-attr="title:a.findTitle;aria-label:a.find"></button>
-            <button class="btn" id="record" type="button" data-i18n-attr="title:v.recordTitle"></button>
+            <div class="split-btn">
+              <button class="btn" id="record" type="button" data-i18n-attr="title:v.recordTitle"></button>
+              <button class="btn icon-only" id="video-options" type="button" popovertarget="video-card" data-i18n-attr="title:vs.options;aria-label:vs.options"></button>
+            </div>
           </div>
         </div>
       </footer>
       <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+      <div class="keys-card tool-card force-dark" id="video-card" popover>
+        <div class="keys-head">
+          <h3 data-i18n="vs.options"></h3>
+          <button class="btn btn-ghost icon-only card-close" type="button" popovertarget="video-card" popovertargetaction="hide" data-i18n-attr="aria-label:k.close"></button>
+        </div>
+        <fieldset class="card-field">
+          <legend data-i18n="vs.size"></legend>
+          <div class="radio-row" id="video-size"></div>
+          <p class="card-note" data-i18n="vs.note"></p>
+        </fieldset>
+      </div>
 
       <div class="keys-card tool-card force-dark" id="still-card" popover>
         <div class="keys-head">

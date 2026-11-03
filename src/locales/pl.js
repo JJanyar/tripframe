@@ -470,5 +470,8 @@ export default {
   "tr.noDecode": "Ta przeglądarka nie potrafi zdekodować {name}. Spróbuj Chrome lub Edge.",
   "tr.noEncode": "Ta przeglądarka nie potrafi utworzyć nowego wideo. Spróbuj Chrome lub Edge.",
   "v.saving": "Zapisywanie {pct}%",
-  "v.saveStopped": "Zapisywanie zatrzymane. Nic nie zostało zapisane."
+  "v.saveStopped": "Zapisywanie zatrzymane. Nic nie zostało zapisane.",
+  "vs.options": "Opcje wideo",
+  "vs.size": "Rozmiar dla dwóch kamer",
+  "vs.note": "Obraz w obrazie i obok siebie są rysowane od nowa w tym rozmiarze, także dla trasy jako jednego wideo. Większy trwa dłużej i daje większe pliki. Jedna kamera jest zapisywana jako oryginalny plik."
 };

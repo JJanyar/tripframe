@@ -5,7 +5,7 @@
 import { readInfo } from './mp4.js';
 import { startRecording, createComposer, canRecord } from './record.js';
 import { exportReverse, canReverse } from './clip.js';
-import { mergeLayout, canLayout, MergeError } from './merge.js';
+import { mergeLayout, canLayout, MergeError, VIDEO_WIDTHS, layoutSize } from './merge.js';
 import { ROUTE_FORMATS, toGpx, waypointsFromGpx, cumulativeKm, gradients } from './route.js';
 import { STILL_FORMATS, canvasToBlob } from './stills.js';
 import { findLoudMoments, knownLoudMoments } from './audio.js';
@@ -35,6 +35,7 @@ let speedColours = localStorage.getItem('speedColours') === '1';
 let follow = localStorage.getItem('follow') !== '0';
 let plotKey = localStorage.getItem('plot') || 'speed';
 let stillFormat = STILL_FORMATS.includes(localStorage.getItem('still')) ? localStorage.getItem('still') : 'png';
+let videoWidth = VIDEO_WIDTHS.includes(Number(localStorage.getItem('videoWidth'))) ? Number(localStorage.getItem('videoWidth')) : 2560;
 let volume = Number(localStorage.getItem('volume') ?? 1);
 let muted = localStorage.getItem('muted') === '1';
 let recording = null; // { rec, started, stampTime, moment, layout, map, timer, stopAt, name }
@@ -49,6 +50,7 @@ function renderChrome() {
   setButton($('swap'), 'swap', t('v.swap'));
   setButton($('save-frame'), 'save', t('v.save'));
   setButton($('still-toggle'), 'more', t('s.options'), { iconOnly: true });
+  setButton($('video-options'), 'more', t('vs.options'), { iconOnly: true });
   setButton($('clip-toggle'), 'clip', t('c.title'), { iconOnly: true });
   setButton($('loud'), 'loud', t('a.find'), { iconOnly: true });
   setButton($('hud-toggle'), 'hud', t('v.hud'), { iconOnly: true });
@@ -446,7 +448,7 @@ async function saveVideo() {
       job.pct = Math.round(f * 100);
       renderRecord();
     };
-    const blob = await mergeLayout([{ first: file(cur.main), second: file(other) }], { layout: cur.layout, name, picker: false, signal: job.abort.signal, onProgress });
+    const blob = await mergeLayout([{ first: file(cur.main), second: file(other) }], { layout: cur.layout, name, picker: false, signal: job.abort.signal, onProgress, width: videoWidth });
     if (job.abort.signal.aborted) return;
     saveBlob(blob, name);
     toast(t('v.recSaved', { name }));
@@ -1036,6 +1038,21 @@ async function saveFrame(only) {
   saveBlob(await canvasToBlob(frame.canvas, stillFormat), name);
   toast(t('v.saved', { name }));
 }
+
+// Each size shows what it gives in the layout on screen (side by side is half as tall).
+function renderVideoCard() {
+  const layout = cur?.layout === 'side' ? 'side' : 'pip';
+  $('video-size').replaceChildren(
+    ...VIDEO_WIDTHS.map((w) =>
+      h('label', {}, h('input', { type: 'radio', name: 'video-size', value: w, checked: w === videoWidth, onchange: () => {
+        videoWidth = w;
+        localStorage.setItem('videoWidth', w);
+      } }), ` ${layoutSize(layout, w).join(' × ')}`),
+    ),
+  );
+}
+
+$('video-card').addEventListener('toggle', (e) => e.newState === 'open' && renderVideoCard());
 
 function renderStillCard() {
   $('still-format').replaceChildren(

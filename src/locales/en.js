@@ -494,5 +494,8 @@ export default {
   "tr.noDecode": "This browser cannot decode {name}. Try Chrome or Edge.",
   "tr.noEncode": "This browser cannot create a new video. Try Chrome or Edge.",
   "v.saving": "Saving {pct}%",
-  "v.saveStopped": "Saving stopped. Nothing was saved."
+  "v.saveStopped": "Saving stopped. Nothing was saved.",
+  "vs.options": "Video options",
+  "vs.size": "Size for two cameras",
+  "vs.note": "Picture in picture and side by side are drawn again at this size, also for a trip as one video. Larger takes longer and makes bigger files. One camera is saved as the original file."
 };

@@ -1,7 +1,7 @@
 // npm test
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { codecString } from './merge.js';
+import { codecString, layoutSize, VIDEO_WIDTHS } from './merge.js';
 
 test('codec strings for the decoder come from the avcC and hvcC boxes', () => {
   assert.equal(codecString({ codec: 'avc', config: new Uint8Array([1, 0x64, 0x00, 0x33, 0xff]) }), 'avc1.640033');
@@ -11,4 +11,10 @@ test('codec strings for the decoder come from the avcC and hvcC boxes', () => {
   // high tier, Main 10
   const high = new Uint8Array([1, 0x22, 0x20, 0, 0, 0, 0x90, 0, 0, 0, 0, 0, 120]);
   assert.equal(codecString({ codec: 'hevc', config: high }), 'hvc1.2.4.H120.90');
+});
+
+test('layoutSize: 16:9 for picture in picture, two 16:9 halves side by side, all even', () => {
+  assert.deepEqual(layoutSize('pip', 1920), [1920, 1080]);
+  assert.deepEqual(layoutSize('side', 2560), [2560, 720]);
+  for (const w of VIDEO_WIDTHS) for (const l of ['pip', 'side']) assert.ok(layoutSize(l, w).every((n) => Number.isInteger(n) && n % 2 === 0));
 });
